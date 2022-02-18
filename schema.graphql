@@ -1,0 +1,66 @@
+# First-class objects
+type Factory @entity {
+  # factory address
+  id: ID!
+
+  owner: ID!
+}
+
+type Protocol @entity {
+  # protocol address
+  id: ID!
+
+  name: String!
+}
+
+type UnderlyingToken @entity {
+  # token address
+  id: ID!
+
+  name: String!
+}
+
+type RateOracle @entity {
+  id: ID!
+  protocol: Protocol!
+  token: UnderlyingToken!
+}
+
+type AMM @entity {
+  # actually the address of the VAMM
+  id: ID!
+
+  createdTimestamp: BigInt!
+  updatedTimestamp: BigInt!
+  marginEngineAddress: String!
+  rateOracle: RateOracle
+  termStartTimestamp: BigInt!
+  termEndTimestamp: BigInt!
+  fixedApr: BigInt!
+  variableApr: BigInt!
+}
+
+#type Tick @entity {
+
+#}
+
+#type Position @entity {
+
+#}
+
+#type PositionSnapshot @entity {
+
+#}
+
+# Event tracking
+type Transaction @entity {
+  # transaction hash
+  id: ID!
+  # block transaction was included in
+  blockNumber: BigInt!
+  # timestamp transaction was confirmed
+  timestamp: BigInt!
+  # gas used during transaction execution
+  gasUsed: BigInt!
+  gasPrice: BigInt!
+}

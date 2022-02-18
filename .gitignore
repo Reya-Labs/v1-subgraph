@@ -4,3 +4,7 @@ yarn-error.log
 .npmrc
 .yalc
 yalc.lock
+data
+artifacts
+generated
+.DS_Store
