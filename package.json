@@ -12,8 +12,9 @@
   ],
   "scripts": {
     "prepare": "husky install && chmod ug+x .husky/*",
-    "build": "tsc -p tsconfig.build.json",
-    "build-release": "tsc -p tsconfig.dist.json",
+    "codegen": "graph codegen",
+    "create-local": "graph create nicholaspiano/v1-subgraph --node http://127.0.0.1:8020",
+    "deploy-local": "graph deploy nicholaspiano/v1-subgraph --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
     "prettier": "prettier 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
     "eslint": "eslint 'src/**/*.ts'",
