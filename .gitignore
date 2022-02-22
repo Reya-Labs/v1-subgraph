@@ -7,3 +7,4 @@ yalc.lock
 data
 artifacts
 .DS_Store
+localhostDeployment.json

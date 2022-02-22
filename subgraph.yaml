@@ -19,7 +19,7 @@ dataSources:
         - AMM
       abis:
         - name: Factory
-          file: ./artifacts/contracts/Factory.sol/Factory.json
+          file: ./artifacts/Factory.json
       eventHandlers:
         - event: IrsInstanceDeployed(indexed address,indexed address,uint256,uint256,address,address)
           handler: handleIrsInstanceDeployed
@@ -38,7 +38,7 @@ templates:
         - AMM
       abis:
         - name: VAMM
-          file: ./artifacts/contracts/VAMM.sol/VAMM.json
+          file: ./artifacts/VAMM.json
       eventHandlers:
         - event: Initialize(uint256,address,uint160,int24)
           handler: handleInitialize
