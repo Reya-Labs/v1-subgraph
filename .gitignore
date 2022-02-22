@@ -6,8 +6,4 @@ yarn-error.log
 yalc.lock
 data
 artifacts
-<<<<<<< HEAD
-generated
-=======
->>>>>>> temp
 .DS_Store
