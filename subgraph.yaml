@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 description: Voltz
-repository: https://github.com/graphprotocol/example-subgraph
+repository: https://github.com/Voltz-Protocol/v1-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
@@ -16,7 +16,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/mappings/factory.ts
       entities:
-        - VAMM
+        - AMM
       abis:
         - name: Factory
           file: ./artifacts/contracts/Factory.sol/Factory.json

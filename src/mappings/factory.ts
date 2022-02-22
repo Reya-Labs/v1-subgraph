@@ -9,3 +9,5 @@ const handleIrsInstanceDeployed = (event: IrsInstanceDeployed): void => {
   amm.termEndTimestamp = event.params.termEndTimestampWad;
   amm.save();
 };
+
+export default handleIrsInstanceDeployed;
