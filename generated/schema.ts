@@ -55,50 +55,6 @@ export class Factory extends Entity {
   }
 }
 
-export class Protocol extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("name", Value.fromString(""));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Protocol entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Protocol entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Protocol", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Protocol | null {
-    return changetype<Protocol | null>(store.get("Protocol", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get name(): string {
-    let value = this.get("name");
-    return value!.toString();
-  }
-
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
-  }
-}
-
 export class UnderlyingToken extends Entity {
   constructor(id: string) {
     super();
@@ -148,7 +104,6 @@ export class RateOracle extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("protocol", Value.fromString(""));
     this.set("token", Value.fromString(""));
   }
 
@@ -178,15 +133,6 @@ export class RateOracle extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get protocol(): string {
-    let value = this.get("protocol");
-    return value!.toString();
-  }
-
-  set protocol(value: string) {
-    this.set("protocol", Value.fromString(value));
-  }
-
   get token(): string {
     let value = this.get("token");
     return value!.toString();
@@ -205,9 +151,11 @@ export class AMM extends Entity {
     this.set("createdTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("updatedTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("marginEngineAddress", Value.fromString(""));
+    this.set("fcmAddress", Value.fromString(""));
     this.set("rateOracle", Value.fromString(""));
     this.set("termStartTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("termEndTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("tickSpacing", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -263,6 +211,15 @@ export class AMM extends Entity {
     this.set("marginEngineAddress", Value.fromString(value));
   }
 
+  get fcmAddress(): string {
+    let value = this.get("fcmAddress");
+    return value!.toString();
+  }
+
+  set fcmAddress(value: string) {
+    this.set("fcmAddress", Value.fromString(value));
+  }
+
   get rateOracle(): string {
     let value = this.get("rateOracle");
     return value!.toString();
@@ -288,6 +245,15 @@ export class AMM extends Entity {
 
   set termEndTimestamp(value: BigInt) {
     this.set("termEndTimestamp", Value.fromBigInt(value));
+  }
+
+  get tickSpacing(): BigInt {
+    let value = this.get("tickSpacing");
+    return value!.toBigInt();
+  }
+
+  set tickSpacing(value: BigInt) {
+    this.set("tickSpacing", Value.fromBigInt(value));
   }
 
   get fixedApr(): BigInt | null {
