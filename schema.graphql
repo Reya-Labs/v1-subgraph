@@ -6,13 +6,6 @@ type Factory @entity {
   owner: ID!
 }
 
-type Protocol @entity {
-  # protocol address
-  id: ID!
-
-  name: String!
-}
-
 type UnderlyingToken @entity {
   # token address
   id: ID!
@@ -22,7 +15,6 @@ type UnderlyingToken @entity {
 
 type RateOracle @entity {
   id: ID!
-  protocol: Protocol!
   token: UnderlyingToken!
 }
 
@@ -33,11 +25,16 @@ type AMM @entity {
   createdTimestamp: BigInt!
   updatedTimestamp: BigInt!
   marginEngineAddress: String!
+  fcmAddress: String!
   rateOracle: RateOracle!
   termStartTimestamp: BigInt!
   termEndTimestamp: BigInt!
+  tickSpacing: BigInt!
   fixedApr: BigInt
   variableApr: BigInt
+
+  # tracking attributes
+  txCount: BigInt
 
   # derived values
   mints: [Mint!]! @derivedFrom(field: "amm")
