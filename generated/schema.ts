@@ -205,10 +205,9 @@ export class AMM extends Entity {
     this.set("createdTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("updatedTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("marginEngineAddress", Value.fromString(""));
+    this.set("rateOracle", Value.fromString(""));
     this.set("termStartTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("termEndTimestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("fixedApr", Value.fromBigInt(BigInt.zero()));
-    this.set("variableApr", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -264,21 +263,13 @@ export class AMM extends Entity {
     this.set("marginEngineAddress", Value.fromString(value));
   }
 
-  get rateOracle(): string | null {
+  get rateOracle(): string {
     let value = this.get("rateOracle");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set rateOracle(value: string | null) {
-    if (!value) {
-      this.unset("rateOracle");
-    } else {
-      this.set("rateOracle", Value.fromString(<string>value));
-    }
+  set rateOracle(value: string) {
+    this.set("rateOracle", Value.fromString(value));
   }
 
   get termStartTimestamp(): BigInt {
@@ -299,22 +290,270 @@ export class AMM extends Entity {
     this.set("termEndTimestamp", Value.fromBigInt(value));
   }
 
-  get fixedApr(): BigInt {
+  get fixedApr(): BigInt | null {
     let value = this.get("fixedApr");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set fixedApr(value: BigInt) {
-    this.set("fixedApr", Value.fromBigInt(value));
+  set fixedApr(value: BigInt | null) {
+    if (!value) {
+      this.unset("fixedApr");
+    } else {
+      this.set("fixedApr", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get variableApr(): BigInt {
+  get variableApr(): BigInt | null {
     let value = this.get("variableApr");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set variableApr(value: BigInt | null) {
+    if (!value) {
+      this.unset("variableApr");
+    } else {
+      this.set("variableApr", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get mints(): Array<string> {
+    let value = this.get("mints");
+    return value!.toStringArray();
+  }
+
+  set mints(value: Array<string>) {
+    this.set("mints", Value.fromStringArray(value));
+  }
+
+  get burns(): Array<string> {
+    let value = this.get("burns");
+    return value!.toStringArray();
+  }
+
+  set burns(value: Array<string>) {
+    this.set("burns", Value.fromStringArray(value));
+  }
+
+  get swaps(): Array<string> {
+    let value = this.get("swaps");
+    return value!.toStringArray();
+  }
+
+  set swaps(value: Array<string>) {
+    this.set("swaps", Value.fromStringArray(value));
+  }
+}
+
+export class Tick extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("amm", Value.fromString(""));
+    this.set("value", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Tick entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Tick entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Tick", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Tick | null {
+    return changetype<Tick | null>(store.get("Tick", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get amm(): string {
+    let value = this.get("amm");
+    return value!.toString();
+  }
+
+  set amm(value: string) {
+    this.set("amm", Value.fromString(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
     return value!.toBigInt();
   }
 
-  set variableApr(value: BigInt) {
-    this.set("variableApr", Value.fromBigInt(value));
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
+  }
+}
+
+export class Position extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("createdTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("updatedTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("closedTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("amm", Value.fromString(""));
+    this.set("owner", Value.fromString(""));
+    this.set("tickLower", Value.fromString(""));
+    this.set("tickUpper", Value.fromString(""));
+    this.set("liquidity", Value.fromBigInt(BigInt.zero()));
+    this.set("margin", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Position entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Position entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Position", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Position | null {
+    return changetype<Position | null>(store.get("Position", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get createdTimestamp(): BigInt {
+    let value = this.get("createdTimestamp");
+    return value!.toBigInt();
+  }
+
+  set createdTimestamp(value: BigInt) {
+    this.set("createdTimestamp", Value.fromBigInt(value));
+  }
+
+  get updatedTimestamp(): BigInt {
+    let value = this.get("updatedTimestamp");
+    return value!.toBigInt();
+  }
+
+  set updatedTimestamp(value: BigInt) {
+    this.set("updatedTimestamp", Value.fromBigInt(value));
+  }
+
+  get closedTimestamp(): BigInt {
+    let value = this.get("closedTimestamp");
+    return value!.toBigInt();
+  }
+
+  set closedTimestamp(value: BigInt) {
+    this.set("closedTimestamp", Value.fromBigInt(value));
+  }
+
+  get amm(): string {
+    let value = this.get("amm");
+    return value!.toString();
+  }
+
+  set amm(value: string) {
+    this.set("amm", Value.fromString(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get tickLower(): string {
+    let value = this.get("tickLower");
+    return value!.toString();
+  }
+
+  set tickLower(value: string) {
+    this.set("tickLower", Value.fromString(value));
+  }
+
+  get tickUpper(): string {
+    let value = this.get("tickUpper");
+    return value!.toString();
+  }
+
+  set tickUpper(value: string) {
+    this.set("tickUpper", Value.fromString(value));
+  }
+
+  get liquidity(): BigInt {
+    let value = this.get("liquidity");
+    return value!.toBigInt();
+  }
+
+  set liquidity(value: BigInt) {
+    this.set("liquidity", Value.fromBigInt(value));
+  }
+
+  get margin(): BigInt {
+    let value = this.get("margin");
+    return value!.toBigInt();
+  }
+
+  set margin(value: BigInt) {
+    this.set("margin", Value.fromBigInt(value));
+  }
+
+  get mints(): Array<string> {
+    let value = this.get("mints");
+    return value!.toStringArray();
+  }
+
+  set mints(value: Array<string>) {
+    this.set("mints", Value.fromStringArray(value));
+  }
+
+  get burns(): Array<string> {
+    let value = this.get("burns");
+    return value!.toStringArray();
+  }
+
+  set burns(value: Array<string>) {
+    this.set("burns", Value.fromStringArray(value));
+  }
+
+  get swaps(): Array<string> {
+    let value = this.get("swaps");
+    return value!.toStringArray();
+  }
+
+  set swaps(value: Array<string>) {
+    this.set("swaps", Value.fromStringArray(value));
   }
 }
 
@@ -325,7 +564,6 @@ export class Transaction extends Entity {
 
     this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
   }
 
@@ -373,15 +611,6 @@ export class Transaction extends Entity {
     this.set("timestamp", Value.fromBigInt(value));
   }
 
-  get gasUsed(): BigInt {
-    let value = this.get("gasUsed");
-    return value!.toBigInt();
-  }
-
-  set gasUsed(value: BigInt) {
-    this.set("gasUsed", Value.fromBigInt(value));
-  }
-
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
     return value!.toBigInt();
@@ -389,5 +618,334 @@ export class Transaction extends Entity {
 
   set gasPrice(value: BigInt) {
     this.set("gasPrice", Value.fromBigInt(value));
+  }
+
+  get mints(): Array<string> {
+    let value = this.get("mints");
+    return value!.toStringArray();
+  }
+
+  set mints(value: Array<string>) {
+    this.set("mints", Value.fromStringArray(value));
+  }
+
+  get burns(): Array<string> {
+    let value = this.get("burns");
+    return value!.toStringArray();
+  }
+
+  set burns(value: Array<string>) {
+    this.set("burns", Value.fromStringArray(value));
+  }
+
+  get swaps(): Array<string> {
+    let value = this.get("swaps");
+    return value!.toStringArray();
+  }
+
+  set swaps(value: Array<string>) {
+    this.set("swaps", Value.fromStringArray(value));
+  }
+}
+
+export class Mint extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("transaction", Value.fromString(""));
+    this.set("amm", Value.fromString(""));
+    this.set("position", Value.fromString(""));
+    this.set("sender", Value.fromString(""));
+    this.set("tickLower", Value.fromString(""));
+    this.set("tickUpper", Value.fromString(""));
+    this.set("amount", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Mint entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Mint entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Mint", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Mint | null {
+    return changetype<Mint | null>(store.get("Mint", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get transaction(): string {
+    let value = this.get("transaction");
+    return value!.toString();
+  }
+
+  set transaction(value: string) {
+    this.set("transaction", Value.fromString(value));
+  }
+
+  get amm(): string {
+    let value = this.get("amm");
+    return value!.toString();
+  }
+
+  set amm(value: string) {
+    this.set("amm", Value.fromString(value));
+  }
+
+  get position(): string {
+    let value = this.get("position");
+    return value!.toString();
+  }
+
+  set position(value: string) {
+    this.set("position", Value.fromString(value));
+  }
+
+  get sender(): string {
+    let value = this.get("sender");
+    return value!.toString();
+  }
+
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
+  }
+
+  get tickLower(): string {
+    let value = this.get("tickLower");
+    return value!.toString();
+  }
+
+  set tickLower(value: string) {
+    this.set("tickLower", Value.fromString(value));
+  }
+
+  get tickUpper(): string {
+    let value = this.get("tickUpper");
+    return value!.toString();
+  }
+
+  set tickUpper(value: string) {
+    this.set("tickUpper", Value.fromString(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value!.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+}
+
+export class Burn extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("transaction", Value.fromString(""));
+    this.set("amm", Value.fromString(""));
+    this.set("position", Value.fromString(""));
+    this.set("sender", Value.fromString(""));
+    this.set("tickLower", Value.fromString(""));
+    this.set("tickUpper", Value.fromString(""));
+    this.set("amount", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Burn entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Burn entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Burn", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Burn | null {
+    return changetype<Burn | null>(store.get("Burn", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get transaction(): string {
+    let value = this.get("transaction");
+    return value!.toString();
+  }
+
+  set transaction(value: string) {
+    this.set("transaction", Value.fromString(value));
+  }
+
+  get amm(): string {
+    let value = this.get("amm");
+    return value!.toString();
+  }
+
+  set amm(value: string) {
+    this.set("amm", Value.fromString(value));
+  }
+
+  get position(): string {
+    let value = this.get("position");
+    return value!.toString();
+  }
+
+  set position(value: string) {
+    this.set("position", Value.fromString(value));
+  }
+
+  get sender(): string {
+    let value = this.get("sender");
+    return value!.toString();
+  }
+
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
+  }
+
+  get tickLower(): string {
+    let value = this.get("tickLower");
+    return value!.toString();
+  }
+
+  set tickLower(value: string) {
+    this.set("tickLower", Value.fromString(value));
+  }
+
+  get tickUpper(): string {
+    let value = this.get("tickUpper");
+    return value!.toString();
+  }
+
+  set tickUpper(value: string) {
+    this.set("tickUpper", Value.fromString(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value!.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+}
+
+export class Swap extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("transaction", Value.fromString(""));
+    this.set("amm", Value.fromString(""));
+    this.set("sender", Value.fromString(""));
+    this.set("position", Value.fromString(""));
+    this.set("txIndex", Value.fromBigInt(BigInt.zero()));
+    this.set("sqrtPriceX96", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Swap entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Swap entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Swap", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Swap | null {
+    return changetype<Swap | null>(store.get("Swap", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get transaction(): string {
+    let value = this.get("transaction");
+    return value!.toString();
+  }
+
+  set transaction(value: string) {
+    this.set("transaction", Value.fromString(value));
+  }
+
+  get amm(): string {
+    let value = this.get("amm");
+    return value!.toString();
+  }
+
+  set amm(value: string) {
+    this.set("amm", Value.fromString(value));
+  }
+
+  get sender(): string {
+    let value = this.get("sender");
+    return value!.toString();
+  }
+
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
+  }
+
+  get position(): string {
+    let value = this.get("position");
+    return value!.toString();
+  }
+
+  set position(value: string) {
+    this.set("position", Value.fromString(value));
+  }
+
+  get txIndex(): BigInt {
+    let value = this.get("txIndex");
+    return value!.toBigInt();
+  }
+
+  set txIndex(value: BigInt) {
+    this.set("txIndex", Value.fromBigInt(value));
+  }
+
+  get sqrtPriceX96(): BigInt {
+    let value = this.get("sqrtPriceX96");
+    return value!.toBigInt();
+  }
+
+  set sqrtPriceX96(value: BigInt) {
+    this.set("sqrtPriceX96", Value.fromBigInt(value));
   }
 }

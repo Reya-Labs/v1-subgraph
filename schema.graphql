@@ -40,9 +40,9 @@ type AMM @entity {
   variableApr: BigInt
 
   # derived values
-  mints: [Mint]! @derivedFrom(field: "amm")
-  burns: [Burn]! @derivedFrom(field: "amm")
-  swaps: [Swap]! @derivedFrom(field: "amm")
+  mints: [Mint!]! @derivedFrom(field: "amm")
+  burns: [Burn!]! @derivedFrom(field: "amm")
+  swaps: [Swap!]! @derivedFrom(field: "amm")
 }
 
 type Tick @entity {
@@ -76,9 +76,9 @@ type Position @entity {
   margin: BigInt!
 
   # derived values
-  mints: [Mint]! @derivedFrom(field: "position")
-  burns: [Burn]! @derivedFrom(field: "position")
-  swaps: [Swap]! @derivedFrom(field: "position")
+  mints: [Mint!]! @derivedFrom(field: "position")
+  burns: [Burn!]! @derivedFrom(field: "position")
+  swaps: [Swap!]! @derivedFrom(field: "position")
 }
 
 # Event tracking
@@ -93,9 +93,9 @@ type Transaction @entity {
   gasPrice: BigInt!
 
   # derived values
-  mints: [Mint]! @derivedFrom(field: "transaction")
-  burns: [Burn]! @derivedFrom(field: "transaction")
-  swaps: [Swap]! @derivedFrom(field: "transaction")
+  mints: [Mint!]! @derivedFrom(field: "transaction")
+  burns: [Burn!]! @derivedFrom(field: "transaction")
+  swaps: [Swap!]! @derivedFrom(field: "transaction")
 }
 
 type Mint @entity {

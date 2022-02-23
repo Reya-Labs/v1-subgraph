@@ -23,96 +23,24 @@ export class Burn__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[2].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 
   get owner(): Address {
-    return this._event.parameters[3].value.toAddress();
+    return this._event.parameters[1].value.toAddress();
   }
 
   get tickLower(): i32 {
-    return this._event.parameters[4].value.toI32();
+    return this._event.parameters[2].value.toI32();
   }
 
   get tickUpper(): i32 {
-    return this._event.parameters[5].value.toI32();
+    return this._event.parameters[3].value.toI32();
   }
 
   get amount(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
-  }
-}
-
-export class ClearTick extends ethereum.Event {
-  get params(): ClearTick__Params {
-    return new ClearTick__Params(this);
-  }
-}
-
-export class ClearTick__Params {
-  _event: ClearTick;
-
-  constructor(event: ClearTick) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get tick(): i32 {
-    return this._event.parameters[2].value.toI32();
-  }
-}
-
-export class CrossTick extends ethereum.Event {
-  get params(): CrossTick__Params {
-    return new CrossTick__Params(this);
-  }
-}
-
-export class CrossTick__Params {
-  _event: CrossTick;
-
-  constructor(event: CrossTick) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get tick(): i32 {
-    return this._event.parameters[2].value.toI32();
-  }
-
-  get fixedTokenGrowthGlobalX128(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-
-  get variableTokenGrowthGlobalX128(): BigInt {
     return this._event.parameters[4].value.toBigInt();
-  }
-
-  get feeGrowthGlobalX128(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -129,102 +57,34 @@ export class FeeSet__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
+  get feeWadOld(): BigInt {
     return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
   }
 
   get feeWad(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
-export class FlipTick extends ethereum.Event {
-  get params(): FlipTick__Params {
-    return new FlipTick__Params(this);
+export class InitializeVAMM extends ethereum.Event {
+  get params(): InitializeVAMM__Params {
+    return new InitializeVAMM__Params(this);
   }
 }
 
-export class FlipTick__Params {
-  _event: FlipTick;
+export class InitializeVAMM__Params {
+  _event: InitializeVAMM;
 
-  constructor(event: FlipTick) {
+  constructor(event: InitializeVAMM) {
     this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get tick(): i32 {
-    return this._event.parameters[2].value.toI32();
-  }
-
-  get tickSpacing(): i32 {
-    return this._event.parameters[3].value.toI32();
-  }
-}
-
-export class Initialize extends ethereum.Event {
-  get params(): Initialize__Params {
-    return new Initialize__Params(this);
-  }
-}
-
-export class Initialize__Params {
-  _event: Initialize;
-
-  constructor(event: Initialize) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
   }
 
   get sqrtPriceX96(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get tick(): i32 {
-    return this._event.parameters[3].value.toI32();
-  }
-}
-
-export class MaxLiquidityPerTickSet extends ethereum.Event {
-  get params(): MaxLiquidityPerTickSet__Params {
-    return new MaxLiquidityPerTickSet__Params(this);
-  }
-}
-
-export class MaxLiquidityPerTickSet__Params {
-  _event: MaxLiquidityPerTickSet;
-
-  constructor(event: MaxLiquidityPerTickSet) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get maxLiquidityPerTick(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+  get tick(): i32 {
+    return this._event.parameters[1].value.toI32();
   }
 }
 
@@ -241,32 +101,24 @@ export class Mint__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[2].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 
   get owner(): Address {
-    return this._event.parameters[3].value.toAddress();
+    return this._event.parameters[1].value.toAddress();
   }
 
   get tickLower(): i32 {
-    return this._event.parameters[4].value.toI32();
+    return this._event.parameters[2].value.toI32();
   }
 
   get tickUpper(): i32 {
-    return this._event.parameters[5].value.toI32();
+    return this._event.parameters[3].value.toI32();
   }
 
   get amount(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
+    return this._event.parameters[4].value.toBigInt();
   }
 }
 
@@ -310,36 +162,6 @@ export class Paused__Params {
   }
 }
 
-export class ProtocolFeesUpdate extends ethereum.Event {
-  get params(): ProtocolFeesUpdate__Params {
-    return new ProtocolFeesUpdate__Params(this);
-  }
-}
-
-export class ProtocolFeesUpdate__Params {
-  _event: ProtocolFeesUpdate;
-
-  constructor(event: ProtocolFeesUpdate) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get protocolFeesCollected(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get protocolFees(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
 export class SetFeeProtocol extends ethereum.Event {
   get params(): SetFeeProtocol__Params {
     return new SetFeeProtocol__Params(this);
@@ -353,42 +175,12 @@ export class SetFeeProtocol__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
+  get feeProtocolOld(): i32 {
+    return this._event.parameters[0].value.toI32();
   }
 
   get feeProtocol(): i32 {
-    return this._event.parameters[2].value.toI32();
-  }
-}
-
-export class SetTickSpacing extends ethereum.Event {
-  get params(): SetTickSpacing__Params {
-    return new SetTickSpacing__Params(this);
-  }
-}
-
-export class SetTickSpacing__Params {
-  _event: SetTickSpacing;
-
-  constructor(event: SetTickSpacing) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get tickSpacing(): i32 {
-    return this._event.parameters[2].value.toI32();
+    return this._event.parameters[1].value.toI32();
   }
 }
 
@@ -405,86 +197,24 @@ export class Swap__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[2].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 
   get recipient(): Address {
-    return this._event.parameters[3].value.toAddress();
-  }
-
-  get sqrtPriceX96(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
-
-  get liquidity(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
-  }
-
-  get tick(): i32 {
-    return this._event.parameters[6].value.toI32();
-  }
-}
-
-export class TickUpdate extends ethereum.Event {
-  get params(): TickUpdate__Params {
-    return new TickUpdate__Params(this);
-  }
-}
-
-export class TickUpdate__Params {
-  _event: TickUpdate;
-
-  constructor(event: TickUpdate) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get marginEngineAddress(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
+  get sqrtPriceX96(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get liquidity(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
   get tick(): i32 {
-    return this._event.parameters[2].value.toI32();
-  }
-
-  get tickCurrent(): i32 {
-    return this._event.parameters[3].value.toI32();
-  }
-
-  get liquidityDelta(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
-
-  get fixedTokenGrowthGlobalX128(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
-  }
-
-  get variableTokenGrowthGlobalX128(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
-  }
-
-  get feeGrowthGlobalX128(): BigInt {
-    return this._event.parameters[7].value.toBigInt();
-  }
-
-  get upper(): boolean {
-    return this._event.parameters[8].value.toBoolean();
-  }
-
-  get maxLiquidity(): BigInt {
-    return this._event.parameters[9].value.toBigInt();
+    return this._event.parameters[4].value.toI32();
   }
 }
 
@@ -551,32 +281,24 @@ export class VAMM__swapInputParamsStruct extends ethereum.Tuple {
     return this[0].toAddress();
   }
 
-  get isFT(): boolean {
-    return this[1].toBoolean();
-  }
-
   get amountSpecified(): BigInt {
-    return this[2].toBigInt();
+    return this[1].toBigInt();
   }
 
   get sqrtPriceLimitX96(): BigInt {
-    return this[3].toBigInt();
+    return this[2].toBigInt();
   }
 
-  get isUnwind(): boolean {
-    return this[4].toBoolean();
-  }
-
-  get isTrader(): boolean {
-    return this[5].toBoolean();
+  get isExternal(): boolean {
+    return this[3].toBoolean();
   }
 
   get tickLower(): i32 {
-    return this[6].toI32();
+    return this[4].toI32();
   }
 
   get tickUpper(): i32 {
-    return this[7].toI32();
+    return this[5].toI32();
   }
 }
 
@@ -683,6 +405,21 @@ export class VAMM extends ethereum.SmartContract {
     );
   }
 
+  factory(): Address {
+    let result = super.call("factory", "factory():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_factory(): ethereum.CallResult<Address> {
+    let result = super.tryCall("factory", "factory():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   feeGrowthGlobalX128(): BigInt {
     let result = super.call(
       "feeGrowthGlobalX128",
@@ -759,22 +496,14 @@ export class VAMM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  marginEngineAddress(): Address {
-    let result = super.call(
-      "marginEngineAddress",
-      "marginEngineAddress():(address)",
-      []
-    );
+  marginEngine(): Address {
+    let result = super.call("marginEngine", "marginEngine():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_marginEngineAddress(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "marginEngineAddress",
-      "marginEngineAddress():(address)",
-      []
-    );
+  try_marginEngine(): ethereum.CallResult<Address> {
+    let result = super.tryCall("marginEngine", "marginEngine():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -853,7 +582,7 @@ export class VAMM extends ethereum.SmartContract {
   swap(params: VAMM__swapInputParamsStruct): VAMM__swapResult {
     let result = super.call(
       "swap",
-      "swap((address,bool,int256,uint160,bool,bool,int24,int24)):(int256,int256,uint256)",
+      "swap((address,int256,uint160,bool,int24,int24)):(int256,int256,uint256)",
       [ethereum.Value.fromTuple(params)]
     );
 
@@ -869,7 +598,7 @@ export class VAMM extends ethereum.SmartContract {
   ): ethereum.CallResult<VAMM__swapResult> {
     let result = super.tryCall(
       "swap",
-      "swap((address,bool,int256,uint160,bool,bool,int24,int24)):(int256,int256,uint256)",
+      "swap((address,int256,uint160,bool,int24,int24)):(int256,int256,uint256)",
       [ethereum.Value.fromTuple(params)]
     );
     if (result.reverted) {
@@ -1114,6 +843,10 @@ export class InitializeCall__Inputs {
   get _marginEngineAddress(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
+
+  get _tickSpacing(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
 }
 
 export class InitializeCall__Outputs {
@@ -1282,66 +1015,6 @@ export class SetFeeProtocolCall__Outputs {
   }
 }
 
-export class SetMaxLiquidityPerTickCall extends ethereum.Call {
-  get inputs(): SetMaxLiquidityPerTickCall__Inputs {
-    return new SetMaxLiquidityPerTickCall__Inputs(this);
-  }
-
-  get outputs(): SetMaxLiquidityPerTickCall__Outputs {
-    return new SetMaxLiquidityPerTickCall__Outputs(this);
-  }
-}
-
-export class SetMaxLiquidityPerTickCall__Inputs {
-  _call: SetMaxLiquidityPerTickCall;
-
-  constructor(call: SetMaxLiquidityPerTickCall) {
-    this._call = call;
-  }
-
-  get _maxLiquidityPerTick(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetMaxLiquidityPerTickCall__Outputs {
-  _call: SetMaxLiquidityPerTickCall;
-
-  constructor(call: SetMaxLiquidityPerTickCall) {
-    this._call = call;
-  }
-}
-
-export class SetTickSpacingCall extends ethereum.Call {
-  get inputs(): SetTickSpacingCall__Inputs {
-    return new SetTickSpacingCall__Inputs(this);
-  }
-
-  get outputs(): SetTickSpacingCall__Outputs {
-    return new SetTickSpacingCall__Outputs(this);
-  }
-}
-
-export class SetTickSpacingCall__Inputs {
-  _call: SetTickSpacingCall;
-
-  constructor(call: SetTickSpacingCall) {
-    this._call = call;
-  }
-
-  get _tickSpacing(): i32 {
-    return this._call.inputValues[0].value.toI32();
-  }
-}
-
-export class SetTickSpacingCall__Outputs {
-  _call: SetTickSpacingCall;
-
-  constructor(call: SetTickSpacingCall) {
-    this._call = call;
-  }
-}
-
 export class SwapCall extends ethereum.Call {
   get inputs(): SwapCall__Inputs {
     return new SwapCall__Inputs(this);
@@ -1391,32 +1064,24 @@ export class SwapCallParamsStruct extends ethereum.Tuple {
     return this[0].toAddress();
   }
 
-  get isFT(): boolean {
-    return this[1].toBoolean();
-  }
-
   get amountSpecified(): BigInt {
-    return this[2].toBigInt();
+    return this[1].toBigInt();
   }
 
   get sqrtPriceLimitX96(): BigInt {
-    return this[3].toBigInt();
+    return this[2].toBigInt();
   }
 
-  get isUnwind(): boolean {
-    return this[4].toBoolean();
-  }
-
-  get isTrader(): boolean {
-    return this[5].toBoolean();
+  get isExternal(): boolean {
+    return this[3].toBoolean();
   }
 
   get tickLower(): i32 {
-    return this[6].toI32();
+    return this[4].toI32();
   }
 
   get tickUpper(): i32 {
-    return this[7].toI32();
+    return this[5].toI32();
   }
 }
 

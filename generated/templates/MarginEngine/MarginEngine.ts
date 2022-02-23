@@ -10,36 +10,6 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class BalancesViaDeltasUpdate extends ethereum.Event {
-  get params(): BalancesViaDeltasUpdate__Params {
-    return new BalancesViaDeltasUpdate__Params(this);
-  }
-}
-
-export class BalancesViaDeltasUpdate__Params {
-  _event: BalancesViaDeltasUpdate;
-
-  constructor(event: BalancesViaDeltasUpdate) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get fixedTokenBalance(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get variableTokenBalance(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
 export class CacheMaxAgeSet extends ethereum.Event {
   get params(): CacheMaxAgeSet__Params {
     return new CacheMaxAgeSet__Params(this);
@@ -53,16 +23,12 @@ export class CacheMaxAgeSet__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
+  get cacheMaxAgeInSecondsOld(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get cacheMaxAgeInSeconds(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -79,156 +45,38 @@ export class CollectProtocol__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
+  get sender(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
   get recipient(): Address {
-    return this._event.parameters[2].value.toAddress();
+    return this._event.parameters[1].value.toAddress();
   }
 
   get amount(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
-export class FeeGrowthInsideUpdate extends ethereum.Event {
-  get params(): FeeGrowthInsideUpdate__Params {
-    return new FeeGrowthInsideUpdate__Params(this);
+export class FCMSet extends ethereum.Event {
+  get params(): FCMSet__Params {
+    return new FCMSet__Params(this);
   }
 }
 
-export class FeeGrowthInsideUpdate__Params {
-  _event: FeeGrowthInsideUpdate;
+export class FCMSet__Params {
+  _event: FCMSet;
 
-  constructor(event: FeeGrowthInsideUpdate) {
+  constructor(event: FCMSet) {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+  get fcmOld(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
-  get source(): Address {
+  get fcm(): Address {
     return this._event.parameters[1].value.toAddress();
-  }
-
-  get info(): FeeGrowthInsideUpdateInfoStruct {
-    return changetype<FeeGrowthInsideUpdateInfoStruct>(
-      this._event.parameters[2].value.toTuple()
-    );
-  }
-
-  get feeGrowthInsideX128(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
-export class FeeGrowthInsideUpdateInfoStruct extends ethereum.Tuple {
-  get _liquidity(): BigInt {
-    return this[0].toBigInt();
-  }
-
-  get margin(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get fixedTokenGrowthInsideLastX128(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get variableTokenGrowthInsideLastX128(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get fixedTokenBalance(): BigInt {
-    return this[4].toBigInt();
-  }
-
-  get variableTokenBalance(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get feeGrowthInsideLastX128(): BigInt {
-    return this[6].toBigInt();
-  }
-
-  get isSettled(): boolean {
-    return this[7].toBoolean();
-  }
-}
-
-export class FixedAndVariableTokenGrowthInsideUpdate extends ethereum.Event {
-  get params(): FixedAndVariableTokenGrowthInsideUpdate__Params {
-    return new FixedAndVariableTokenGrowthInsideUpdate__Params(this);
-  }
-}
-
-export class FixedAndVariableTokenGrowthInsideUpdate__Params {
-  _event: FixedAndVariableTokenGrowthInsideUpdate;
-
-  constructor(event: FixedAndVariableTokenGrowthInsideUpdate) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get info(): FixedAndVariableTokenGrowthInsideUpdateInfoStruct {
-    return changetype<FixedAndVariableTokenGrowthInsideUpdateInfoStruct>(
-      this._event.parameters[2].value.toTuple()
-    );
-  }
-
-  get fixedTokenGrowthInsideX128(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-
-  get variableTokenGrowthInsideX128(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
-}
-
-export class FixedAndVariableTokenGrowthInsideUpdateInfoStruct extends ethereum.Tuple {
-  get _liquidity(): BigInt {
-    return this[0].toBigInt();
-  }
-
-  get margin(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get fixedTokenGrowthInsideLastX128(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get variableTokenGrowthInsideLastX128(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get fixedTokenBalance(): BigInt {
-    return this[4].toBigInt();
-  }
-
-  get variableTokenBalance(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get feeGrowthInsideLastX128(): BigInt {
-    return this[6].toBigInt();
-  }
-
-  get isSettled(): boolean {
-    return this[7].toBoolean();
   }
 }
 
@@ -245,42 +93,54 @@ export class HistoricalApyWindowSet__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
+  get secondsAgoOld(): BigInt {
     return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
   }
 
   get secondsAgo(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
-export class IsInsuranceDepletedSet extends ethereum.Event {
-  get params(): IsInsuranceDepletedSet__Params {
-    return new IsInsuranceDepletedSet__Params(this);
+export class LiquidatePosition extends ethereum.Event {
+  get params(): LiquidatePosition__Params {
+    return new LiquidatePosition__Params(this);
   }
 }
 
-export class IsInsuranceDepletedSet__Params {
-  _event: IsInsuranceDepletedSet;
+export class LiquidatePosition__Params {
+  _event: LiquidatePosition;
 
-  constructor(event: IsInsuranceDepletedSet) {
+  constructor(event: LiquidatePosition) {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
+  get tickLower(): i32 {
+    return this._event.parameters[1].value.toI32();
   }
 
-  get isInsuranceDepleted(): boolean {
-    return this._event.parameters[2].value.toBoolean();
+  get tickUpper(): i32 {
+    return this._event.parameters[2].value.toI32();
+  }
+
+  get fixedTokenBalance(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get variableTokenBalance(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get margin(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
+  }
+
+  get liquidity(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
   }
 }
 
@@ -297,224 +157,186 @@ export class LiquidatorRewardSet__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
+  get liquidatorRewardWadOld(): BigInt {
     return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
   }
 
   get liquidatorRewardWad(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
-export class LiquidityUpdate extends ethereum.Event {
-  get params(): LiquidityUpdate__Params {
-    return new LiquidityUpdate__Params(this);
+export class MarginCalculatorParametersSet extends ethereum.Event {
+  get params(): MarginCalculatorParametersSet__Params {
+    return new MarginCalculatorParametersSet__Params(this);
   }
 }
 
-export class LiquidityUpdate__Params {
-  _event: LiquidityUpdate;
+export class MarginCalculatorParametersSet__Params {
+  _event: MarginCalculatorParametersSet;
 
-  constructor(event: LiquidityUpdate) {
+  constructor(event: MarginCalculatorParametersSet) {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+  get marginCalculatorParametersOld(): MarginCalculatorParametersSetMarginCalculatorParametersOldStruct {
+    return changetype<
+      MarginCalculatorParametersSetMarginCalculatorParametersOldStruct
+    >(this._event.parameters[0].value.toTuple());
   }
 
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get info(): LiquidityUpdateInfoStruct {
-    return changetype<LiquidityUpdateInfoStruct>(
-      this._event.parameters[2].value.toTuple()
-    );
-  }
-
-  get liquidity(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+  get marginCalculatorParameters(): MarginCalculatorParametersSetMarginCalculatorParametersStruct {
+    return changetype<
+      MarginCalculatorParametersSetMarginCalculatorParametersStruct
+    >(this._event.parameters[1].value.toTuple());
   }
 }
 
-export class LiquidityUpdateInfoStruct extends ethereum.Tuple {
-  get _liquidity(): BigInt {
+export class MarginCalculatorParametersSetMarginCalculatorParametersOldStruct extends ethereum.Tuple {
+  get apyUpperMultiplierWad(): BigInt {
     return this[0].toBigInt();
   }
 
-  get margin(): BigInt {
+  get apyLowerMultiplierWad(): BigInt {
     return this[1].toBigInt();
   }
 
-  get fixedTokenGrowthInsideLastX128(): BigInt {
+  get sigmaSquaredWad(): BigInt {
     return this[2].toBigInt();
   }
 
-  get variableTokenGrowthInsideLastX128(): BigInt {
+  get alphaWad(): BigInt {
     return this[3].toBigInt();
   }
 
-  get fixedTokenBalance(): BigInt {
+  get betaWad(): BigInt {
     return this[4].toBigInt();
   }
 
-  get variableTokenBalance(): BigInt {
+  get xiUpperWad(): BigInt {
     return this[5].toBigInt();
   }
 
-  get feeGrowthInsideLastX128(): BigInt {
+  get xiLowerWad(): BigInt {
     return this[6].toBigInt();
   }
 
-  get isSettled(): boolean {
-    return this[7].toBoolean();
-  }
-}
-
-export class MarginViaDeltaUpdate extends ethereum.Event {
-  get params(): MarginViaDeltaUpdate__Params {
-    return new MarginViaDeltaUpdate__Params(this);
-  }
-}
-
-export class MarginViaDeltaUpdate__Params {
-  _event: MarginViaDeltaUpdate;
-
-  constructor(event: MarginViaDeltaUpdate) {
-    this._event = event;
+  get tMaxWad(): BigInt {
+    return this[7].toBigInt();
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+  get devMulLeftUnwindLMWad(): BigInt {
+    return this[8].toBigInt();
   }
 
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
+  get devMulRightUnwindLMWad(): BigInt {
+    return this[9].toBigInt();
   }
 
-  get info(): MarginViaDeltaUpdateInfoStruct {
-    return changetype<MarginViaDeltaUpdateInfoStruct>(
-      this._event.parameters[2].value.toTuple()
-    );
+  get devMulLeftUnwindIMWad(): BigInt {
+    return this[10].toBigInt();
   }
 
-  get margin(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
-export class MarginViaDeltaUpdateInfoStruct extends ethereum.Tuple {
-  get _liquidity(): BigInt {
-    return this[0].toBigInt();
+  get devMulRightUnwindIMWad(): BigInt {
+    return this[11].toBigInt();
   }
 
-  get margin(): BigInt {
-    return this[1].toBigInt();
+  get fixedRateDeviationMinLeftUnwindLMWad(): BigInt {
+    return this[12].toBigInt();
   }
 
-  get fixedTokenGrowthInsideLastX128(): BigInt {
-    return this[2].toBigInt();
+  get fixedRateDeviationMinRightUnwindLMWad(): BigInt {
+    return this[13].toBigInt();
   }
 
-  get variableTokenGrowthInsideLastX128(): BigInt {
-    return this[3].toBigInt();
+  get fixedRateDeviationMinLeftUnwindIMWad(): BigInt {
+    return this[14].toBigInt();
   }
 
-  get fixedTokenBalance(): BigInt {
-    return this[4].toBigInt();
+  get fixedRateDeviationMinRightUnwindIMWad(): BigInt {
+    return this[15].toBigInt();
   }
 
-  get variableTokenBalance(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get feeGrowthInsideLastX128(): BigInt {
-    return this[6].toBigInt();
-  }
-
-  get isSettled(): boolean {
-    return this[7].toBoolean();
-  }
-}
-
-export class MarginViaDeltaUpdate1 extends ethereum.Event {
-  get params(): MarginViaDeltaUpdate1__Params {
-    return new MarginViaDeltaUpdate1__Params(this);
-  }
-}
-
-export class MarginViaDeltaUpdate1__Params {
-  _event: MarginViaDeltaUpdate1;
-
-  constructor(event: MarginViaDeltaUpdate1) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get info(): MarginViaDeltaUpdate1InfoStruct {
-    return changetype<MarginViaDeltaUpdate1InfoStruct>(
-      this._event.parameters[2].value.toTuple()
-    );
-  }
-
-  get margin(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
-export class MarginViaDeltaUpdate1InfoStruct extends ethereum.Tuple {
-  get margin(): BigInt {
-    return this[0].toBigInt();
-  }
-
-  get fixedTokenBalance(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get variableTokenBalance(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get isSettled(): boolean {
-    return this[3].toBoolean();
-  }
-}
-
-export class MinMarginToIncentiviseLiquidatorsSet extends ethereum.Event {
-  get params(): MinMarginToIncentiviseLiquidatorsSet__Params {
-    return new MinMarginToIncentiviseLiquidatorsSet__Params(this);
-  }
-}
-
-export class MinMarginToIncentiviseLiquidatorsSet__Params {
-  _event: MinMarginToIncentiviseLiquidatorsSet;
-
-  constructor(event: MinMarginToIncentiviseLiquidatorsSet) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
+  get gammaWad(): BigInt {
+    return this[16].toBigInt();
   }
 
   get minMarginToIncentiviseLiquidators(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this[17].toBigInt();
+  }
+}
+
+export class MarginCalculatorParametersSetMarginCalculatorParametersStruct extends ethereum.Tuple {
+  get apyUpperMultiplierWad(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get apyLowerMultiplierWad(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get sigmaSquaredWad(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get alphaWad(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get betaWad(): BigInt {
+    return this[4].toBigInt();
+  }
+
+  get xiUpperWad(): BigInt {
+    return this[5].toBigInt();
+  }
+
+  get xiLowerWad(): BigInt {
+    return this[6].toBigInt();
+  }
+
+  get tMaxWad(): BigInt {
+    return this[7].toBigInt();
+  }
+
+  get devMulLeftUnwindLMWad(): BigInt {
+    return this[8].toBigInt();
+  }
+
+  get devMulRightUnwindLMWad(): BigInt {
+    return this[9].toBigInt();
+  }
+
+  get devMulLeftUnwindIMWad(): BigInt {
+    return this[10].toBigInt();
+  }
+
+  get devMulRightUnwindIMWad(): BigInt {
+    return this[11].toBigInt();
+  }
+
+  get fixedRateDeviationMinLeftUnwindLMWad(): BigInt {
+    return this[12].toBigInt();
+  }
+
+  get fixedRateDeviationMinRightUnwindLMWad(): BigInt {
+    return this[13].toBigInt();
+  }
+
+  get fixedRateDeviationMinLeftUnwindIMWad(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get fixedRateDeviationMinRightUnwindIMWad(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get gammaWad(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get minMarginToIncentiviseLiquidators(): BigInt {
+    return this[17].toBigInt();
   }
 }
 
@@ -558,44 +380,6 @@ export class Paused__Params {
   }
 }
 
-export class PositionTokenBalancesAndAccountForFeesUpdate extends ethereum.Event {
-  get params(): PositionTokenBalancesAndAccountForFeesUpdate__Params {
-    return new PositionTokenBalancesAndAccountForFeesUpdate__Params(this);
-  }
-}
-
-export class PositionTokenBalancesAndAccountForFeesUpdate__Params {
-  _event: PositionTokenBalancesAndAccountForFeesUpdate;
-
-  constructor(event: PositionTokenBalancesAndAccountForFeesUpdate) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get owner(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-
-  get fixedTokenBalance(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-
-  get variableTokenBalance(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
-
-  get feeDelta(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
-  }
-}
-
 export class SettlePosition extends ethereum.Event {
   get params(): SettlePosition__Params {
     return new SettlePosition__Params(this);
@@ -609,104 +393,16 @@ export class SettlePosition__Params {
     this._event = event;
   }
 
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
+  get tickLower(): i32 {
+    return this._event.parameters[1].value.toI32();
   }
 
-  get info(): SettlePositionInfoStruct {
-    return changetype<SettlePositionInfoStruct>(
-      this._event.parameters[2].value.toTuple()
-    );
-  }
-}
-
-export class SettlePositionInfoStruct extends ethereum.Tuple {
-  get _liquidity(): BigInt {
-    return this[0].toBigInt();
-  }
-
-  get margin(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get fixedTokenGrowthInsideLastX128(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get variableTokenGrowthInsideLastX128(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get fixedTokenBalance(): BigInt {
-    return this[4].toBigInt();
-  }
-
-  get variableTokenBalance(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get feeGrowthInsideLastX128(): BigInt {
-    return this[6].toBigInt();
-  }
-
-  get isSettled(): boolean {
-    return this[7].toBoolean();
-  }
-}
-
-export class SettleTrader extends ethereum.Event {
-  get params(): SettleTrader__Params {
-    return new SettleTrader__Params(this);
-  }
-}
-
-export class SettleTrader__Params {
-  _event: SettleTrader;
-
-  constructor(event: SettleTrader) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get traderAddress(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
-export class TraderPostVAMMInducedSwapUpdate extends ethereum.Event {
-  get params(): TraderPostVAMMInducedSwapUpdate__Params {
-    return new TraderPostVAMMInducedSwapUpdate__Params(this);
-  }
-}
-
-export class TraderPostVAMMInducedSwapUpdate__Params {
-  _event: TraderPostVAMMInducedSwapUpdate;
-
-  constructor(event: TraderPostVAMMInducedSwapUpdate) {
-    this._event = event;
-  }
-
-  get blockTimestampScaled(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get source(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get recipient(): Address {
-    return this._event.parameters[2].value.toAddress();
+  get tickUpper(): i32 {
+    return this._event.parameters[2].value.toI32();
   }
 
   get fixedTokenBalance(): BigInt {
@@ -717,8 +413,12 @@ export class TraderPostVAMMInducedSwapUpdate__Params {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get cumulativeFeeIncurred(): BigInt {
+  get margin(): BigInt {
     return this._event.parameters[5].value.toBigInt();
+  }
+
+  get isSettled(): boolean {
+    return this._event.parameters[6].value.toBoolean();
   }
 }
 
@@ -740,60 +440,157 @@ export class Unpaused__Params {
   }
 }
 
-export class MarginEngine__getPositionResultPositionStruct extends ethereum.Tuple {
-  get _liquidity(): BigInt {
-    return this[0].toBigInt();
-  }
-
-  get margin(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get fixedTokenGrowthInsideLastX128(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get variableTokenGrowthInsideLastX128(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get fixedTokenBalance(): BigInt {
-    return this[4].toBigInt();
-  }
-
-  get variableTokenBalance(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get feeGrowthInsideLastX128(): BigInt {
-    return this[6].toBigInt();
-  }
-
-  get isSettled(): boolean {
-    return this[7].toBoolean();
+export class UpdatePositionMargin extends ethereum.Event {
+  get params(): UpdatePositionMargin__Params {
+    return new UpdatePositionMargin__Params(this);
   }
 }
 
-export class MarginEngine__tradersResult {
-  value0: BigInt;
-  value1: BigInt;
-  value2: BigInt;
-  value3: boolean;
+export class UpdatePositionMargin__Params {
+  _event: UpdatePositionMargin;
 
-  constructor(value0: BigInt, value1: BigInt, value2: BigInt, value3: boolean) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
-    this.value3 = value3;
+  constructor(event: UpdatePositionMargin) {
+    this._event = event;
   }
 
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromSignedBigInt(this.value0));
-    map.set("value1", ethereum.Value.fromSignedBigInt(this.value1));
-    map.set("value2", ethereum.Value.fromSignedBigInt(this.value2));
-    map.set("value3", ethereum.Value.fromBoolean(this.value3));
-    return map;
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get tickLower(): i32 {
+    return this._event.parameters[1].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._event.parameters[2].value.toI32();
+  }
+
+  get positionMargin(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+}
+
+export class UpdatePositionPostMintBurn extends ethereum.Event {
+  get params(): UpdatePositionPostMintBurn__Params {
+    return new UpdatePositionPostMintBurn__Params(this);
+  }
+}
+
+export class UpdatePositionPostMintBurn__Params {
+  _event: UpdatePositionPostMintBurn;
+
+  constructor(event: UpdatePositionPostMintBurn) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get tickLower(): i32 {
+    return this._event.parameters[1].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._event.parameters[2].value.toI32();
+  }
+
+  get liquidity(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+}
+
+export class UpdatePositionPostSwap extends ethereum.Event {
+  get params(): UpdatePositionPostSwap__Params {
+    return new UpdatePositionPostSwap__Params(this);
+  }
+}
+
+export class UpdatePositionPostSwap__Params {
+  _event: UpdatePositionPostSwap;
+
+  constructor(event: UpdatePositionPostSwap) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get tickLower(): i32 {
+    return this._event.parameters[1].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._event.parameters[2].value.toI32();
+  }
+
+  get fixedTokenBalance(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get variableTokenBalance(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get margin(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
+  }
+}
+
+export class VAMMSet extends ethereum.Event {
+  get params(): VAMMSet__Params {
+    return new VAMMSet__Params(this);
+  }
+}
+
+export class VAMMSet__Params {
+  _event: VAMMSet;
+
+  constructor(event: VAMMSet) {
+    this._event = event;
+  }
+
+  get vammOld(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get vamm(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class MarginEngine__getPositionResultPositionStruct extends ethereum.Tuple {
+  get isSettled(): boolean {
+    return this[0].toBoolean();
+  }
+
+  get _liquidity(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get margin(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get fixedTokenGrowthInsideLastX128(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get variableTokenGrowthInsideLastX128(): BigInt {
+    return this[4].toBigInt();
+  }
+
+  get fixedTokenBalance(): BigInt {
+    return this[5].toBigInt();
+  }
+
+  get variableTokenBalance(): BigInt {
+    return this[6].toBigInt();
+  }
+
+  get feeGrowthInsideLastX128(): BigInt {
+    return this[7].toBigInt();
   }
 }
 
@@ -823,6 +620,21 @@ export class MarginEngine extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  factory(): Address {
+    let result = super.call("factory", "factory():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_factory(): ethereum.CallResult<Address> {
+    let result = super.tryCall("factory", "factory():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   fcm(): Address {
@@ -887,15 +699,15 @@ export class MarginEngine extends ethereum.SmartContract {
   }
 
   getPosition(
-    owner: Address,
+    _owner: Address,
     tickLower: i32,
     tickUpper: i32
   ): MarginEngine__getPositionResultPositionStruct {
     let result = super.call(
       "getPosition",
-      "getPosition(address,int24,int24):((uint128,int256,int256,int256,int256,int256,uint256,bool))",
+      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256))",
       [
-        ethereum.Value.fromAddress(owner),
+        ethereum.Value.fromAddress(_owner),
         ethereum.Value.fromI32(tickLower),
         ethereum.Value.fromI32(tickUpper)
       ]
@@ -907,15 +719,15 @@ export class MarginEngine extends ethereum.SmartContract {
   }
 
   try_getPosition(
-    owner: Address,
+    _owner: Address,
     tickLower: i32,
     tickUpper: i32
   ): ethereum.CallResult<MarginEngine__getPositionResultPositionStruct> {
     let result = super.tryCall(
       "getPosition",
-      "getPosition(address,int24,int24):((uint128,int256,int256,int256,int256,int256,uint256,bool))",
+      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256))",
       [
-        ethereum.Value.fromAddress(owner),
+        ethereum.Value.fromAddress(_owner),
         ethereum.Value.fromI32(tickLower),
         ethereum.Value.fromI32(tickUpper)
       ]
@@ -929,29 +741,6 @@ export class MarginEngine extends ethereum.SmartContract {
         value[0].toTuple()
       )
     );
-  }
-
-  isInsuranceDepleted(): boolean {
-    let result = super.call(
-      "isInsuranceDepleted",
-      "isInsuranceDepleted():(bool)",
-      []
-    );
-
-    return result[0].toBoolean();
-  }
-
-  try_isInsuranceDepleted(): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "isInsuranceDepleted",
-      "isInsuranceDepleted():(bool)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   liquidatorRewardWad(): BigInt {
@@ -1007,22 +796,14 @@ export class MarginEngine extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  rateOracleAddress(): Address {
-    let result = super.call(
-      "rateOracleAddress",
-      "rateOracleAddress():(address)",
-      []
-    );
+  rateOracle(): Address {
+    let result = super.call("rateOracle", "rateOracle():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_rateOracleAddress(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "rateOracleAddress",
-      "rateOracleAddress():(address)",
-      []
-    );
+  try_rateOracle(): ethereum.CallResult<Address> {
+    let result = super.tryCall("rateOracle", "rateOracle():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1091,43 +872,6 @@ export class MarginEngine extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  traders(param0: Address): MarginEngine__tradersResult {
-    let result = super.call(
-      "traders",
-      "traders(address):(int256,int256,int256,bool)",
-      [ethereum.Value.fromAddress(param0)]
-    );
-
-    return new MarginEngine__tradersResult(
-      result[0].toBigInt(),
-      result[1].toBigInt(),
-      result[2].toBigInt(),
-      result[3].toBoolean()
-    );
-  }
-
-  try_traders(
-    param0: Address
-  ): ethereum.CallResult<MarginEngine__tradersResult> {
-    let result = super.tryCall(
-      "traders",
-      "traders(address):(int256,int256,int256,bool)",
-      [ethereum.Value.fromAddress(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new MarginEngine__tradersResult(
-        value[0].toBigInt(),
-        value[1].toBigInt(),
-        value[2].toBigInt(),
-        value[3].toBoolean()
-      )
-    );
-  }
-
   underlyingToken(): Address {
     let result = super.call(
       "underlyingToken",
@@ -1151,14 +895,14 @@ export class MarginEngine extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  vammAddress(): Address {
-    let result = super.call("vammAddress", "vammAddress():(address)", []);
+  vamm(): Address {
+    let result = super.call("vamm", "vamm():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_vammAddress(): ethereum.CallResult<Address> {
-    let result = super.tryCall("vammAddress", "vammAddress():(address)", []);
+  try_vamm(): ethereum.CallResult<Address> {
+    let result = super.tryCall("vamm", "vamm():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1316,10 +1060,16 @@ export class LiquidatePositionCall__Inputs {
     this._call = call;
   }
 
-  get params(): LiquidatePositionCallParamsStruct {
-    return changetype<LiquidatePositionCallParamsStruct>(
-      this._call.inputValues[0].value.toTuple()
-    );
+  get tickLower(): i32 {
+    return this._call.inputValues[0].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
+
+  get _owner(): Address {
+    return this._call.inputValues[2].value.toAddress();
   }
 }
 
@@ -1327,54 +1077,6 @@ export class LiquidatePositionCall__Outputs {
   _call: LiquidatePositionCall;
 
   constructor(call: LiquidatePositionCall) {
-    this._call = call;
-  }
-}
-
-export class LiquidatePositionCallParamsStruct extends ethereum.Tuple {
-  get owner(): Address {
-    return this[0].toAddress();
-  }
-
-  get tickLower(): i32 {
-    return this[1].toI32();
-  }
-
-  get tickUpper(): i32 {
-    return this[2].toI32();
-  }
-
-  get liquidityDelta(): BigInt {
-    return this[3].toBigInt();
-  }
-}
-
-export class LiquidateTraderCall extends ethereum.Call {
-  get inputs(): LiquidateTraderCall__Inputs {
-    return new LiquidateTraderCall__Inputs(this);
-  }
-
-  get outputs(): LiquidateTraderCall__Outputs {
-    return new LiquidateTraderCall__Outputs(this);
-  }
-}
-
-export class LiquidateTraderCall__Inputs {
-  _call: LiquidateTraderCall;
-
-  constructor(call: LiquidateTraderCall) {
-    this._call = call;
-  }
-
-  get traderAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class LiquidateTraderCall__Outputs {
-  _call: LiquidateTraderCall;
-
-  constructor(call: LiquidateTraderCall) {
     this._call = call;
   }
 }
@@ -1461,36 +1163,6 @@ export class SetFCMCall__Outputs {
   _call: SetFCMCall;
 
   constructor(call: SetFCMCall) {
-    this._call = call;
-  }
-}
-
-export class SetIsInsuranceDepletedCall extends ethereum.Call {
-  get inputs(): SetIsInsuranceDepletedCall__Inputs {
-    return new SetIsInsuranceDepletedCall__Inputs(this);
-  }
-
-  get outputs(): SetIsInsuranceDepletedCall__Outputs {
-    return new SetIsInsuranceDepletedCall__Outputs(this);
-  }
-}
-
-export class SetIsInsuranceDepletedCall__Inputs {
-  _call: SetIsInsuranceDepletedCall;
-
-  constructor(call: SetIsInsuranceDepletedCall) {
-    this._call = call;
-  }
-
-  get _isInsuranceDepleted(): boolean {
-    return this._call.inputValues[0].value.toBoolean();
-  }
-}
-
-export class SetIsInsuranceDepletedCall__Outputs {
-  _call: SetIsInsuranceDepletedCall;
-
-  constructor(call: SetIsInsuranceDepletedCall) {
     this._call = call;
   }
 }
@@ -1661,20 +1333,20 @@ export class SetSecondsAgoCall__Outputs {
   }
 }
 
-export class SetVAMMAddressCall extends ethereum.Call {
-  get inputs(): SetVAMMAddressCall__Inputs {
-    return new SetVAMMAddressCall__Inputs(this);
+export class SetVAMMCall extends ethereum.Call {
+  get inputs(): SetVAMMCall__Inputs {
+    return new SetVAMMCall__Inputs(this);
   }
 
-  get outputs(): SetVAMMAddressCall__Outputs {
-    return new SetVAMMAddressCall__Outputs(this);
+  get outputs(): SetVAMMCall__Outputs {
+    return new SetVAMMCall__Outputs(this);
   }
 }
 
-export class SetVAMMAddressCall__Inputs {
-  _call: SetVAMMAddressCall;
+export class SetVAMMCall__Inputs {
+  _call: SetVAMMCall;
 
-  constructor(call: SetVAMMAddressCall) {
+  constructor(call: SetVAMMCall) {
     this._call = call;
   }
 
@@ -1683,10 +1355,10 @@ export class SetVAMMAddressCall__Inputs {
   }
 }
 
-export class SetVAMMAddressCall__Outputs {
-  _call: SetVAMMAddressCall;
+export class SetVAMMCall__Outputs {
+  _call: SetVAMMCall;
 
-  constructor(call: SetVAMMAddressCall) {
+  constructor(call: SetVAMMCall) {
     this._call = call;
   }
 }
@@ -1708,10 +1380,16 @@ export class SettlePositionCall__Inputs {
     this._call = call;
   }
 
-  get params(): SettlePositionCallParamsStruct {
-    return changetype<SettlePositionCallParamsStruct>(
-      this._call.inputValues[0].value.toTuple()
-    );
+  get tickLower(): i32 {
+    return this._call.inputValues[0].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
+
+  get _owner(): Address {
+    return this._call.inputValues[2].value.toAddress();
   }
 }
 
@@ -1719,54 +1397,6 @@ export class SettlePositionCall__Outputs {
   _call: SettlePositionCall;
 
   constructor(call: SettlePositionCall) {
-    this._call = call;
-  }
-}
-
-export class SettlePositionCallParamsStruct extends ethereum.Tuple {
-  get owner(): Address {
-    return this[0].toAddress();
-  }
-
-  get tickLower(): i32 {
-    return this[1].toI32();
-  }
-
-  get tickUpper(): i32 {
-    return this[2].toI32();
-  }
-
-  get liquidityDelta(): BigInt {
-    return this[3].toBigInt();
-  }
-}
-
-export class SettleTraderCall extends ethereum.Call {
-  get inputs(): SettleTraderCall__Inputs {
-    return new SettleTraderCall__Inputs(this);
-  }
-
-  get outputs(): SettleTraderCall__Outputs {
-    return new SettleTraderCall__Outputs(this);
-  }
-}
-
-export class SettleTraderCall__Inputs {
-  _call: SettleTraderCall;
-
-  constructor(call: SettleTraderCall) {
-    this._call = call;
-  }
-
-  get traderAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SettleTraderCall__Outputs {
-  _call: SettleTraderCall;
-
-  constructor(call: SettleTraderCall) {
     this._call = call;
   }
 }
@@ -1852,14 +1482,20 @@ export class UpdatePositionMarginCall__Inputs {
     this._call = call;
   }
 
-  get params(): UpdatePositionMarginCallParamsStruct {
-    return changetype<UpdatePositionMarginCallParamsStruct>(
-      this._call.inputValues[0].value.toTuple()
-    );
+  get _owner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get tickLower(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._call.inputValues[2].value.toI32();
   }
 
   get marginDelta(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 }
 
@@ -1868,24 +1504,6 @@ export class UpdatePositionMarginCall__Outputs {
 
   constructor(call: UpdatePositionMarginCall) {
     this._call = call;
-  }
-}
-
-export class UpdatePositionMarginCallParamsStruct extends ethereum.Tuple {
-  get owner(): Address {
-    return this[0].toAddress();
-  }
-
-  get tickLower(): i32 {
-    return this[1].toI32();
-  }
-
-  get tickUpper(): i32 {
-    return this[2].toI32();
-  }
-
-  get liquidityDelta(): BigInt {
-    return this[3].toBigInt();
   }
 }
 
@@ -1956,7 +1574,7 @@ export class UpdatePositionPostVAMMInducedSwapCall__Inputs {
     this._call = call;
   }
 
-  get owner(): Address {
+  get _owner(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
@@ -1979,100 +1597,12 @@ export class UpdatePositionPostVAMMInducedSwapCall__Inputs {
   get cumulativeFeeIncurred(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
   }
-
-  get currentTick(): i32 {
-    return this._call.inputValues[6].value.toI32();
-  }
-
-  get sqrtPriceX96(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
-  }
 }
 
 export class UpdatePositionPostVAMMInducedSwapCall__Outputs {
   _call: UpdatePositionPostVAMMInducedSwapCall;
 
   constructor(call: UpdatePositionPostVAMMInducedSwapCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateTraderMarginCall extends ethereum.Call {
-  get inputs(): UpdateTraderMarginCall__Inputs {
-    return new UpdateTraderMarginCall__Inputs(this);
-  }
-
-  get outputs(): UpdateTraderMarginCall__Outputs {
-    return new UpdateTraderMarginCall__Outputs(this);
-  }
-}
-
-export class UpdateTraderMarginCall__Inputs {
-  _call: UpdateTraderMarginCall;
-
-  constructor(call: UpdateTraderMarginCall) {
-    this._call = call;
-  }
-
-  get traderAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get marginDelta(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-}
-
-export class UpdateTraderMarginCall__Outputs {
-  _call: UpdateTraderMarginCall;
-
-  constructor(call: UpdateTraderMarginCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateTraderPostVAMMInducedSwapCall extends ethereum.Call {
-  get inputs(): UpdateTraderPostVAMMInducedSwapCall__Inputs {
-    return new UpdateTraderPostVAMMInducedSwapCall__Inputs(this);
-  }
-
-  get outputs(): UpdateTraderPostVAMMInducedSwapCall__Outputs {
-    return new UpdateTraderPostVAMMInducedSwapCall__Outputs(this);
-  }
-}
-
-export class UpdateTraderPostVAMMInducedSwapCall__Inputs {
-  _call: UpdateTraderPostVAMMInducedSwapCall;
-
-  constructor(call: UpdateTraderPostVAMMInducedSwapCall) {
-    this._call = call;
-  }
-
-  get recipient(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get fixedTokenDelta(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get variableTokenDelta(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get cumulativeFeeIncurred(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get sqrtPriceX96(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
-  }
-}
-
-export class UpdateTraderPostVAMMInducedSwapCall__Outputs {
-  _call: UpdateTraderPostVAMMInducedSwapCall;
-
-  constructor(call: UpdateTraderPostVAMMInducedSwapCall) {
     this._call = call;
   }
 }

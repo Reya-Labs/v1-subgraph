@@ -39,12 +39,46 @@ export class IrsInstanceDeployed__Params {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get marginEngin(): Address {
-    return this._event.parameters[4].value.toAddress();
+  get tickSpacing(): i32 {
+    return this._event.parameters[4].value.toI32();
+  }
+
+  get marginEngine(): Address {
+    return this._event.parameters[5].value.toAddress();
   }
 
   get vamm(): Address {
-    return this._event.parameters[5].value.toAddress();
+    return this._event.parameters[6].value.toAddress();
+  }
+
+  get fcm(): Address {
+    return this._event.parameters[7].value.toAddress();
+  }
+}
+
+export class MasterFCMSet extends ethereum.Event {
+  get params(): MasterFCMSet__Params {
+    return new MasterFCMSet__Params(this);
+  }
+}
+
+export class MasterFCMSet__Params {
+  _event: MasterFCMSet;
+
+  constructor(event: MasterFCMSet) {
+    this._event = event;
+  }
+
+  get masterFCMAddressOld(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get masterFCMAddress(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get yieldBearingProtocolID(): i32 {
+    return this._event.parameters[2].value.toI32();
   }
 }
 
@@ -73,16 +107,19 @@ export class OwnershipTransferred__Params {
 export class Factory__deployIrsInstanceResult {
   value0: Address;
   value1: Address;
+  value2: Address;
 
-  constructor(value0: Address, value1: Address) {
+  constructor(value0: Address, value1: Address, value2: Address) {
     this.value0 = value0;
     this.value1 = value1;
+    this.value2 = value2;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromAddress(this.value0));
     map.set("value1", ethereum.Value.fromAddress(this.value1));
+    map.set("value2", ethereum.Value.fromAddress(this.value2));
     return map;
   }
 }
@@ -96,22 +133,25 @@ export class Factory extends ethereum.SmartContract {
     _underlyingToken: Address,
     _rateOracle: Address,
     _termStartTimestampWad: BigInt,
-    _termEndTimestampWad: BigInt
+    _termEndTimestampWad: BigInt,
+    _tickSpacing: i32
   ): Factory__deployIrsInstanceResult {
     let result = super.call(
       "deployIrsInstance",
-      "deployIrsInstance(address,address,uint256,uint256):(address,address)",
+      "deployIrsInstance(address,address,uint256,uint256,int24):(address,address,address)",
       [
         ethereum.Value.fromAddress(_underlyingToken),
         ethereum.Value.fromAddress(_rateOracle),
         ethereum.Value.fromUnsignedBigInt(_termStartTimestampWad),
-        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad)
+        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad),
+        ethereum.Value.fromI32(_tickSpacing)
       ]
     );
 
     return new Factory__deployIrsInstanceResult(
       result[0].toAddress(),
-      result[1].toAddress()
+      result[1].toAddress(),
+      result[2].toAddress()
     );
   }
 
@@ -119,16 +159,18 @@ export class Factory extends ethereum.SmartContract {
     _underlyingToken: Address,
     _rateOracle: Address,
     _termStartTimestampWad: BigInt,
-    _termEndTimestampWad: BigInt
+    _termEndTimestampWad: BigInt,
+    _tickSpacing: i32
   ): ethereum.CallResult<Factory__deployIrsInstanceResult> {
     let result = super.tryCall(
       "deployIrsInstance",
-      "deployIrsInstance(address,address,uint256,uint256):(address,address)",
+      "deployIrsInstance(address,address,uint256,uint256,int24):(address,address,address)",
       [
         ethereum.Value.fromAddress(_underlyingToken),
         ethereum.Value.fromAddress(_rateOracle),
         ethereum.Value.fromUnsignedBigInt(_termStartTimestampWad),
-        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad)
+        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad),
+        ethereum.Value.fromI32(_tickSpacing)
       ]
     );
     if (result.reverted) {
@@ -138,25 +180,75 @@ export class Factory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new Factory__deployIrsInstanceResult(
         value[0].toAddress(),
-        value[1].toAddress()
+        value[1].toAddress(),
+        value[2].toAddress()
       )
     );
+  }
+
+  getFCMAddress(
+    _underlyingToken: Address,
+    _rateOracle: Address,
+    _termStartTimestampWad: BigInt,
+    _termEndTimestampWad: BigInt,
+    _tickSpacing: i32
+  ): Address {
+    let result = super.call(
+      "getFCMAddress",
+      "getFCMAddress(address,address,uint256,uint256,int24):(address)",
+      [
+        ethereum.Value.fromAddress(_underlyingToken),
+        ethereum.Value.fromAddress(_rateOracle),
+        ethereum.Value.fromUnsignedBigInt(_termStartTimestampWad),
+        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad),
+        ethereum.Value.fromI32(_tickSpacing)
+      ]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getFCMAddress(
+    _underlyingToken: Address,
+    _rateOracle: Address,
+    _termStartTimestampWad: BigInt,
+    _termEndTimestampWad: BigInt,
+    _tickSpacing: i32
+  ): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getFCMAddress",
+      "getFCMAddress(address,address,uint256,uint256,int24):(address)",
+      [
+        ethereum.Value.fromAddress(_underlyingToken),
+        ethereum.Value.fromAddress(_rateOracle),
+        ethereum.Value.fromUnsignedBigInt(_termStartTimestampWad),
+        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad),
+        ethereum.Value.fromI32(_tickSpacing)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   getMarginEngineAddress(
     _underlyingToken: Address,
     _rateOracle: Address,
     _termStartTimestampWad: BigInt,
-    _termEndTimestampWad: BigInt
+    _termEndTimestampWad: BigInt,
+    _tickSpacing: i32
   ): Address {
     let result = super.call(
       "getMarginEngineAddress",
-      "getMarginEngineAddress(address,address,uint256,uint256):(address)",
+      "getMarginEngineAddress(address,address,uint256,uint256,int24):(address)",
       [
         ethereum.Value.fromAddress(_underlyingToken),
         ethereum.Value.fromAddress(_rateOracle),
         ethereum.Value.fromUnsignedBigInt(_termStartTimestampWad),
-        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad)
+        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad),
+        ethereum.Value.fromI32(_tickSpacing)
       ]
     );
 
@@ -167,16 +259,18 @@ export class Factory extends ethereum.SmartContract {
     _underlyingToken: Address,
     _rateOracle: Address,
     _termStartTimestampWad: BigInt,
-    _termEndTimestampWad: BigInt
+    _termEndTimestampWad: BigInt,
+    _tickSpacing: i32
   ): ethereum.CallResult<Address> {
     let result = super.tryCall(
       "getMarginEngineAddress",
-      "getMarginEngineAddress(address,address,uint256,uint256):(address)",
+      "getMarginEngineAddress(address,address,uint256,uint256,int24):(address)",
       [
         ethereum.Value.fromAddress(_underlyingToken),
         ethereum.Value.fromAddress(_rateOracle),
         ethereum.Value.fromUnsignedBigInt(_termStartTimestampWad),
-        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad)
+        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad),
+        ethereum.Value.fromI32(_tickSpacing)
       ]
     );
     if (result.reverted) {
@@ -190,16 +284,18 @@ export class Factory extends ethereum.SmartContract {
     _underlyingToken: Address,
     _rateOracle: Address,
     _termStartTimestampWad: BigInt,
-    _termEndTimestampWad: BigInt
+    _termEndTimestampWad: BigInt,
+    _tickSpacing: i32
   ): Address {
     let result = super.call(
       "getVAMMAddress",
-      "getVAMMAddress(address,address,uint256,uint256):(address)",
+      "getVAMMAddress(address,address,uint256,uint256,int24):(address)",
       [
         ethereum.Value.fromAddress(_underlyingToken),
         ethereum.Value.fromAddress(_rateOracle),
         ethereum.Value.fromUnsignedBigInt(_termStartTimestampWad),
-        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad)
+        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad),
+        ethereum.Value.fromI32(_tickSpacing)
       ]
     );
 
@@ -210,18 +306,71 @@ export class Factory extends ethereum.SmartContract {
     _underlyingToken: Address,
     _rateOracle: Address,
     _termStartTimestampWad: BigInt,
-    _termEndTimestampWad: BigInt
+    _termEndTimestampWad: BigInt,
+    _tickSpacing: i32
   ): ethereum.CallResult<Address> {
     let result = super.tryCall(
       "getVAMMAddress",
-      "getVAMMAddress(address,address,uint256,uint256):(address)",
+      "getVAMMAddress(address,address,uint256,uint256,int24):(address)",
       [
         ethereum.Value.fromAddress(_underlyingToken),
         ethereum.Value.fromAddress(_rateOracle),
         ethereum.Value.fromUnsignedBigInt(_termStartTimestampWad),
-        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad)
+        ethereum.Value.fromUnsignedBigInt(_termEndTimestampWad),
+        ethereum.Value.fromI32(_tickSpacing)
       ]
     );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  isApproved(_owner: Address, intAddress: Address): boolean {
+    let result = super.call(
+      "isApproved",
+      "isApproved(address,address):(bool)",
+      [
+        ethereum.Value.fromAddress(_owner),
+        ethereum.Value.fromAddress(intAddress)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_isApproved(
+    _owner: Address,
+    intAddress: Address
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "isApproved",
+      "isApproved(address,address):(bool)",
+      [
+        ethereum.Value.fromAddress(_owner),
+        ethereum.Value.fromAddress(intAddress)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  masterFCMs(param0: i32): Address {
+    let result = super.call("masterFCMs", "masterFCMs(uint8):(address)", [
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(param0))
+    ]);
+
+    return result[0].toAddress();
+  }
+
+  try_masterFCMs(param0: i32): ethereum.CallResult<Address> {
+    let result = super.tryCall("masterFCMs", "masterFCMs(uint8):(address)", [
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(param0))
+    ]);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -349,6 +498,10 @@ export class DeployIrsInstanceCall__Inputs {
   get _termEndTimestampWad(): BigInt {
     return this._call.inputValues[3].value.toBigInt();
   }
+
+  get _tickSpacing(): i32 {
+    return this._call.inputValues[4].value.toI32();
+  }
 }
 
 export class DeployIrsInstanceCall__Outputs {
@@ -364,6 +517,10 @@ export class DeployIrsInstanceCall__Outputs {
 
   get vammProxy(): Address {
     return this._call.outputValues[1].value.toAddress();
+  }
+
+  get fcmProxy(): Address {
+    return this._call.outputValues[2].value.toAddress();
   }
 }
 
@@ -389,6 +546,74 @@ export class RenounceOwnershipCall__Outputs {
   _call: RenounceOwnershipCall;
 
   constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class SetApprovalCall extends ethereum.Call {
+  get inputs(): SetApprovalCall__Inputs {
+    return new SetApprovalCall__Inputs(this);
+  }
+
+  get outputs(): SetApprovalCall__Outputs {
+    return new SetApprovalCall__Outputs(this);
+  }
+}
+
+export class SetApprovalCall__Inputs {
+  _call: SetApprovalCall;
+
+  constructor(call: SetApprovalCall) {
+    this._call = call;
+  }
+
+  get intAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get allowIntegration(): boolean {
+    return this._call.inputValues[1].value.toBoolean();
+  }
+}
+
+export class SetApprovalCall__Outputs {
+  _call: SetApprovalCall;
+
+  constructor(call: SetApprovalCall) {
+    this._call = call;
+  }
+}
+
+export class SetMasterFCMCall extends ethereum.Call {
+  get inputs(): SetMasterFCMCall__Inputs {
+    return new SetMasterFCMCall__Inputs(this);
+  }
+
+  get outputs(): SetMasterFCMCall__Outputs {
+    return new SetMasterFCMCall__Outputs(this);
+  }
+}
+
+export class SetMasterFCMCall__Inputs {
+  _call: SetMasterFCMCall;
+
+  constructor(call: SetMasterFCMCall) {
+    this._call = call;
+  }
+
+  get masterFCMAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _rateOracle(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class SetMasterFCMCall__Outputs {
+  _call: SetMasterFCMCall;
+
+  constructor(call: SetMasterFCMCall) {
     this._call = call;
   }
 }
