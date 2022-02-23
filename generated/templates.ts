@@ -15,3 +15,17 @@ export class VAMM extends DataSourceTemplate {
     DataSourceTemplate.createWithContext("VAMM", [address.toHex()], context);
   }
 }
+
+export class MarginEngine extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("MarginEngine", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "MarginEngine",
+      [address.toHex()],
+      context
+    );
+  }
+}
