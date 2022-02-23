@@ -290,6 +290,23 @@ export class AMM extends Entity {
     }
   }
 
+  get txCount(): BigInt | null {
+    let value = this.get("txCount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set txCount(value: BigInt | null) {
+    if (!value) {
+      this.unset("txCount");
+    } else {
+      this.set("txCount", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get mints(): Array<string> {
     let value = this.get("mints");
     return value!.toStringArray();

@@ -33,6 +33,9 @@ type AMM @entity {
   fixedApr: BigInt
   variableApr: BigInt
 
+  # tracking attributes
+  txCount: BigInt
+
   # derived values
   mints: [Mint!]! @derivedFrom(field: "amm")
   burns: [Burn!]! @derivedFrom(field: "amm")
