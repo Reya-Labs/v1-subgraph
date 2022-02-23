@@ -1,6 +1,6 @@
 import { IrsInstanceDeployed } from '../../../generated/Factory/Factory';
-import { UnderlyingToken, RateOracle, AMM } from '../../../generated/schema';
-import { getUnderlyingTokenName } from '../../utilities';
+import { UnderlyingToken, RateOracle } from '../../../generated/schema';
+import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
 
 function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
   const underlyingTokenAddress = event.params.underlyingToken.toHexString();
@@ -14,9 +14,11 @@ function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
   rateOracle.token = underlyingToken.id;
   rateOracle.save();
 
-  const amm = new AMM(event.params.vamm.toHexString());
+  const amm = getOrCreateAMM({
+    vammAddress: event.params.vamm.toHexString(),
+    timestamp: event.block.timestamp,
+  });
 
-  amm.createdTimestamp = event.block.timestamp;
   amm.updatedTimestamp = event.block.timestamp;
   amm.marginEngineAddress = event.params.marginEngine.toHexString();
   amm.fcmAddress = event.params.fcm.toHexString();

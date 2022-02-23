@@ -403,6 +403,10 @@ export class Position extends Entity {
     this.set("tickUpper", Value.fromString(""));
     this.set("liquidity", Value.fromBigInt(BigInt.zero()));
     this.set("margin", Value.fromBigInt(BigInt.zero()));
+    this.set("fixedTokenBalance", Value.fromBigInt(BigInt.zero()));
+    this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
+    this.set("isLiquidityProvider", Value.fromBoolean(false));
+    this.set("isSettled", Value.fromBoolean(false));
   }
 
   save(): void {
@@ -510,6 +514,42 @@ export class Position extends Entity {
 
   set margin(value: BigInt) {
     this.set("margin", Value.fromBigInt(value));
+  }
+
+  get fixedTokenBalance(): BigInt {
+    let value = this.get("fixedTokenBalance");
+    return value!.toBigInt();
+  }
+
+  set fixedTokenBalance(value: BigInt) {
+    this.set("fixedTokenBalance", Value.fromBigInt(value));
+  }
+
+  get variableTokenBalance(): BigInt {
+    let value = this.get("variableTokenBalance");
+    return value!.toBigInt();
+  }
+
+  set variableTokenBalance(value: BigInt) {
+    this.set("variableTokenBalance", Value.fromBigInt(value));
+  }
+
+  get isLiquidityProvider(): boolean {
+    let value = this.get("isLiquidityProvider");
+    return value!.toBoolean();
+  }
+
+  set isLiquidityProvider(value: boolean) {
+    this.set("isLiquidityProvider", Value.fromBoolean(value));
+  }
+
+  get isSettled(): boolean {
+    let value = this.get("isSettled");
+    return value!.toBoolean();
+  }
+
+  set isSettled(value: boolean) {
+    this.set("isSettled", Value.fromBoolean(value));
   }
 
   get mints(): Array<string> {

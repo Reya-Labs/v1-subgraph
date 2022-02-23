@@ -16,11 +16,16 @@ function handleBurn(event: BurnEvent): void {
   const transaction = getOrCreateTransaction(event);
 
   const vammAddress = event.address.toHexString();
-  const amm = getOrCreateAMM(vammAddress);
+  const amm = getOrCreateAMM({ vammAddress, timestamp: event.block.timestamp });
 
   const tickLower = getOrCreateTick({ amm, value: BigInt.fromI32(tickLowerI32) });
   const tickUpper = getOrCreateTick({ amm, value: BigInt.fromI32(tickUpperI32) });
-  const position = getOrCreatePosition({ address: owner.toHexString(), tickLower, tickUpper });
+  const position = getOrCreatePosition({
+    address: owner.toHexString(),
+    tickLower,
+    tickUpper,
+    timestamp: event.block.timestamp,
+  });
 
   const burnId = `${transaction.id}#${amm.txCount}`;
   const burn = new Burn(burnId);
