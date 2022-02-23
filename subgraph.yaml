@@ -14,15 +14,19 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/mappings/factory.ts
+      file: ./src/mappings/factory/index.ts
       entities:
         - AMM
       abis:
         - name: Factory
           file: ./artifacts/Factory.json
       eventHandlers:
-        - event: IrsInstanceDeployed(indexed address,indexed address,uint256,uint256,address,address)
+        - event: IrsInstanceDeployed(indexed address,indexed address,uint256,uint256,int24,address,address,address)
           handler: handleIrsInstanceDeployed
+        - event: MasterFCMSet(address,address,uint8)
+          handler: handleMasterFCMSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handlerOwnershipTransferred
 templates:
   - kind: ethereum/contract
     name: VAMM
@@ -33,12 +37,74 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/mappings/vamm.ts
+      file: ./src/mappings/vamm/index.ts
       entities:
         - AMM
       abis:
         - name: VAMM
           file: ./artifacts/VAMM.json
       eventHandlers:
-        - event: Initialize(uint256,address,uint160,int24)
+        - event: Burn(address,indexed address,indexed int24,indexed int24,uint128)
+          handler: handleBurn
+        - event: FeeSet(uint256,uint256)
+          handler: handleFeeSet
+        - event: InitializeVAMM(uint160,int24)
           handler: handleInitialize
+        - event: Mint(address,indexed address,indexed int24,indexed int24,uint128)
+          handler: handleMint
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Paused(address)
+          handler: handlePaused
+        - event: SetFeeProtocol(uint8,uint8)
+          handler: handleSetFeeProtocol
+        - event: Swap(indexed address,indexed address,uint160,uint128,int24)
+          handler: handleSwap
+        - event: Unpaused(address)
+          handler: handleUnpaused
+  - kind: ethereum/contract
+    name: MarginEngine
+    network: mainnet
+    source:
+      abi: MarginEngine
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/marginEngine/index.ts
+      entities:
+        - MarginEngine
+      abis:
+        - name: MarginEngine
+          file: ./artifacts/MarginEngine.json
+      eventHandlers:
+        - event: CacheMaxAgeSet(uint256,uint256)
+          handler: handleCacheMaxAgeSet
+        - event: CollectProtocol(address,address,uint256)
+          handler: CollectProtocol
+        - event: FCMSet(address,address)
+          handler: handleFCMSet
+        - event: HistoricalApyWindowSet(uint256,uint256)
+          handler: handleHistoricalApyWindowSet
+        - event: LiquidatePosition(address,int24,int24,int256,int256,int256,uint128)
+          handler: handleLiquidatePosition
+        - event: LiquidatorRewardSet(uint256,uint256)
+          handler: handleLiquidatorRewardSet
+        - event: MarginCalculatorParametersSet((uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),(uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
+          handler: handleMarginCalculatorParametersSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Paused(address)
+          handler: handlePaused
+        - event: SettlePosition(address,int24,int24,int256,int256,int256,bool)
+          handler: handleSettlePosition
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: UpdatePositionMargin(address,int24,int24,int256)
+          handler: handleUpdatePositionMargin
+        - event: UpdatePositionPostMintBurn(address,int24,int24,uint128)
+          handler: handleUpdatePositionPostMintBurn
+        - event: UpdatePositionPostSwap(address,int24,int24,int256,int256,int256)
+          handler: handleUpdatePositionPostSwap
+        - event: VAMMSet(address,address)
+          handler: handleVAMMSet

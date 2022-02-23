@@ -5,6 +5,5 @@ yarn-error.log
 .yalc
 yalc.lock
 data
-artifacts
 .DS_Store
 localhostDeployment.json

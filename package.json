@@ -15,6 +15,7 @@
     "remove-errors": "ts-node deploy/removeErrors.ts",
     "codegen": "graph codegen",
     "create-local": "graph create nicholaspiano/v1-subgraph --node http://127.0.0.1:8020",
+    "build": "graph build",
     "deploy-local": "graph deploy nicholaspiano/v1-subgraph --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
     "prettier": "prettier 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",

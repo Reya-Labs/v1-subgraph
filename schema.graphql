@@ -33,24 +33,53 @@ type AMM @entity {
   createdTimestamp: BigInt!
   updatedTimestamp: BigInt!
   marginEngineAddress: String!
-  rateOracle: RateOracle
+  rateOracle: RateOracle!
   termStartTimestamp: BigInt!
   termEndTimestamp: BigInt!
-  fixedApr: BigInt!
-  variableApr: BigInt!
+  fixedApr: BigInt
+  variableApr: BigInt
+
+  # derived values
+  mints: [Mint]! @derivedFrom(field: "amm")
+  burns: [Burn]! @derivedFrom(field: "amm")
+  swaps: [Swap]! @derivedFrom(field: "amm")
 }
 
-#type Tick @entity {
+type Tick @entity {
+  # format: <amm>#<tick value>
+  id: ID!
 
-#}
+  amm: AMM!
+  value: BigInt!
+}
 
-#type Position @entity {
+type Position @entity {
+  # format: <owner>#<tickLower>#<tickUpper>
+  id: ID!
 
-#}
+  createdTimestamp: BigInt!
+  updatedTimestamp: BigInt!
+  closedTimestamp: BigInt!
 
-#type PositionSnapshot @entity {
+  amm: AMM!
 
-#}
+  # owner of the position
+  owner: String!
+
+  # lower tick of the position
+  tickLower: Tick!
+  # upper tick of the position
+  tickUpper: Tick!
+  # total position liquidity
+  liquidity: BigInt!
+  # total position margin
+  margin: BigInt!
+
+  # derived values
+  mints: [Mint]! @derivedFrom(field: "position")
+  burns: [Burn]! @derivedFrom(field: "position")
+  swaps: [Swap]! @derivedFrom(field: "position")
+}
 
 # Event tracking
 type Transaction @entity {
@@ -61,6 +90,61 @@ type Transaction @entity {
   # timestamp transaction was confirmed
   timestamp: BigInt!
   # gas used during transaction execution
-  gasUsed: BigInt!
   gasPrice: BigInt!
+
+  # derived values
+  mints: [Mint]! @derivedFrom(field: "transaction")
+  burns: [Burn]! @derivedFrom(field: "transaction")
+  swaps: [Swap]! @derivedFrom(field: "transaction")
+}
+
+type Mint @entity {
+  # transaction hash + "#" + index in mints Transaction array
+  id: ID!
+
+  transaction: Transaction!
+
+  # Get from transaction
+  amm: AMM!
+  position: Position!
+
+  # Passed with Mint event
+  sender: String!
+  tickLower: Tick!
+  tickUpper: Tick!
+  amount: BigInt!
+}
+
+type Burn @entity {
+  # format: <transaction hash>#<index in burns Transaction array>
+  id: ID!
+
+  transaction: Transaction!
+  amm: AMM!
+  position: Position!
+  sender: String!
+
+  # Passed with Burn event
+  tickLower: Tick!
+  tickUpper: Tick!
+  amount: BigInt!
+}
+
+type Swap @entity {
+  # format: <transaction hash>#<index in burns Transaction array>
+  id: ID!
+
+  transaction: Transaction!
+  amm: AMM!
+  sender: String!
+
+  # Get from recipient
+  position: Position!
+
+  # index within the txn
+  txIndex: BigInt!
+
+  liquidity: BigInt!
+  sqrtPriceX96: BigInt!
+  tick: BigInt!
 }

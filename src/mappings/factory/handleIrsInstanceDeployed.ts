@@ -1,7 +1,7 @@
-import { IrsInstanceDeployed } from '../../generated/Factory/Factory';
-import { AMM } from '../../generated/schema';
+import { IrsInstanceDeployed } from '../../../generated/Factory/Factory';
+import { AMM } from '../../../generated/schema';
 
-export function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
+function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
   const amm = new AMM(event.params.vamm.toHexString());
 
   amm.marginEngineAddress = event.params.marginEngin.toHexString();
@@ -9,3 +9,5 @@ export function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
   amm.termEndTimestamp = event.params.termEndTimestampWad;
   amm.save();
 }
+
+export default handleIrsInstanceDeployed;
