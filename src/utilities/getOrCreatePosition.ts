@@ -13,7 +13,7 @@ const getOrCreatePosition = ({
   tickLower,
   tickUpper,
 }: GetOrCreatePositionArgs): Position => {
-  const positionId = `${address}${tickLower.value}${tickUpper.value}`;
+  const positionId = `${address}#${tickLower.value}#${tickUpper.value}`;
   const existingPosition = Position.load(positionId);
 
   if (!isNull(existingPosition)) {
