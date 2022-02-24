@@ -84,6 +84,26 @@ type Position @entity {
   mints: [Mint!]! @derivedFrom(field: "position")
   burns: [Burn!]! @derivedFrom(field: "position")
   swaps: [Swap!]! @derivedFrom(field: "position")
+  snapshots: [PositionSnapshot!]! @derivedFrom(field: "position")
+}
+
+type PositionSnapshot @entity {
+  # format: <position>#<index>
+  id: ID!
+
+  createdTimestamp: BigInt!
+  owner: String!
+  position: Position!
+
+  # total position liquidity
+  liquidity: BigInt!
+  # total position margin
+  margin: BigInt!
+  fixedTokenBalance: BigInt!
+  variableTokenBalance: BigInt!
+  isSettled: Boolean!
+
+  # In future, can add USD or underlying values
 }
 
 # Event tracking

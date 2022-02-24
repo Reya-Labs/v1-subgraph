@@ -605,6 +605,131 @@ export class Position extends Entity {
   set swaps(value: Array<string>) {
     this.set("swaps", Value.fromStringArray(value));
   }
+
+  get snapshots(): Array<string> {
+    let value = this.get("snapshots");
+    return value!.toStringArray();
+  }
+
+  set snapshots(value: Array<string>) {
+    this.set("snapshots", Value.fromStringArray(value));
+  }
+}
+
+export class PositionSnapshot extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("createdTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("owner", Value.fromString(""));
+    this.set("position", Value.fromString(""));
+    this.set("liquidity", Value.fromBigInt(BigInt.zero()));
+    this.set("margin", Value.fromBigInt(BigInt.zero()));
+    this.set("fixedTokenBalance", Value.fromBigInt(BigInt.zero()));
+    this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
+    this.set("isSettled", Value.fromBoolean(false));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save PositionSnapshot entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save PositionSnapshot entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("PositionSnapshot", id.toString(), this);
+    }
+  }
+
+  static load(id: string): PositionSnapshot | null {
+    return changetype<PositionSnapshot | null>(
+      store.get("PositionSnapshot", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get createdTimestamp(): BigInt {
+    let value = this.get("createdTimestamp");
+    return value!.toBigInt();
+  }
+
+  set createdTimestamp(value: BigInt) {
+    this.set("createdTimestamp", Value.fromBigInt(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get position(): string {
+    let value = this.get("position");
+    return value!.toString();
+  }
+
+  set position(value: string) {
+    this.set("position", Value.fromString(value));
+  }
+
+  get liquidity(): BigInt {
+    let value = this.get("liquidity");
+    return value!.toBigInt();
+  }
+
+  set liquidity(value: BigInt) {
+    this.set("liquidity", Value.fromBigInt(value));
+  }
+
+  get margin(): BigInt {
+    let value = this.get("margin");
+    return value!.toBigInt();
+  }
+
+  set margin(value: BigInt) {
+    this.set("margin", Value.fromBigInt(value));
+  }
+
+  get fixedTokenBalance(): BigInt {
+    let value = this.get("fixedTokenBalance");
+    return value!.toBigInt();
+  }
+
+  set fixedTokenBalance(value: BigInt) {
+    this.set("fixedTokenBalance", Value.fromBigInt(value));
+  }
+
+  get variableTokenBalance(): BigInt {
+    let value = this.get("variableTokenBalance");
+    return value!.toBigInt();
+  }
+
+  set variableTokenBalance(value: BigInt) {
+    this.set("variableTokenBalance", Value.fromBigInt(value));
+  }
+
+  get isSettled(): boolean {
+    let value = this.get("isSettled");
+    return value!.toBoolean();
+  }
+
+  set isSettled(value: boolean) {
+    this.set("isSettled", Value.fromBoolean(value));
+  }
 }
 
 export class Transaction extends Entity {
