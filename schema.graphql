@@ -85,6 +85,7 @@ type Position @entity {
   burns: [Burn!]! @derivedFrom(field: "position")
   swaps: [Swap!]! @derivedFrom(field: "position")
   snapshots: [PositionSnapshot!]! @derivedFrom(field: "position")
+  snapshotCount: BigInt!
 }
 
 type PositionSnapshot @entity {

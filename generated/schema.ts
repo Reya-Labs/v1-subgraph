@@ -434,6 +434,7 @@ export class Position extends Entity {
     this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("isLiquidityProvider", Value.fromBoolean(false));
     this.set("isSettled", Value.fromBoolean(false));
+    this.set("snapshotCount", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -613,6 +614,15 @@ export class Position extends Entity {
 
   set snapshots(value: Array<string>) {
     this.set("snapshots", Value.fromStringArray(value));
+  }
+
+  get snapshotCount(): BigInt {
+    let value = this.get("snapshotCount");
+    return value!.toBigInt();
+  }
+
+  set snapshotCount(value: BigInt) {
+    this.set("snapshotCount", Value.fromBigInt(value));
   }
 }
 

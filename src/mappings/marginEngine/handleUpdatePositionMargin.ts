@@ -2,6 +2,7 @@ import { BigInt } from '@graphprotocol/graph-ts';
 
 import { UpdatePositionMargin } from '../../../generated/templates/MarginEngine/MarginEngine';
 import {
+  createPositionSnapshot,
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
   getOrCreateTick,
@@ -19,6 +20,8 @@ function handleUpdatePositionMargin(event: UpdatePositionMargin): void {
   const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
   const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(owner, tickLower, tickUpper, event.block.timestamp);
+
+  createPositionSnapshot(position, event.block.timestamp);
 
   position.updatedTimestamp = event.block.timestamp;
   position.amm = amm.id;
