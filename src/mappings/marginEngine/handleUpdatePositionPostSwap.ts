@@ -1,10 +1,9 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
-import { UpdatePositionPostMintBurn } from '../../../generated/templates/MarginEngine/MarginEngine';
-import { ZERO_BI } from '../../constants';
+import { UpdatePositionPostSwap } from '../../../generated/templates/MarginEngine/MarginEngine';
 import { getOrCreateAMM, getOrCreatePosition, getOrCreateTick } from '../../utilities';
 
-function handleUpdatePositionPostMintBurn(event: UpdatePositionPostMintBurn): void {
+function handleUpdatePositionPostSwap(event: UpdatePositionPostSwap): void {
   const owner = event.params.owner.toHexString();
   const vammAddress = event.address.toHexString();
   const amm = getOrCreateAMM(vammAddress, event.block.timestamp);
@@ -18,15 +17,12 @@ function handleUpdatePositionPostMintBurn(event: UpdatePositionPostMintBurn): vo
   position.owner = event.params.owner.toHexString();
   position.tickLower = tickLower.id;
   position.tickUpper = tickUpper.id;
-  position.liquidity = event.params.liquidity;
-  position.isLiquidityProvider = true;
+  position.margin = event.params.margin;
+  position.isLiquidityProvider = false;
   position.isSettled = false;
-
-  if (event.params.liquidity.lt(ZERO_BI) || event.params.liquidity.equals(ZERO_BI)) {
-    position.closedTimestamp = event.block.timestamp;
-  }
-
+  position.fixedTokenBalance = event.params.fixedTokenBalance;
+  position.variableTokenBalance = event.params.variableTokenBalance;
   position.save();
 }
 
-export default handleUpdatePositionPostMintBurn;
+export default handleUpdatePositionPostSwap;
