@@ -1,5 +1,4 @@
 import { ethereum } from '@graphprotocol/graph-ts';
-import isNull from 'lodash/isNull';
 
 import { Transaction } from '../../generated/schema';
 
@@ -7,7 +6,7 @@ const getOrCreateTransaction = (event: ethereum.Event): Transaction => {
   const transactionHash = event.transaction.hash.toHexString();
   const existingTransaction = Transaction.load(transactionHash);
 
-  if (!isNull(existingTransaction)) {
+  if (existingTransaction !== null) {
     return existingTransaction;
   }
 

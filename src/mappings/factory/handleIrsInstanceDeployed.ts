@@ -1,6 +1,8 @@
+import { BigInt } from '@graphprotocol/graph-ts';
+
 import { IrsInstanceDeployed } from '../../../generated/Factory/Factory';
-import { UnderlyingToken, RateOracle, AMM } from '../../../generated/schema';
-import { getUnderlyingTokenName } from '../../utilities';
+import { UnderlyingToken, RateOracle } from '../../../generated/schema';
+import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
 
 function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
   const underlyingTokenAddress = event.params.underlyingToken.toHexString();
@@ -14,16 +16,15 @@ function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
   rateOracle.token = underlyingToken.id;
   rateOracle.save();
 
-  const amm = new AMM(event.params.vamm.toHexString());
+  const amm = getOrCreateAMM(event.params.vamm.toHexString(), event.block.timestamp);
 
-  amm.createdTimestamp = event.block.timestamp;
   amm.updatedTimestamp = event.block.timestamp;
   amm.marginEngineAddress = event.params.marginEngine.toHexString();
   amm.fcmAddress = event.params.fcm.toHexString();
   amm.rateOracle = rateOracle.id;
   amm.termStartTimestamp = event.params.termStartTimestampWad;
   amm.termEndTimestamp = event.params.termEndTimestampWad;
-  amm.tickSpacing = event.params.tickSpacing;
+  amm.tickSpacing = BigInt.fromI32(event.params.tickSpacing);
   amm.save();
 }
 

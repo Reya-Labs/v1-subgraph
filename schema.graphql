@@ -34,7 +34,7 @@ type AMM @entity {
   variableApr: BigInt
 
   # tracking attributes
-  txCount: BigInt
+  txCount: BigInt!
 
   # derived values
   mints: [Mint!]! @derivedFrom(field: "amm")
@@ -71,6 +71,10 @@ type Position @entity {
   liquidity: BigInt!
   # total position margin
   margin: BigInt!
+  fixedTokenBalance: BigInt!
+  variableTokenBalance: BigInt!
+  isLiquidityProvider: Boolean!
+  isSettled: Boolean!
 
   # derived values
   mints: [Mint!]! @derivedFrom(field: "position")
