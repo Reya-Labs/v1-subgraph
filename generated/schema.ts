@@ -156,6 +156,7 @@ export class AMM extends Entity {
     this.set("termStartTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("termEndTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("tickSpacing", Value.fromBigInt(BigInt.zero()));
+    this.set("txCount", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -290,21 +291,13 @@ export class AMM extends Entity {
     }
   }
 
-  get txCount(): BigInt | null {
+  get txCount(): BigInt {
     let value = this.get("txCount");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set txCount(value: BigInt | null) {
-    if (!value) {
-      this.unset("txCount");
-    } else {
-      this.set("txCount", Value.fromBigInt(<BigInt>value));
-    }
+  set txCount(value: BigInt) {
+    this.set("txCount", Value.fromBigInt(value));
   }
 
   get mints(): Array<string> {
