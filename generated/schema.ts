@@ -290,37 +290,37 @@ export class AMM extends Entity {
     this.set("termEndTimestamp", Value.fromBigInt(value));
   }
 
-  get fixedApr(): BigInt | null {
+  get fixedApr(): BigDecimal | null {
     let value = this.get("fixedApr");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBigInt();
+      return value.toBigDecimal();
     }
   }
 
-  set fixedApr(value: BigInt | null) {
+  set fixedApr(value: BigDecimal | null) {
     if (!value) {
       this.unset("fixedApr");
     } else {
-      this.set("fixedApr", Value.fromBigInt(<BigInt>value));
+      this.set("fixedApr", Value.fromBigDecimal(<BigDecimal>value));
     }
   }
 
-  get variableApr(): BigInt | null {
+  get variableApr(): BigDecimal | null {
     let value = this.get("variableApr");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBigInt();
+      return value.toBigDecimal();
     }
   }
 
-  set variableApr(value: BigInt | null) {
+  set variableApr(value: BigDecimal | null) {
     if (!value) {
       this.unset("variableApr");
     } else {
-      this.set("variableApr", Value.fromBigInt(<BigInt>value));
+      this.set("variableApr", Value.fromBigDecimal(<BigDecimal>value));
     }
   }
 

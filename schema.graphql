@@ -36,8 +36,8 @@ type AMM @entity {
   rateOracle: RateOracle!
   termStartTimestamp: BigInt!
   termEndTimestamp: BigInt!
-  fixedApr: BigInt
-  variableApr: BigInt
+  fixedApr: BigDecimal
+  variableApr: BigDecimal
 
   # derived values
   mints: [Mint!]! @derivedFrom(field: "amm")
