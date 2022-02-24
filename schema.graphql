@@ -24,7 +24,6 @@ type AMM @entity {
 
   createdTimestamp: BigInt!
   updatedTimestamp: BigInt!
-  marginEngineAddress: String!
   fcmAddress: String!
   rateOracle: RateOracle!
   termStartTimestamp: BigInt!
@@ -40,6 +39,11 @@ type AMM @entity {
   mints: [Mint!]! @derivedFrom(field: "amm")
   burns: [Burn!]! @derivedFrom(field: "amm")
   swaps: [Swap!]! @derivedFrom(field: "amm")
+}
+
+type MarginEngine @entity {
+  id: ID!
+  amm: AMM!
 }
 
 type Tick @entity {
@@ -80,6 +84,27 @@ type Position @entity {
   mints: [Mint!]! @derivedFrom(field: "position")
   burns: [Burn!]! @derivedFrom(field: "position")
   swaps: [Swap!]! @derivedFrom(field: "position")
+  snapshots: [PositionSnapshot!]! @derivedFrom(field: "position")
+  snapshotCount: BigInt!
+}
+
+type PositionSnapshot @entity {
+  # format: <position>#<index>
+  id: ID!
+
+  createdTimestamp: BigInt!
+  owner: String!
+  position: Position!
+
+  # total position liquidity
+  liquidity: BigInt!
+  # total position margin
+  margin: BigInt!
+  fixedTokenBalance: BigInt!
+  variableTokenBalance: BigInt!
+  isSettled: Boolean!
+
+  # In future, can add USD or underlying values
 }
 
 # Event tracking

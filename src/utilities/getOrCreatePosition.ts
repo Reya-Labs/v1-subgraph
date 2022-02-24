@@ -1,6 +1,7 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
 import { Position, Tick } from '../../generated/schema';
+import { ZERO_BI } from '../constants';
 
 const getOrCreatePosition = (
   address: string,
@@ -18,6 +19,7 @@ const getOrCreatePosition = (
   const position = new Position(positionId);
 
   position.createdTimestamp = timestamp;
+  position.snapshotCount = ZERO_BI;
   position.save();
 
   return position;
