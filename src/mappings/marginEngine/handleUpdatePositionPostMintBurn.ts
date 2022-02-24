@@ -2,12 +2,20 @@ import { BigInt } from '@graphprotocol/graph-ts';
 
 import { UpdatePositionPostMintBurn } from '../../../generated/templates/MarginEngine/MarginEngine';
 import { ZERO_BI } from '../../constants';
-import { getOrCreateAMM, getOrCreatePosition, getOrCreateTick } from '../../utilities';
+import {
+  getAMMFromMarginEngineAddress,
+  getOrCreatePosition,
+  getOrCreateTick,
+} from '../../utilities';
 
 function handleUpdatePositionPostMintBurn(event: UpdatePositionPostMintBurn): void {
   const owner = event.params.owner.toHexString();
-  const vammAddress = event.address.toHexString();
-  const amm = getOrCreateAMM(vammAddress, event.block.timestamp);
+  const marginEngineAddress = event.address.toHexString();
+  const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
+
+  if (amm === null) {
+    return;
+  }
 
   const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
   const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));

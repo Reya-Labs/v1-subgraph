@@ -24,7 +24,6 @@ type AMM @entity {
 
   createdTimestamp: BigInt!
   updatedTimestamp: BigInt!
-  marginEngineAddress: String!
   fcmAddress: String!
   rateOracle: RateOracle!
   termStartTimestamp: BigInt!
@@ -40,6 +39,11 @@ type AMM @entity {
   mints: [Mint!]! @derivedFrom(field: "amm")
   burns: [Burn!]! @derivedFrom(field: "amm")
   swaps: [Swap!]! @derivedFrom(field: "amm")
+}
+
+type MarginEngine @entity {
+  id: ID!
+  amm: AMM!
 }
 
 type Tick @entity {

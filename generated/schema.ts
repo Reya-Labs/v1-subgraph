@@ -150,7 +150,6 @@ export class AMM extends Entity {
 
     this.set("createdTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("updatedTimestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("marginEngineAddress", Value.fromString(""));
     this.set("fcmAddress", Value.fromString(""));
     this.set("rateOracle", Value.fromString(""));
     this.set("termStartTimestamp", Value.fromBigInt(BigInt.zero()));
@@ -201,15 +200,6 @@ export class AMM extends Entity {
 
   set updatedTimestamp(value: BigInt) {
     this.set("updatedTimestamp", Value.fromBigInt(value));
-  }
-
-  get marginEngineAddress(): string {
-    let value = this.get("marginEngineAddress");
-    return value!.toString();
-  }
-
-  set marginEngineAddress(value: string) {
-    this.set("marginEngineAddress", Value.fromString(value));
   }
 
   get fcmAddress(): string {
@@ -325,6 +315,50 @@ export class AMM extends Entity {
 
   set swaps(value: Array<string>) {
     this.set("swaps", Value.fromStringArray(value));
+  }
+}
+
+export class MarginEngine extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("amm", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MarginEngine entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MarginEngine entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MarginEngine", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MarginEngine | null {
+    return changetype<MarginEngine | null>(store.get("MarginEngine", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get amm(): string {
+    let value = this.get("amm");
+    return value!.toString();
+  }
+
+  set amm(value: string) {
+    this.set("amm", Value.fromString(value));
   }
 }
 

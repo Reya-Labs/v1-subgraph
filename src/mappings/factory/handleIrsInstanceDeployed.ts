@@ -1,7 +1,7 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
 import { IrsInstanceDeployed } from '../../../generated/Factory/Factory';
-import { UnderlyingToken, RateOracle } from '../../../generated/schema';
+import { UnderlyingToken, RateOracle, MarginEngine } from '../../../generated/schema';
 import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
 
 function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
@@ -18,8 +18,12 @@ function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
 
   const amm = getOrCreateAMM(event.params.vamm.toHexString(), event.block.timestamp);
 
+  const marginEngine = new MarginEngine(event.params.marginEngine.toHexString());
+
+  marginEngine.amm = amm.id;
+  marginEngine.save();
+
   amm.updatedTimestamp = event.block.timestamp;
-  amm.marginEngineAddress = event.params.marginEngine.toHexString();
   amm.fcmAddress = event.params.fcm.toHexString();
   amm.rateOracle = rateOracle.id;
   amm.termStartTimestamp = event.params.termStartTimestampWad;

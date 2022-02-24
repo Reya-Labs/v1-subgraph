@@ -1,12 +1,20 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
 import { SettlePosition } from '../../../generated/templates/MarginEngine/MarginEngine';
-import { getOrCreateAMM, getOrCreatePosition, getOrCreateTick } from '../../utilities';
+import {
+  getAMMFromMarginEngineAddress,
+  getOrCreatePosition,
+  getOrCreateTick,
+} from '../../utilities';
 
 function handleSettlePosition(event: SettlePosition): void {
   const owner = event.params.owner.toHexString();
-  const vammAddress = event.address.toHexString();
-  const amm = getOrCreateAMM(vammAddress, event.block.timestamp);
+  const marginEngineAddress = event.address.toHexString();
+  const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
+
+  if (amm === null) {
+    return;
+  }
 
   const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
   const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
