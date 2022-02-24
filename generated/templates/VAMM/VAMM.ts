@@ -216,6 +216,14 @@ export class Swap__Params {
   get tick(): i32 {
     return this._event.parameters[4].value.toI32();
   }
+
+  get tickLower(): i32 {
+    return this._event.parameters[5].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._event.parameters[6].value.toI32();
+  }
 }
 
 export class Unpaused extends ethereum.Event {

@@ -883,6 +883,8 @@ export class Swap extends Entity {
     this.set("position", Value.fromString(""));
     this.set("txIndex", Value.fromBigInt(BigInt.zero()));
     this.set("sqrtPriceX96", Value.fromBigInt(BigInt.zero()));
+    this.set("liquidity", Value.fromBigInt(BigInt.zero()));
+    this.set("tick", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -963,5 +965,23 @@ export class Swap extends Entity {
 
   set sqrtPriceX96(value: BigInt) {
     this.set("sqrtPriceX96", Value.fromBigInt(value));
+  }
+
+  get liquidity(): BigInt {
+    let value = this.get("liquidity");
+    return value!.toBigInt();
+  }
+
+  set liquidity(value: BigInt) {
+    this.set("liquidity", Value.fromBigInt(value));
+  }
+
+  get tick(): BigInt {
+    let value = this.get("tick");
+    return value!.toBigInt();
+  }
+
+  set tick(value: BigInt) {
+    this.set("tick", Value.fromBigInt(value));
   }
 }

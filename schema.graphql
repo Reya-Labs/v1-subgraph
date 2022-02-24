@@ -146,4 +146,6 @@ type Swap @entity {
   txIndex: BigInt!
 
   sqrtPriceX96: BigInt!
+  liquidity: BigInt!
+  tick: BigInt!
 }
