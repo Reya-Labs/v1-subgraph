@@ -15,7 +15,7 @@ function handleUpdatePositionPostMintBurn(event: UpdatePositionPostMintBurn): vo
 
   position.updatedTimestamp = event.block.timestamp;
   position.amm = amm.id;
-  position.owner = event.params.owner.toHexString();
+  position.owner = owner;
   position.tickLower = tickLower.id;
   position.tickUpper = tickUpper.id;
   position.liquidity = event.params.liquidity;

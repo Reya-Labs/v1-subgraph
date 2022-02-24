@@ -14,7 +14,7 @@ function handleUpdatePositionPostSwap(event: UpdatePositionPostSwap): void {
 
   position.updatedTimestamp = event.block.timestamp;
   position.amm = amm.id;
-  position.owner = event.params.owner.toHexString();
+  position.owner = owner;
   position.tickLower = tickLower.id;
   position.tickUpper = tickUpper.id;
   position.margin = event.params.margin;
