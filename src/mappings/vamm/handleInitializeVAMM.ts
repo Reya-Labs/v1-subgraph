@@ -7,7 +7,7 @@ function handleInitializeVAMM(event: InitializeVAMM): void {
   const id = event.transaction.to;
   const amm = AMM.load(id!.toString());
   const { sqrtPriceX96 } = event.params;
-  const denom = ((Number(sqrtPriceX96) / 2) ^ 96) ** 2;
+  const denom = (Number(sqrtPriceX96) / 2 ** 96) ** 2;
   amm!.fixedApr = safeDiv(BigDecimal.fromString('1'), BigDecimal.fromString(denom.toString()));
   amm!.save();
 }
