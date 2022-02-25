@@ -22,17 +22,17 @@ function handleSwap(event: SwapEvent): void {
   const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(owner, tickLower, tickUpper, event.block.timestamp);
 
-  const mintId = `${transaction.id}#${amm.txCount.toString()}`;
-  const mint = new Swap(mintId);
+  const swapId = `${transaction.id}#${amm.txCount.toString()}`;
+  const swap = new Swap(swapId);
 
-  mint.transaction = transaction.id;
-  mint.amm = amm.id;
-  mint.position = position.id;
-  mint.sender = sender;
-  mint.sqrtPriceX96 = event.params.sqrtPriceX96;
-  mint.liquidity = event.params.liquidity;
-  mint.tick = BigInt.fromI32(event.params.tick);
-  mint.save();
+  swap.transaction = transaction.id;
+  swap.amm = amm.id;
+  swap.position = position.id;
+  swap.sender = sender;
+  swap.sqrtPriceX96 = event.params.sqrtPriceX96;
+  swap.liquidity = event.params.liquidity;
+  swap.tick = BigInt.fromI32(event.params.tick);
+  swap.save();
 
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();
