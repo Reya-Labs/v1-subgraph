@@ -63,7 +63,6 @@ type Position @entity {
 
   createdTimestamp: BigInt!
   updatedTimestamp: BigInt!
-  closedTimestamp: BigInt!
 
   amm: AMM!
 
@@ -82,6 +81,7 @@ type Position @entity {
   variableTokenBalance: BigInt!
   isLiquidityProvider: Boolean!
   isSettled: Boolean!
+  isEmpty: Boolean!
 
   # derived values
   mints: [Mint!]! @derivedFrom(field: "position")
@@ -106,6 +106,7 @@ type PositionSnapshot @entity {
   fixedTokenBalance: BigInt!
   variableTokenBalance: BigInt!
   isSettled: Boolean!
+  isEmpty: Boolean!
 
   # In future, can add USD or underlying values
 }
