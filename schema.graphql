@@ -32,8 +32,6 @@ type AMM @entity {
   sqrtPriceX96: BigInt!
   liquidity: BigInt!
   tick: BigInt!
-  fixedApr: BigInt
-  variableApr: BigInt
 
   # tracking attributes
   txCount: BigInt!

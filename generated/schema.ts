@@ -277,40 +277,6 @@ export class AMM extends Entity {
     this.set("tick", Value.fromBigInt(value));
   }
 
-  get fixedApr(): BigInt | null {
-    let value = this.get("fixedApr");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set fixedApr(value: BigInt | null) {
-    if (!value) {
-      this.unset("fixedApr");
-    } else {
-      this.set("fixedApr", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get variableApr(): BigInt | null {
-    let value = this.get("variableApr");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set variableApr(value: BigInt | null) {
-    if (!value) {
-      this.unset("variableApr");
-    } else {
-      this.set("variableApr", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
   get txCount(): BigInt {
     let value = this.get("txCount");
     return value!.toBigInt();
