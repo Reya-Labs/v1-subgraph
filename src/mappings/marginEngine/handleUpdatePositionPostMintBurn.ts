@@ -22,8 +22,6 @@ function handleUpdatePositionPostMintBurn(event: UpdatePositionPostMintBurn): vo
   const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(owner, tickLower, tickUpper, event.block.timestamp);
 
-  createPositionSnapshot(position, event.block.timestamp);
-
   position.updatedTimestamp = event.block.timestamp;
   position.amm = amm.id;
   position.owner = owner;
@@ -32,10 +30,13 @@ function handleUpdatePositionPostMintBurn(event: UpdatePositionPostMintBurn): vo
   position.liquidity = event.params.liquidity;
   position.isLiquidityProvider = true;
   position.isSettled = false;
+  position.isEmpty = false;
 
   if (event.params.liquidity.lt(ZERO_BI) || event.params.liquidity.equals(ZERO_BI)) {
-    position.closedTimestamp = event.block.timestamp;
+    position.isEmpty = true;
   }
+
+  createPositionSnapshot(position, event.block.timestamp);
 
   position.save();
 }

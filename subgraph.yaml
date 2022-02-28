@@ -26,7 +26,7 @@ dataSources:
         - event: MasterFCMSet(address,address,uint8)
           handler: handleMasterFCMSet
         - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handlerOwnershipTransferred
+          handler: handleOwnershipTransferred
 templates:
   - kind: ethereum/contract
     name: VAMM
@@ -49,7 +49,7 @@ templates:
         - event: FeeSet(uint256,uint256)
           handler: handleFeeSet
         - event: InitializeVAMM(uint160,int24)
-          handler: handleInitialize
+          handler: handleInitializeVAMM
         - event: Mint(address,indexed address,indexed int24,indexed int24,uint128)
           handler: handleMint
         - event: OwnershipTransferred(indexed address,indexed address)
@@ -81,7 +81,7 @@ templates:
         - event: CacheMaxAgeSet(uint256,uint256)
           handler: handleCacheMaxAgeSet
         - event: CollectProtocol(address,address,uint256)
-          handler: CollectProtocol
+          handler: handleCollectProtocol
         - event: FCMSet(address,address)
           handler: handleFCMSet
         - event: HistoricalApyWindowSet(uint256,uint256)

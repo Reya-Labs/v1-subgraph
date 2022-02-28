@@ -155,6 +155,9 @@ export class AMM extends Entity {
     this.set("termStartTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("termEndTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("tickSpacing", Value.fromBigInt(BigInt.zero()));
+    this.set("sqrtPriceX96", Value.fromBigInt(BigInt.zero()));
+    this.set("liquidity", Value.fromBigInt(BigInt.zero()));
+    this.set("tick", Value.fromBigInt(BigInt.zero()));
     this.set("txCount", Value.fromBigInt(BigInt.zero()));
   }
 
@@ -247,38 +250,31 @@ export class AMM extends Entity {
     this.set("tickSpacing", Value.fromBigInt(value));
   }
 
-  get fixedApr(): BigInt | null {
-    let value = this.get("fixedApr");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+  get sqrtPriceX96(): BigInt {
+    let value = this.get("sqrtPriceX96");
+    return value!.toBigInt();
   }
 
-  set fixedApr(value: BigInt | null) {
-    if (!value) {
-      this.unset("fixedApr");
-    } else {
-      this.set("fixedApr", Value.fromBigInt(<BigInt>value));
-    }
+  set sqrtPriceX96(value: BigInt) {
+    this.set("sqrtPriceX96", Value.fromBigInt(value));
   }
 
-  get variableApr(): BigInt | null {
-    let value = this.get("variableApr");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+  get liquidity(): BigInt {
+    let value = this.get("liquidity");
+    return value!.toBigInt();
   }
 
-  set variableApr(value: BigInt | null) {
-    if (!value) {
-      this.unset("variableApr");
-    } else {
-      this.set("variableApr", Value.fromBigInt(<BigInt>value));
-    }
+  set liquidity(value: BigInt) {
+    this.set("liquidity", Value.fromBigInt(value));
+  }
+
+  get tick(): BigInt {
+    let value = this.get("tick");
+    return value!.toBigInt();
+  }
+
+  set tick(value: BigInt) {
+    this.set("tick", Value.fromBigInt(value));
   }
 
   get txCount(): BigInt {
@@ -423,7 +419,6 @@ export class Position extends Entity {
 
     this.set("createdTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("updatedTimestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("closedTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("amm", Value.fromString(""));
     this.set("owner", Value.fromString(""));
     this.set("tickLower", Value.fromString(""));
@@ -434,6 +429,7 @@ export class Position extends Entity {
     this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("isLiquidityProvider", Value.fromBoolean(false));
     this.set("isSettled", Value.fromBoolean(false));
+    this.set("isEmpty", Value.fromBoolean(false));
     this.set("snapshotCount", Value.fromBigInt(BigInt.zero()));
   }
 
@@ -479,15 +475,6 @@ export class Position extends Entity {
 
   set updatedTimestamp(value: BigInt) {
     this.set("updatedTimestamp", Value.fromBigInt(value));
-  }
-
-  get closedTimestamp(): BigInt {
-    let value = this.get("closedTimestamp");
-    return value!.toBigInt();
-  }
-
-  set closedTimestamp(value: BigInt) {
-    this.set("closedTimestamp", Value.fromBigInt(value));
   }
 
   get amm(): string {
@@ -580,6 +567,15 @@ export class Position extends Entity {
     this.set("isSettled", Value.fromBoolean(value));
   }
 
+  get isEmpty(): boolean {
+    let value = this.get("isEmpty");
+    return value!.toBoolean();
+  }
+
+  set isEmpty(value: boolean) {
+    this.set("isEmpty", Value.fromBoolean(value));
+  }
+
   get mints(): Array<string> {
     let value = this.get("mints");
     return value!.toStringArray();
@@ -639,6 +635,7 @@ export class PositionSnapshot extends Entity {
     this.set("fixedTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("isSettled", Value.fromBoolean(false));
+    this.set("isEmpty", Value.fromBoolean(false));
   }
 
   save(): void {
@@ -739,6 +736,15 @@ export class PositionSnapshot extends Entity {
 
   set isSettled(value: boolean) {
     this.set("isSettled", Value.fromBoolean(value));
+  }
+
+  get isEmpty(): boolean {
+    let value = this.get("isEmpty");
+    return value!.toBoolean();
+  }
+
+  set isEmpty(value: boolean) {
+    this.set("isEmpty", Value.fromBoolean(value));
   }
 }
 
