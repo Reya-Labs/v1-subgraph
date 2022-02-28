@@ -29,6 +29,9 @@ type AMM @entity {
   termStartTimestamp: BigInt!
   termEndTimestamp: BigInt!
   tickSpacing: BigInt!
+  sqrtPriceX96: BigInt!
+  liquidity: BigInt!
+  tick: BigInt!
   fixedApr: BigInt
   variableApr: BigInt
 

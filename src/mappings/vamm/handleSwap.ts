@@ -34,6 +34,9 @@ function handleSwap(event: SwapEvent): void {
   swap.tick = BigInt.fromI32(event.params.tick);
   swap.save();
 
+  amm.sqrtPriceX96 = event.params.sqrtPriceX96;
+  amm.liquidity = event.params.liquidity;
+  amm.tick = BigInt.fromI32(event.params.tick);
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();
 }

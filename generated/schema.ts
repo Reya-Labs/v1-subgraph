@@ -155,6 +155,9 @@ export class AMM extends Entity {
     this.set("termStartTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("termEndTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("tickSpacing", Value.fromBigInt(BigInt.zero()));
+    this.set("sqrtPriceX96", Value.fromBigInt(BigInt.zero()));
+    this.set("liquidity", Value.fromBigInt(BigInt.zero()));
+    this.set("tick", Value.fromBigInt(BigInt.zero()));
     this.set("txCount", Value.fromBigInt(BigInt.zero()));
   }
 
@@ -245,6 +248,33 @@ export class AMM extends Entity {
 
   set tickSpacing(value: BigInt) {
     this.set("tickSpacing", Value.fromBigInt(value));
+  }
+
+  get sqrtPriceX96(): BigInt {
+    let value = this.get("sqrtPriceX96");
+    return value!.toBigInt();
+  }
+
+  set sqrtPriceX96(value: BigInt) {
+    this.set("sqrtPriceX96", Value.fromBigInt(value));
+  }
+
+  get liquidity(): BigInt {
+    let value = this.get("liquidity");
+    return value!.toBigInt();
+  }
+
+  set liquidity(value: BigInt) {
+    this.set("liquidity", Value.fromBigInt(value));
+  }
+
+  get tick(): BigInt {
+    let value = this.get("tick");
+    return value!.toBigInt();
+  }
+
+  set tick(value: BigInt) {
+    this.set("tick", Value.fromBigInt(value));
   }
 
   get fixedApr(): BigInt | null {
