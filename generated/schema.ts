@@ -412,6 +412,59 @@ export class Tick extends Entity {
   }
 }
 
+export class Wallet extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("positionCount", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Wallet entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Wallet entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Wallet", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Wallet | null {
+    return changetype<Wallet | null>(store.get("Wallet", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get positions(): Array<string> {
+    let value = this.get("positions");
+    return value!.toStringArray();
+  }
+
+  set positions(value: Array<string>) {
+    this.set("positions", Value.fromStringArray(value));
+  }
+
+  get positionCount(): BigInt {
+    let value = this.get("positionCount");
+    return value!.toBigInt();
+  }
+
+  set positionCount(value: BigInt) {
+    this.set("positionCount", Value.fromBigInt(value));
+  }
+}
+
 export class Position extends Entity {
   constructor(id: string) {
     super();
@@ -628,7 +681,6 @@ export class PositionSnapshot extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("createdTimestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("owner", Value.fromString(""));
     this.set("position", Value.fromString(""));
     this.set("liquidity", Value.fromBigInt(BigInt.zero()));
     this.set("margin", Value.fromBigInt(BigInt.zero()));
@@ -673,15 +725,6 @@ export class PositionSnapshot extends Entity {
 
   set createdTimestamp(value: BigInt) {
     this.set("createdTimestamp", Value.fromBigInt(value));
-  }
-
-  get owner(): string {
-    let value = this.get("owner");
-    return value!.toString();
-  }
-
-  set owner(value: string) {
-    this.set("owner", Value.fromString(value));
   }
 
   get position(): string {
