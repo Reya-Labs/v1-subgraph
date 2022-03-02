@@ -7,3 +7,4 @@ yalc.lock
 data
 .DS_Store
 localhostDeployment.json
+.env

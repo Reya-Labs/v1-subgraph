@@ -17,6 +17,7 @@
     "create-local": "graph create nicholaspiano/v1-subgraph --node http://127.0.0.1:8020",
     "build": "graph build",
     "deploy-local": "graph deploy nicholaspiano/v1-subgraph --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
+    "deploy": "sh deploy.sh",
     "prettier": "prettier 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
     "eslint": "eslint 'src/**/*.ts'",
