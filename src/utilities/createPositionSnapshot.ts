@@ -7,7 +7,7 @@ const createPositionSnapshot = (position: Position, timestamp: BigInt): void => 
   const positionSnapshotId = `${position.id}#${position.snapshotCount.toString()}`;
   const positionSnapshot = new PositionSnapshot(positionSnapshotId);
 
-  positionSnapshot.owner = position.owner;
+  positionSnapshot.position = position.id;
   positionSnapshot.createdTimestamp = timestamp;
   positionSnapshot.margin = position.margin;
   positionSnapshot.liquidity = position.liquidity;

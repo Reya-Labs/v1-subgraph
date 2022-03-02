@@ -55,6 +55,13 @@ type Tick @entity {
   value: BigInt!
 }
 
+type Wallet @entity {
+  id: ID!
+
+  positions: [Position!]! @derivedFrom(field: "owner")
+  positionCount: BigInt!
+}
+
 type Position @entity {
   # format: <owner>#<tickLower>#<tickUpper>
   id: ID!
@@ -65,7 +72,7 @@ type Position @entity {
   amm: AMM!
 
   # owner of the position
-  owner: String!
+  owner: Wallet!
 
   # lower tick of the position
   tickLower: Tick!
@@ -94,7 +101,6 @@ type PositionSnapshot @entity {
   id: ID!
 
   createdTimestamp: BigInt!
-  owner: String!
   position: Position!
 
   # total position liquidity
