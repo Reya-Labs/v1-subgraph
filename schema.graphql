@@ -25,6 +25,7 @@ type AMM @entity {
   createdTimestamp: BigInt!
   updatedTimestamp: BigInt!
   fcmAddress: String!
+  marginEngineAddress: String!
   rateOracle: RateOracle!
   termStartTimestamp: BigInt!
   termEndTimestamp: BigInt!

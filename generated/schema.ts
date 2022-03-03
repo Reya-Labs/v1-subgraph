@@ -151,6 +151,7 @@ export class AMM extends Entity {
     this.set("createdTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("updatedTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("fcmAddress", Value.fromString(""));
+    this.set("marginEngineAddress", Value.fromString(""));
     this.set("rateOracle", Value.fromString(""));
     this.set("termStartTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("termEndTimestamp", Value.fromBigInt(BigInt.zero()));
@@ -212,6 +213,15 @@ export class AMM extends Entity {
 
   set fcmAddress(value: string) {
     this.set("fcmAddress", Value.fromString(value));
+  }
+
+  get marginEngineAddress(): string {
+    let value = this.get("marginEngineAddress");
+    return value!.toString();
+  }
+
+  set marginEngineAddress(value: string) {
+    this.set("marginEngineAddress", Value.fromString(value));
   }
 
   get rateOracle(): string {
