@@ -15,6 +15,7 @@ type UnderlyingToken @entity {
 
 type RateOracle @entity {
   id: ID!
+  protocolId: BigInt!
   token: UnderlyingToken!
 }
 

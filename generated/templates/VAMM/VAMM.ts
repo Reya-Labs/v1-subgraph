@@ -268,11 +268,21 @@ export class VAMM__swapResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
+  value3: BigInt;
+  value4: BigInt;
 
-  constructor(value0: BigInt, value1: BigInt, value2: BigInt) {
+  constructor(
+    value0: BigInt,
+    value1: BigInt,
+    value2: BigInt,
+    value3: BigInt,
+    value4: BigInt
+  ) {
     this.value0 = value0;
     this.value1 = value1;
     this.value2 = value2;
+    this.value3 = value3;
+    this.value4 = value4;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -280,6 +290,8 @@ export class VAMM__swapResult {
     map.set("value0", ethereum.Value.fromSignedBigInt(this.value0));
     map.set("value1", ethereum.Value.fromSignedBigInt(this.value1));
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
+    map.set("value3", ethereum.Value.fromSignedBigInt(this.value3));
+    map.set("value4", ethereum.Value.fromSignedBigInt(this.value4));
     return map;
   }
 }
@@ -297,16 +309,12 @@ export class VAMM__swapInputParamsStruct extends ethereum.Tuple {
     return this[2].toBigInt();
   }
 
-  get isExternal(): boolean {
-    return this[3].toBoolean();
-  }
-
   get tickLower(): i32 {
-    return this[4].toI32();
+    return this[3].toI32();
   }
 
   get tickUpper(): i32 {
-    return this[5].toI32();
+    return this[4].toI32();
   }
 }
 
@@ -372,6 +380,49 @@ export class VAMM__vammVarsResult {
 export class VAMM extends ethereum.SmartContract {
   static bind(address: Address): VAMM {
     return new VAMM("VAMM", address);
+  }
+
+  burn(
+    recipient: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    amount: BigInt
+  ): BigInt {
+    let result = super.call(
+      "burn",
+      "burn(address,int24,int24,uint128):(int256)",
+      [
+        ethereum.Value.fromAddress(recipient),
+        ethereum.Value.fromI32(tickLower),
+        ethereum.Value.fromI32(tickUpper),
+        ethereum.Value.fromUnsignedBigInt(amount)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_burn(
+    recipient: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    amount: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "burn",
+      "burn(address,int24,int24,uint128):(int256)",
+      [
+        ethereum.Value.fromAddress(recipient),
+        ethereum.Value.fromI32(tickLower),
+        ethereum.Value.fromI32(tickUpper),
+        ethereum.Value.fromUnsignedBigInt(amount)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   computeGrowthInside(
@@ -542,6 +593,49 @@ export class VAMM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  mint(
+    recipient: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    amount: BigInt
+  ): BigInt {
+    let result = super.call(
+      "mint",
+      "mint(address,int24,int24,uint128):(int256)",
+      [
+        ethereum.Value.fromAddress(recipient),
+        ethereum.Value.fromI32(tickLower),
+        ethereum.Value.fromI32(tickUpper),
+        ethereum.Value.fromUnsignedBigInt(amount)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_mint(
+    recipient: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    amount: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "mint",
+      "mint(address,int24,int24,uint128):(int256)",
+      [
+        ethereum.Value.fromAddress(recipient),
+        ethereum.Value.fromI32(tickLower),
+        ethereum.Value.fromI32(tickUpper),
+        ethereum.Value.fromUnsignedBigInt(amount)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   owner(): Address {
     let result = super.call("owner", "owner():(address)", []);
 
@@ -590,14 +684,16 @@ export class VAMM extends ethereum.SmartContract {
   swap(params: VAMM__swapInputParamsStruct): VAMM__swapResult {
     let result = super.call(
       "swap",
-      "swap((address,int256,uint160,bool,int24,int24)):(int256,int256,uint256)",
+      "swap((address,int256,uint160,int24,int24)):(int256,int256,uint256,int256,int256)",
       [ethereum.Value.fromTuple(params)]
     );
 
     return new VAMM__swapResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
-      result[2].toBigInt()
+      result[2].toBigInt(),
+      result[3].toBigInt(),
+      result[4].toBigInt()
     );
   }
 
@@ -606,7 +702,7 @@ export class VAMM extends ethereum.SmartContract {
   ): ethereum.CallResult<VAMM__swapResult> {
     let result = super.tryCall(
       "swap",
-      "swap((address,int256,uint160,bool,int24,int24)):(int256,int256,uint256)",
+      "swap((address,int256,uint160,int24,int24)):(int256,int256,uint256,int256,int256)",
       [ethereum.Value.fromTuple(params)]
     );
     if (result.reverted) {
@@ -617,7 +713,9 @@ export class VAMM extends ethereum.SmartContract {
       new VAMM__swapResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
-        value[2].toBigInt()
+        value[2].toBigInt(),
+        value[3].toBigInt(),
+        value[4].toBigInt()
       )
     );
   }
@@ -829,6 +927,10 @@ export class BurnCall__Outputs {
   constructor(call: BurnCall) {
     this._call = call;
   }
+
+  get positionMarginRequirement(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
 }
 
 export class InitializeCall extends ethereum.Call {
@@ -934,6 +1036,10 @@ export class MintCall__Outputs {
 
   constructor(call: MintCall) {
     this._call = call;
+  }
+
+  get positionMarginRequirement(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
@@ -1065,6 +1171,14 @@ export class SwapCall__Outputs {
   get _cumulativeFeeIncurred(): BigInt {
     return this._call.outputValues[2].value.toBigInt();
   }
+
+  get _fixedTokenDeltaUnbalanced(): BigInt {
+    return this._call.outputValues[3].value.toBigInt();
+  }
+
+  get _marginRequirement(): BigInt {
+    return this._call.outputValues[4].value.toBigInt();
+  }
 }
 
 export class SwapCallParamsStruct extends ethereum.Tuple {
@@ -1080,16 +1194,12 @@ export class SwapCallParamsStruct extends ethereum.Tuple {
     return this[2].toBigInt();
   }
 
-  get isExternal(): boolean {
-    return this[3].toBoolean();
-  }
-
   get tickLower(): i32 {
-    return this[4].toI32();
+    return this[3].toI32();
   }
 
   get tickUpper(): i32 {
-    return this[5].toI32();
+    return this[4].toI32();
   }
 }
 

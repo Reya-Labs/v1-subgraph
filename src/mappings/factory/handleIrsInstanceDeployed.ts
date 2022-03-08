@@ -14,6 +14,7 @@ function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
   const rateOracle = new RateOracle(event.params.rateOracle.toHexString());
 
   rateOracle.token = underlyingToken.id;
+  rateOracle.protocolId = BigInt.fromI32(event.params.yieldBearingProtocolID);
   rateOracle.save();
 
   const amm = getOrCreateAMM(event.params.vamm.toHexString(), event.block.timestamp);

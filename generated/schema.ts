@@ -104,6 +104,7 @@ export class RateOracle extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("protocolId", Value.fromBigInt(BigInt.zero()));
     this.set("token", Value.fromString(""));
   }
 
@@ -131,6 +132,15 @@ export class RateOracle extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get protocolId(): BigInt {
+    let value = this.get("protocolId");
+    return value!.toBigInt();
+  }
+
+  set protocolId(value: BigInt) {
+    this.set("protocolId", Value.fromBigInt(value));
   }
 
   get token(): string {
