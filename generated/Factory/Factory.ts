@@ -54,6 +54,10 @@ export class IrsInstanceDeployed__Params {
   get fcm(): Address {
     return this._event.parameters[7].value.toAddress();
   }
+
+  get yieldBearingProtocolID(): i32 {
+    return this._event.parameters[8].value.toI32();
+  }
 }
 
 export class MasterFCMSet extends ethereum.Event {

@@ -14,6 +14,7 @@ function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
   const rateOracle = new RateOracle(event.params.rateOracle.toHexString());
 
   rateOracle.token = underlyingToken.id;
+  rateOracle.protocolId = BigInt.fromI32(event.params.yieldBearingProtocolID);
   rateOracle.save();
 
   const amm = getOrCreateAMM(event.params.vamm.toHexString(), event.block.timestamp);
@@ -25,6 +26,7 @@ function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
 
   amm.updatedTimestamp = event.block.timestamp;
   amm.fcmAddress = event.params.fcm.toHexString();
+  amm.marginEngineAddress = marginEngine.id;
   amm.rateOracle = rateOracle.id;
   amm.termStartTimestamp = event.params.termStartTimestampWad;
   amm.termEndTimestamp = event.params.termEndTimestampWad;

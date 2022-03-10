@@ -21,7 +21,7 @@ dataSources:
         - name: Factory
           file: ./artifacts/Factory.json
       eventHandlers:
-        - event: IrsInstanceDeployed(indexed address,indexed address,uint256,uint256,int24,address,address,address)
+        - event: IrsInstanceDeployed(indexed address,indexed address,uint256,uint256,int24,address,address,address,uint8)
           handler: handleIrsInstanceDeployed
         - event: MasterFCMSet(address,address,uint8)
           handler: handleMasterFCMSet

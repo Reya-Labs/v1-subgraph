@@ -560,7 +560,7 @@ export class VAMMSet__Params {
   }
 }
 
-export class MarginEngine__getPositionResultPositionStruct extends ethereum.Tuple {
+export class MarginEngine__getPositionResultPositionMemoryStruct extends ethereum.Tuple {
   get isSettled(): boolean {
     return this[0].toBoolean();
   }
@@ -591,6 +591,28 @@ export class MarginEngine__getPositionResultPositionStruct extends ethereum.Tupl
 
   get feeGrowthInsideLastX128(): BigInt {
     return this[7].toBigInt();
+  }
+
+  get rewardPerAmount(): BigInt {
+    return this[8].toBigInt();
+  }
+}
+
+export class MarginEngine__updatePositionPostVAMMInducedMintBurnInputParamsStruct extends ethereum.Tuple {
+  get owner(): Address {
+    return this[0].toAddress();
+  }
+
+  get tickLower(): i32 {
+    return this[1].toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this[2].toI32();
+  }
+
+  get liquidityDelta(): BigInt {
+    return this[3].toBigInt();
   }
 }
 
@@ -702,10 +724,10 @@ export class MarginEngine extends ethereum.SmartContract {
     _owner: Address,
     tickLower: i32,
     tickUpper: i32
-  ): MarginEngine__getPositionResultPositionStruct {
+  ): MarginEngine__getPositionResultPositionMemoryStruct {
     let result = super.call(
       "getPosition",
-      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256))",
+      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256,uint256))",
       [
         ethereum.Value.fromAddress(_owner),
         ethereum.Value.fromI32(tickLower),
@@ -713,7 +735,7 @@ export class MarginEngine extends ethereum.SmartContract {
       ]
     );
 
-    return changetype<MarginEngine__getPositionResultPositionStruct>(
+    return changetype<MarginEngine__getPositionResultPositionMemoryStruct>(
       result[0].toTuple()
     );
   }
@@ -722,10 +744,10 @@ export class MarginEngine extends ethereum.SmartContract {
     _owner: Address,
     tickLower: i32,
     tickUpper: i32
-  ): ethereum.CallResult<MarginEngine__getPositionResultPositionStruct> {
+  ): ethereum.CallResult<MarginEngine__getPositionResultPositionMemoryStruct> {
     let result = super.tryCall(
       "getPosition",
-      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256))",
+      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256,uint256))",
       [
         ethereum.Value.fromAddress(_owner),
         ethereum.Value.fromI32(tickLower),
@@ -737,7 +759,7 @@ export class MarginEngine extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      changetype<MarginEngine__getPositionResultPositionStruct>(
+      changetype<MarginEngine__getPositionResultPositionMemoryStruct>(
         value[0].toTuple()
       )
     );
@@ -893,6 +915,88 @@ export class MarginEngine extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  updatePositionPostVAMMInducedMintBurn(
+    params: MarginEngine__updatePositionPostVAMMInducedMintBurnInputParamsStruct
+  ): BigInt {
+    let result = super.call(
+      "updatePositionPostVAMMInducedMintBurn",
+      "updatePositionPostVAMMInducedMintBurn((address,int24,int24,int128)):(int256)",
+      [ethereum.Value.fromTuple(params)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_updatePositionPostVAMMInducedMintBurn(
+    params: MarginEngine__updatePositionPostVAMMInducedMintBurnInputParamsStruct
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "updatePositionPostVAMMInducedMintBurn",
+      "updatePositionPostVAMMInducedMintBurn((address,int24,int24,int128)):(int256)",
+      [ethereum.Value.fromTuple(params)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  updatePositionPostVAMMInducedSwap(
+    _owner: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    fixedTokenDelta: BigInt,
+    variableTokenDelta: BigInt,
+    cumulativeFeeIncurred: BigInt,
+    fixedTokenDeltaUnbalanced: BigInt
+  ): BigInt {
+    let result = super.call(
+      "updatePositionPostVAMMInducedSwap",
+      "updatePositionPostVAMMInducedSwap(address,int24,int24,int256,int256,uint256,int256):(int256)",
+      [
+        ethereum.Value.fromAddress(_owner),
+        ethereum.Value.fromI32(tickLower),
+        ethereum.Value.fromI32(tickUpper),
+        ethereum.Value.fromSignedBigInt(fixedTokenDelta),
+        ethereum.Value.fromSignedBigInt(variableTokenDelta),
+        ethereum.Value.fromUnsignedBigInt(cumulativeFeeIncurred),
+        ethereum.Value.fromSignedBigInt(fixedTokenDeltaUnbalanced)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_updatePositionPostVAMMInducedSwap(
+    _owner: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    fixedTokenDelta: BigInt,
+    variableTokenDelta: BigInt,
+    cumulativeFeeIncurred: BigInt,
+    fixedTokenDeltaUnbalanced: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "updatePositionPostVAMMInducedSwap",
+      "updatePositionPostVAMMInducedSwap(address,int24,int24,int256,int256,uint256,int256):(int256)",
+      [
+        ethereum.Value.fromAddress(_owner),
+        ethereum.Value.fromI32(tickLower),
+        ethereum.Value.fromI32(tickUpper),
+        ethereum.Value.fromSignedBigInt(fixedTokenDelta),
+        ethereum.Value.fromSignedBigInt(variableTokenDelta),
+        ethereum.Value.fromUnsignedBigInt(cumulativeFeeIncurred),
+        ethereum.Value.fromSignedBigInt(fixedTokenDeltaUnbalanced)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   vamm(): Address {
@@ -1537,6 +1641,10 @@ export class UpdatePositionPostVAMMInducedMintBurnCall__Outputs {
   constructor(call: UpdatePositionPostVAMMInducedMintBurnCall) {
     this._call = call;
   }
+
+  get positionMarginRequirement(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
 }
 
 export class UpdatePositionPostVAMMInducedMintBurnCallParamsStruct extends ethereum.Tuple {
@@ -1597,6 +1705,10 @@ export class UpdatePositionPostVAMMInducedSwapCall__Inputs {
   get cumulativeFeeIncurred(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
   }
+
+  get fixedTokenDeltaUnbalanced(): BigInt {
+    return this._call.inputValues[6].value.toBigInt();
+  }
 }
 
 export class UpdatePositionPostVAMMInducedSwapCall__Outputs {
@@ -1604,5 +1716,9 @@ export class UpdatePositionPostVAMMInducedSwapCall__Outputs {
 
   constructor(call: UpdatePositionPostVAMMInducedSwapCall) {
     this._call = call;
+  }
+
+  get positionMarginRequirement(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
