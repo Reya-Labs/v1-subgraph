@@ -6,9 +6,9 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: kovan
+    network: mainnet
     source:
-      address: '0x9f30Ec6903F1728ca250f48f664e48c3f15038eD'
+      address: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
       abi: Factory
     mapping:
       kind: ethereum/events
@@ -30,7 +30,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: VAMM
-    network: kovan
+    network: mainnet
     source:
       abi: VAMM
     mapping:
@@ -64,7 +64,7 @@ templates:
           handler: handleUnpaused
   - kind: ethereum/contract
     name: MarginEngine
-    network: kovan
+    network: mainnet
     source:
       abi: MarginEngine
     mapping:
