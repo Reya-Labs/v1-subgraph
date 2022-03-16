@@ -10,6 +10,46 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class AdminChanged extends ethereum.Event {
+  get params(): AdminChanged__Params {
+    return new AdminChanged__Params(this);
+  }
+}
+
+export class AdminChanged__Params {
+  _event: AdminChanged;
+
+  constructor(event: AdminChanged) {
+    this._event = event;
+  }
+
+  get previousAdmin(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newAdmin(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class BeaconUpgraded extends ethereum.Event {
+  get params(): BeaconUpgraded__Params {
+    return new BeaconUpgraded__Params(this);
+  }
+}
+
+export class BeaconUpgraded__Params {
+  _event: BeaconUpgraded;
+
+  constructor(event: BeaconUpgraded) {
+    this._event = event;
+  }
+
+  get beacon(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class CacheMaxAgeSet extends ethereum.Event {
   get params(): CacheMaxAgeSet__Params {
     return new CacheMaxAgeSet__Params(this);
@@ -538,6 +578,24 @@ export class UpdatePositionPostSwap__Params {
   }
 }
 
+export class Upgraded extends ethereum.Event {
+  get params(): Upgraded__Params {
+    return new Upgraded__Params(this);
+  }
+}
+
+export class Upgraded__Params {
+  _event: Upgraded;
+
+  constructor(event: Upgraded) {
+    this._event = event;
+  }
+
+  get implementation(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class VAMMSet extends ethereum.Event {
   get params(): VAMMSet__Params {
     return new VAMMSet__Params(this);
@@ -763,6 +821,49 @@ export class MarginEngine extends ethereum.SmartContract {
         value[0].toTuple()
       )
     );
+  }
+
+  getPositionMarginRequirement(
+    recipient: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    isLM: boolean
+  ): BigInt {
+    let result = super.call(
+      "getPositionMarginRequirement",
+      "getPositionMarginRequirement(address,int24,int24,bool):(uint256)",
+      [
+        ethereum.Value.fromAddress(recipient),
+        ethereum.Value.fromI32(tickLower),
+        ethereum.Value.fromI32(tickUpper),
+        ethereum.Value.fromBoolean(isLM)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getPositionMarginRequirement(
+    recipient: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    isLM: boolean
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getPositionMarginRequirement",
+      "getPositionMarginRequirement(address,int24,int24,bool):(uint256)",
+      [
+        ethereum.Value.fromAddress(recipient),
+        ethereum.Value.fromI32(tickLower),
+        ethereum.Value.fromI32(tickUpper),
+        ethereum.Value.fromBoolean(isLM)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   liquidatorRewardWad(): BigInt {
@@ -1105,6 +1206,52 @@ export class GetHistoricalApyCall__Outputs {
   }
 }
 
+export class GetPositionMarginRequirementCall extends ethereum.Call {
+  get inputs(): GetPositionMarginRequirementCall__Inputs {
+    return new GetPositionMarginRequirementCall__Inputs(this);
+  }
+
+  get outputs(): GetPositionMarginRequirementCall__Outputs {
+    return new GetPositionMarginRequirementCall__Outputs(this);
+  }
+}
+
+export class GetPositionMarginRequirementCall__Inputs {
+  _call: GetPositionMarginRequirementCall;
+
+  constructor(call: GetPositionMarginRequirementCall) {
+    this._call = call;
+  }
+
+  get recipient(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get tickLower(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._call.inputValues[2].value.toI32();
+  }
+
+  get isLM(): boolean {
+    return this._call.inputValues[3].value.toBoolean();
+  }
+}
+
+export class GetPositionMarginRequirementCall__Outputs {
+  _call: GetPositionMarginRequirementCall;
+
+  constructor(call: GetPositionMarginRequirementCall) {
+    this._call = call;
+  }
+
+  get margin(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
 export class InitializeCall extends ethereum.Call {
   get inputs(): InitializeCall__Inputs {
     return new InitializeCall__Inputs(this);
@@ -1122,7 +1269,7 @@ export class InitializeCall__Inputs {
     this._call = call;
   }
 
-  get _underlyingToken(): Address {
+  get __underlyingToken(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
@@ -1130,11 +1277,11 @@ export class InitializeCall__Inputs {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get _termStartTimestampWad(): BigInt {
+  get __termStartTimestampWad(): BigInt {
     return this._call.inputValues[2].value.toBigInt();
   }
 
-  get _termEndTimestampWad(): BigInt {
+  get __termEndTimestampWad(): BigInt {
     return this._call.inputValues[3].value.toBigInt();
   }
 }
@@ -1228,7 +1375,7 @@ export class SetCacheMaxAgeInSecondsCall__Inputs {
     this._call = call;
   }
 
-  get _cacheMaxAgeInSeconds(): BigInt {
+  get _newCacheMaxAgeInSeconds(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
 }
@@ -1258,7 +1405,7 @@ export class SetFCMCall__Inputs {
     this._call = call;
   }
 
-  get _fcm(): Address {
+  get _newFcm(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
@@ -1288,7 +1435,7 @@ export class SetLiquidatorRewardCall__Inputs {
     this._call = call;
   }
 
-  get _liquidatorRewardWad(): BigInt {
+  get _newLiquidatorRewardWad(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
 }
@@ -1424,7 +1571,7 @@ export class SetSecondsAgoCall__Inputs {
     this._call = call;
   }
 
-  get _secondsAgo(): BigInt {
+  get _newSecondsAgo(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
 }
@@ -1720,5 +1867,69 @@ export class UpdatePositionPostVAMMInducedSwapCall__Outputs {
 
   get positionMarginRequirement(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class UpgradeToCall extends ethereum.Call {
+  get inputs(): UpgradeToCall__Inputs {
+    return new UpgradeToCall__Inputs(this);
+  }
+
+  get outputs(): UpgradeToCall__Outputs {
+    return new UpgradeToCall__Outputs(this);
+  }
+}
+
+export class UpgradeToCall__Inputs {
+  _call: UpgradeToCall;
+
+  constructor(call: UpgradeToCall) {
+    this._call = call;
+  }
+
+  get newImplementation(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UpgradeToCall__Outputs {
+  _call: UpgradeToCall;
+
+  constructor(call: UpgradeToCall) {
+    this._call = call;
+  }
+}
+
+export class UpgradeToAndCallCall extends ethereum.Call {
+  get inputs(): UpgradeToAndCallCall__Inputs {
+    return new UpgradeToAndCallCall__Inputs(this);
+  }
+
+  get outputs(): UpgradeToAndCallCall__Outputs {
+    return new UpgradeToAndCallCall__Outputs(this);
+  }
+}
+
+export class UpgradeToAndCallCall__Inputs {
+  _call: UpgradeToAndCallCall;
+
+  constructor(call: UpgradeToAndCallCall) {
+    this._call = call;
+  }
+
+  get newImplementation(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get data(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class UpgradeToAndCallCall__Outputs {
+  _call: UpgradeToAndCallCall;
+
+  constructor(call: UpgradeToAndCallCall) {
+    this._call = call;
   }
 }

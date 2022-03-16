@@ -10,6 +10,46 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class AdminChanged extends ethereum.Event {
+  get params(): AdminChanged__Params {
+    return new AdminChanged__Params(this);
+  }
+}
+
+export class AdminChanged__Params {
+  _event: AdminChanged;
+
+  constructor(event: AdminChanged) {
+    this._event = event;
+  }
+
+  get previousAdmin(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newAdmin(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class BeaconUpgraded extends ethereum.Event {
+  get params(): BeaconUpgraded__Params {
+    return new BeaconUpgraded__Params(this);
+  }
+}
+
+export class BeaconUpgraded__Params {
+  _event: BeaconUpgraded;
+
+  constructor(event: BeaconUpgraded) {
+    this._event = event;
+  }
+
+  get beacon(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class Burn extends ethereum.Event {
   get params(): Burn__Params {
     return new Burn__Params(this);
@@ -244,6 +284,24 @@ export class Unpaused__Params {
   }
 }
 
+export class Upgraded extends ethereum.Event {
+  get params(): Upgraded__Params {
+    return new Upgraded__Params(this);
+  }
+}
+
+export class Upgraded__Params {
+  _event: Upgraded;
+
+  constructor(event: Upgraded) {
+    this._event = event;
+  }
+
+  get implementation(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class VAMM__computeGrowthInsideResult {
   value0: BigInt;
   value1: BigInt;
@@ -318,62 +376,43 @@ export class VAMM__swapInputParamsStruct extends ethereum.Tuple {
   }
 }
 
-export class VAMM__ticksResult {
-  value0: BigInt;
-  value1: BigInt;
-  value2: BigInt;
-  value3: BigInt;
-  value4: BigInt;
-  value5: boolean;
-
-  constructor(
-    value0: BigInt,
-    value1: BigInt,
-    value2: BigInt,
-    value3: BigInt,
-    value4: BigInt,
-    value5: boolean
-  ) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
-    this.value3 = value3;
-    this.value4 = value4;
-    this.value5 = value5;
+export class VAMM__ticksResultValue0Struct extends ethereum.Tuple {
+  get liquidityGross(): BigInt {
+    return this[0].toBigInt();
   }
 
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
-    map.set("value1", ethereum.Value.fromSignedBigInt(this.value1));
-    map.set("value2", ethereum.Value.fromSignedBigInt(this.value2));
-    map.set("value3", ethereum.Value.fromSignedBigInt(this.value3));
-    map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
-    map.set("value5", ethereum.Value.fromBoolean(this.value5));
-    return map;
+  get liquidityNet(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get fixedTokenGrowthOutsideX128(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get variableTokenGrowthOutsideX128(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get feeGrowthOutsideX128(): BigInt {
+    return this[4].toBigInt();
+  }
+
+  get initialized(): boolean {
+    return this[5].toBoolean();
   }
 }
 
-export class VAMM__vammVarsResult {
-  value0: BigInt;
-  value1: i32;
-  value2: i32;
-
-  constructor(value0: BigInt, value1: i32, value2: i32) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
+export class VAMM__vammVarsResultValue0Struct extends ethereum.Tuple {
+  get sqrtPriceX96(): BigInt {
+    return this[0].toBigInt();
   }
 
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
-    map.set("value1", ethereum.Value.fromI32(this.value1));
-    map.set(
-      "value2",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value2))
-    );
-    return map;
+  get tick(): i32 {
+    return this[1].toI32();
+  }
+
+  get feeProtocol(): i32 {
+    return this[2].toI32();
   }
 }
 
@@ -720,17 +759,17 @@ export class VAMM extends ethereum.SmartContract {
     );
   }
 
-  tickBitmap(param0: i32): BigInt {
+  tickBitmap(wordPosition: i32): BigInt {
     let result = super.call("tickBitmap", "tickBitmap(int16):(uint256)", [
-      ethereum.Value.fromI32(param0)
+      ethereum.Value.fromI32(wordPosition)
     ]);
 
     return result[0].toBigInt();
   }
 
-  try_tickBitmap(param0: i32): ethereum.CallResult<BigInt> {
+  try_tickBitmap(wordPosition: i32): ethereum.CallResult<BigInt> {
     let result = super.tryCall("tickBitmap", "tickBitmap(int16):(uint256)", [
-      ethereum.Value.fromI32(param0)
+      ethereum.Value.fromI32(wordPosition)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -754,74 +793,45 @@ export class VAMM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toI32());
   }
 
-  ticks(param0: i32): VAMM__ticksResult {
+  ticks(tick: i32): VAMM__ticksResultValue0Struct {
     let result = super.call(
       "ticks",
-      "ticks(int24):(uint128,int128,int256,int256,uint256,bool)",
-      [ethereum.Value.fromI32(param0)]
+      "ticks(int24):((uint128,int128,int256,int256,uint256,bool))",
+      [ethereum.Value.fromI32(tick)]
     );
 
-    return new VAMM__ticksResult(
-      result[0].toBigInt(),
-      result[1].toBigInt(),
-      result[2].toBigInt(),
-      result[3].toBigInt(),
-      result[4].toBigInt(),
-      result[5].toBoolean()
-    );
+    return changetype<VAMM__ticksResultValue0Struct>(result[0].toTuple());
   }
 
-  try_ticks(param0: i32): ethereum.CallResult<VAMM__ticksResult> {
+  try_ticks(tick: i32): ethereum.CallResult<VAMM__ticksResultValue0Struct> {
     let result = super.tryCall(
       "ticks",
-      "ticks(int24):(uint128,int128,int256,int256,uint256,bool)",
-      [ethereum.Value.fromI32(param0)]
+      "ticks(int24):((uint128,int128,int256,int256,uint256,bool))",
+      [ethereum.Value.fromI32(tick)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new VAMM__ticksResult(
-        value[0].toBigInt(),
-        value[1].toBigInt(),
-        value[2].toBigInt(),
-        value[3].toBigInt(),
-        value[4].toBigInt(),
-        value[5].toBoolean()
-      )
+      changetype<VAMM__ticksResultValue0Struct>(value[0].toTuple())
     );
   }
 
-  unlocked(): boolean {
-    let result = super.call("unlocked", "unlocked():(bool)", []);
-
-    return result[0].toBoolean();
-  }
-
-  try_unlocked(): ethereum.CallResult<boolean> {
-    let result = super.tryCall("unlocked", "unlocked():(bool)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  vammVars(): VAMM__vammVarsResult {
-    let result = super.call("vammVars", "vammVars():(uint160,int24,uint8)", []);
-
-    return new VAMM__vammVarsResult(
-      result[0].toBigInt(),
-      result[1].toI32(),
-      result[2].toI32()
+  vammVars(): VAMM__vammVarsResultValue0Struct {
+    let result = super.call(
+      "vammVars",
+      "vammVars():((uint160,int24,uint8))",
+      []
     );
+
+    return changetype<VAMM__vammVarsResultValue0Struct>(result[0].toTuple());
   }
 
-  try_vammVars(): ethereum.CallResult<VAMM__vammVarsResult> {
+  try_vammVars(): ethereum.CallResult<VAMM__vammVarsResultValue0Struct> {
     let result = super.tryCall(
       "vammVars",
-      "vammVars():(uint160,int24,uint8)",
+      "vammVars():((uint160,int24,uint8))",
       []
     );
     if (result.reverted) {
@@ -829,11 +839,7 @@ export class VAMM extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new VAMM__vammVarsResult(
-        value[0].toBigInt(),
-        value[1].toI32(),
-        value[2].toI32()
-      )
+      changetype<VAMM__vammVarsResultValue0Struct>(value[0].toTuple())
     );
   }
 
@@ -954,7 +960,7 @@ export class InitializeCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _tickSpacing(): i32 {
+  get __tickSpacing(): i32 {
     return this._call.inputValues[1].value.toI32();
   }
 }
@@ -1086,7 +1092,7 @@ export class SetFeeCall__Inputs {
     this._call = call;
   }
 
-  get _feeWad(): BigInt {
+  get newFeeWad(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
 }
@@ -1259,6 +1265,70 @@ export class UpdateProtocolFeesCall__Outputs {
   _call: UpdateProtocolFeesCall;
 
   constructor(call: UpdateProtocolFeesCall) {
+    this._call = call;
+  }
+}
+
+export class UpgradeToCall extends ethereum.Call {
+  get inputs(): UpgradeToCall__Inputs {
+    return new UpgradeToCall__Inputs(this);
+  }
+
+  get outputs(): UpgradeToCall__Outputs {
+    return new UpgradeToCall__Outputs(this);
+  }
+}
+
+export class UpgradeToCall__Inputs {
+  _call: UpgradeToCall;
+
+  constructor(call: UpgradeToCall) {
+    this._call = call;
+  }
+
+  get newImplementation(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UpgradeToCall__Outputs {
+  _call: UpgradeToCall;
+
+  constructor(call: UpgradeToCall) {
+    this._call = call;
+  }
+}
+
+export class UpgradeToAndCallCall extends ethereum.Call {
+  get inputs(): UpgradeToAndCallCall__Inputs {
+    return new UpgradeToAndCallCall__Inputs(this);
+  }
+
+  get outputs(): UpgradeToAndCallCall__Outputs {
+    return new UpgradeToAndCallCall__Outputs(this);
+  }
+}
+
+export class UpgradeToAndCallCall__Inputs {
+  _call: UpgradeToAndCallCall;
+
+  constructor(call: UpgradeToAndCallCall) {
+    this._call = call;
+  }
+
+  get newImplementation(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get data(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class UpgradeToAndCallCall__Outputs {
+  _call: UpgradeToAndCallCall;
+
+  constructor(call: UpgradeToAndCallCall) {
     this._call = call;
   }
 }

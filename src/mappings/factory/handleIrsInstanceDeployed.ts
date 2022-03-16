@@ -1,7 +1,11 @@
-import { BigInt } from '@graphprotocol/graph-ts';
+import { BigInt, log } from '@graphprotocol/graph-ts';
 
 import { IrsInstanceDeployed } from '../../../generated/Factory/Factory';
 import { UnderlyingToken, RateOracle, MarginEngine } from '../../../generated/schema';
+import {
+  MarginEngine as MarginEngineTemplate,
+  VAMM as VAMMTemplate,
+} from '../../../generated/templates';
 import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
 
 function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
@@ -23,6 +27,14 @@ function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
 
   marginEngine.amm = amm.id;
   marginEngine.save();
+
+  MarginEngineTemplate.create(event.params.marginEngine);
+  VAMMTemplate.create(event.params.vamm);
+
+  log.info('Initializing new MarginEngine: {}, VAMM: {}', [
+    event.params.vamm.toHexString(),
+    event.params.marginEngine.toHexString(),
+  ]);
 
   amm.updatedTimestamp = event.block.timestamp;
   amm.fcmAddress = event.params.fcm.toHexString();
