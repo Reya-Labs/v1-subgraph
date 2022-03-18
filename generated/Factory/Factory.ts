@@ -10,6 +10,32 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class ApprovalSet extends ethereum.Event {
+  get params(): ApprovalSet__Params {
+    return new ApprovalSet__Params(this);
+  }
+}
+
+export class ApprovalSet__Params {
+  _event: ApprovalSet;
+
+  constructor(event: ApprovalSet) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get intAddress(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get isApproved(): boolean {
+    return this._event.parameters[2].value.toBoolean();
+  }
+}
+
 export class IrsInstanceDeployed extends ethereum.Event {
   get params(): IrsInstanceDeployed__Params {
     return new IrsInstanceDeployed__Params(this);
@@ -190,30 +216,24 @@ export class Factory extends ethereum.SmartContract {
     );
   }
 
-  isApproved(_owner: Address, intAddress: Address): boolean {
+  isApproved(param0: Address, param1: Address): boolean {
     let result = super.call(
       "isApproved",
       "isApproved(address,address):(bool)",
-      [
-        ethereum.Value.fromAddress(_owner),
-        ethereum.Value.fromAddress(intAddress)
-      ]
+      [ethereum.Value.fromAddress(param0), ethereum.Value.fromAddress(param1)]
     );
 
     return result[0].toBoolean();
   }
 
   try_isApproved(
-    _owner: Address,
-    intAddress: Address
+    param0: Address,
+    param1: Address
   ): ethereum.CallResult<boolean> {
     let result = super.tryCall(
       "isApproved",
       "isApproved(address,address):(bool)",
-      [
-        ethereum.Value.fromAddress(_owner),
-        ethereum.Value.fromAddress(intAddress)
-      ]
+      [ethereum.Value.fromAddress(param0), ethereum.Value.fromAddress(param1)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -464,12 +484,12 @@ export class SetMasterFCMCall__Inputs {
     this._call = call;
   }
 
-  get masterFCMAddress(): Address {
+  get masterFCM(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _rateOracle(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get yieldBearingProtocolID(): i32 {
+    return this._call.inputValues[1].value.toI32();
   }
 }
 
