@@ -1206,6 +1206,88 @@ export class GetHistoricalApyCall__Outputs {
   }
 }
 
+export class GetPositionCall extends ethereum.Call {
+  get inputs(): GetPositionCall__Inputs {
+    return new GetPositionCall__Inputs(this);
+  }
+
+  get outputs(): GetPositionCall__Outputs {
+    return new GetPositionCall__Outputs(this);
+  }
+}
+
+export class GetPositionCall__Inputs {
+  _call: GetPositionCall;
+
+  constructor(call: GetPositionCall) {
+    this._call = call;
+  }
+
+  get _owner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get tickLower(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._call.inputValues[2].value.toI32();
+  }
+}
+
+export class GetPositionCall__Outputs {
+  _call: GetPositionCall;
+
+  constructor(call: GetPositionCall) {
+    this._call = call;
+  }
+
+  get positionMemory(): GetPositionCallPositionMemoryStruct {
+    return changetype<GetPositionCallPositionMemoryStruct>(
+      this._call.outputValues[0].value.toTuple()
+    );
+  }
+}
+
+export class GetPositionCallPositionMemoryStruct extends ethereum.Tuple {
+  get isSettled(): boolean {
+    return this[0].toBoolean();
+  }
+
+  get _liquidity(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get margin(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get fixedTokenGrowthInsideLastX128(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get variableTokenGrowthInsideLastX128(): BigInt {
+    return this[4].toBigInt();
+  }
+
+  get fixedTokenBalance(): BigInt {
+    return this[5].toBigInt();
+  }
+
+  get variableTokenBalance(): BigInt {
+    return this[6].toBigInt();
+  }
+
+  get feeGrowthInsideLastX128(): BigInt {
+    return this[7].toBigInt();
+  }
+
+  get rewardPerAmount(): BigInt {
+    return this[8].toBigInt();
+  }
+}
+
 export class GetPositionMarginRequirementCall extends ethereum.Call {
   get inputs(): GetPositionMarginRequirementCall__Inputs {
     return new GetPositionMarginRequirementCall__Inputs(this);
@@ -1273,7 +1355,7 @@ export class InitializeCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _rateOracleAddress(): Address {
+  get __rateOracle(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
@@ -1405,7 +1487,7 @@ export class SetFCMCall__Inputs {
     this._call = call;
   }
 
-  get _newFcm(): Address {
+  get _newFCM(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
@@ -1601,7 +1683,7 @@ export class SetVAMMCall__Inputs {
     this._call = call;
   }
 
-  get _vAMMAddress(): Address {
+  get _vAMM(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }

@@ -956,7 +956,7 @@ export class InitializeCall__Inputs {
     this._call = call;
   }
 
-  get _marginEngineAddress(): Address {
+  get __marginEngine(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
