@@ -6,9 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: mainnet
+    network: {{name}}
     source:
-      address: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
+      {{#contracts.Factory}}
+      address: '{{address}}'
+      {{/contracts.Factory}}
       abi: Factory
     mapping:
       kind: ethereum/events
@@ -30,7 +32,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: VAMM
-    network: mainnet
+    network: {{name}}
     source:
       abi: VAMM
     mapping:
@@ -64,7 +66,7 @@ templates:
           handler: handleUnpaused
   - kind: ethereum/contract
     name: MarginEngine
-    network: mainnet
+    network: {{name}}
     source:
       abi: MarginEngine
     mapping:
