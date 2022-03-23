@@ -112,5 +112,5 @@ templates:
           handler: handleUpdatePositionPostSwap
         - event: Upgraded(indexed address)
           handler: handleUpgraded
-        - event: VAMMSet(address,address)
+        - event: VAMMSet(indexed address)
           handler: handleVAMMSet
