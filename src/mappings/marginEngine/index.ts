@@ -1,3 +1,5 @@
+export { default as handleAdminChanged } from './handleAdminChanged';
+export { default as handleBeaconUpgraded } from './handleBeaconUpgraded';
 export { default as handleCacheMaxAgeSet } from './handleCacheMaxAgeSet';
 export { default as handleCollectProtocol } from './handleCollectProtocol';
 export { default as handleFCMSet } from './handleFCMSet';
@@ -12,4 +14,5 @@ export { default as handleUnpaused } from './handleUnpaused';
 export { default as handleUpdatePositionMargin } from './handleUpdatePositionMargin';
 export { default as handleUpdatePositionPostMintBurn } from './handleUpdatePositionPostMintBurn';
 export { default as handleUpdatePositionPostSwap } from './handleUpdatePositionPostSwap';
+export { default as handleUpgraded } from './handleUpgraded';
 export { default as handleVAMMSet } from './handleVAMMSet';
