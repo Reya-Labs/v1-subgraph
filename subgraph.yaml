@@ -78,33 +78,39 @@ templates:
         - name: MarginEngine
           file: ./artifacts/MarginEngine.json
       eventHandlers:
-        - event: CacheMaxAgeSet(uint256,uint256)
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: CacheMaxAgeSet(uint256)
           handler: handleCacheMaxAgeSet
-        - event: CollectProtocol(address,address,uint256)
+        - event: CollectProtocol(address,indexed address,uint256)
           handler: handleCollectProtocol
-        - event: FCMSet(address,address)
+        - event: FCMSet(indexed address)
           handler: handleFCMSet
-        - event: HistoricalApyWindowSet(uint256,uint256)
+        - event: HistoricalApyWindowSet(uint256)
           handler: handleHistoricalApyWindowSet
-        - event: LiquidatePosition(address,int24,int24,int256,int256,int256,uint128)
+        - event: LiquidatePosition(indexed address,indexed int24,indexed int24,int256,int256,int256,uint128)
           handler: handleLiquidatePosition
-        - event: LiquidatorRewardSet(uint256,uint256)
+        - event: LiquidatorRewardSet(uint256)
           handler: handleLiquidatorRewardSet
-        - event: MarginCalculatorParametersSet((uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),(uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
+        - event: MarginCalculatorParametersSet((uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
           handler: handleMarginCalculatorParametersSet
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
         - event: Paused(address)
           handler: handlePaused
-        - event: SettlePosition(address,int24,int24,int256,int256,int256,bool)
+        - event: SettlePosition(indexed address,indexed int24,indexed int24,int256,int256,int256,int256,bool)
           handler: handleSettlePosition
         - event: Unpaused(address)
           handler: handleUnpaused
-        - event: UpdatePositionMargin(address,int24,int24,int256)
+        - event: UpdatePositionMargin(indexed address,indexed int24,indexed int24,int256)
           handler: handleUpdatePositionMargin
-        - event: UpdatePositionPostMintBurn(address,int24,int24,uint128)
+        - event: UpdatePositionPostMintBurn(indexed address,indexed int24,indexed int24,uint128)
           handler: handleUpdatePositionPostMintBurn
-        - event: UpdatePositionPostSwap(address,int24,int24,int256,int256,int256)
+        - event: UpdatePositionPostSwap(indexed address,indexed int24,indexed int24,int256,int256,int256)
           handler: handleUpdatePositionPostSwap
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
         - event: VAMMSet(address,address)
           handler: handleVAMMSet
