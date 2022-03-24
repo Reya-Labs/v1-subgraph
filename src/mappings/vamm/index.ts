@@ -1,3 +1,5 @@
+export { default as handleAdminChanged } from './handleAdminChanged';
+export { default as handleBeaconUpgraded } from './handleBeaconUpgraded';
 export { default as handleBurn } from './handleBurn';
 export { default as handleFeeSet } from './handleFeeSet';
 export { default as handleInitializeVAMM } from './handleInitializeVAMM';
