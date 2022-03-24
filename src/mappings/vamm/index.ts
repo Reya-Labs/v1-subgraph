@@ -8,3 +8,4 @@ export { default as handleOwnershipTransferred } from './handleOwnershipTransfer
 export { default as handlePaused } from './handlePaused';
 export { default as handleSwap } from './handleSwap';
 export { default as handleUnpaused } from './handleUnpaused';
+export { default as handleUpgraded } from './handleUpgraded';
