@@ -84,35 +84,35 @@ templates:
           handler: handleAdminChanged
         - event: BeaconUpgraded(indexed address)
           handler: handleBeaconUpgraded
-        - event: CacheMaxAgeSet(uint256)
+        - event: CacheMaxAgeSetting(uint256)
           handler: handleCacheMaxAgeSet
-        - event: CollectProtocol(address,indexed address,uint256)
+        - event: ProtocolCollection(address,indexed address,uint256)
           handler: handleCollectProtocol
-        - event: FCMSet(indexed address)
+        - event: FCMSetting(indexed address)
           handler: handleFCMSet
-        - event: HistoricalApyWindowSet(uint256)
+        - event: HistoricalApyWindowSetting(uint256)
           handler: handleHistoricalApyWindowSet
-        - event: LiquidatePosition(indexed address,indexed int24,indexed int24,int256,int256,int256,uint128)
+        - event: PositionLiquidation(indexed address,indexed int24,indexed int24,int256,int256,int256,uint128)
           handler: handleLiquidatePosition
-        - event: LiquidatorRewardSet(uint256)
+        - event: LiquidatorRewardSetting(uint256)
           handler: handleLiquidatorRewardSet
-        - event: MarginCalculatorParametersSet((uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
+        - event: MarginCalculatorParametersSetting((uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
           handler: handleMarginCalculatorParametersSet
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
         - event: Paused(address)
           handler: handlePaused
-        - event: SettlePosition(indexed address,indexed int24,indexed int24,int256,int256,int256,int256,bool)
+        - event: PositionSettlement(indexed address,indexed int24,indexed int24,int256,int256,int256,int256,bool)
           handler: handleSettlePosition
         - event: Unpaused(address)
           handler: handleUnpaused
-        - event: UpdatePositionMargin(indexed address,indexed int24,indexed int24,int256)
+        - event: PositionMarginUpdate(indexed address,indexed int24,indexed int24,int256)
           handler: handleUpdatePositionMargin
-        - event: UpdatePositionPostMintBurn(indexed address,indexed int24,indexed int24,uint128)
+        - event: PositionPostMintBurnUpdate(indexed address,indexed int24,indexed int24,uint128)
           handler: handleUpdatePositionPostMintBurn
-        - event: UpdatePositionPostSwap(indexed address,indexed int24,indexed int24,int256,int256,int256)
+        - event: PositionPostSwapUpdate(indexed address,indexed int24,indexed int24,int256,int256,int256)
           handler: handleUpdatePositionPostSwap
         - event: Upgraded(indexed address)
           handler: handleUpgraded
-        - event: VAMMSet(indexed address)
+        - event: VAMMSetting(indexed address)
           handler: handleVAMMSet
