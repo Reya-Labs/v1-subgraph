@@ -21,11 +21,11 @@ dataSources:
         - name: Factory
           file: ./artifacts/Factory.json
       eventHandlers:
-        - event: ApprovalSet(indexed address,indexed address,indexed bool)
+        - event: Approval(indexed address,indexed address,indexed bool)
           handler: handleApprovalSet
-        - event: IrsInstanceDeployed(indexed address,indexed address,uint256,uint256,int24,address,address,address,uint8)
+        - event: IrsInstance(indexed address,indexed address,uint256,uint256,int24,address,address,address,uint8,uint8)
           handler: handleIrsInstanceDeployed
-        - event: MasterFCMSet(address,uint8)
+        - event: MasterFCM(address,uint8)
           handler: handleMasterFCMSet
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
