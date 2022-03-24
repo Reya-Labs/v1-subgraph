@@ -13,6 +13,7 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   const underlyingToken = new UnderlyingToken(underlyingTokenAddress);
 
   underlyingToken.name = getUnderlyingTokenName(underlyingTokenAddress);
+  underlyingToken.decimals = BigInt.fromI32(event.params.underlyingTokenDecimals);
   underlyingToken.save();
 
   const rateOracle = new RateOracle(event.params.rateOracle.toHexString());
