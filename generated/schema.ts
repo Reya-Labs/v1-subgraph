@@ -61,6 +61,7 @@ export class UnderlyingToken extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("name", Value.fromString(""));
+    this.set("decimals", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -96,6 +97,15 @@ export class UnderlyingToken extends Entity {
 
   set name(value: string) {
     this.set("name", Value.fromString(value));
+  }
+
+  get decimals(): BigInt {
+    let value = this.get("decimals");
+    return value!.toBigInt();
+  }
+
+  set decimals(value: BigInt) {
+    this.set("decimals", Value.fromBigInt(value));
   }
 }
 

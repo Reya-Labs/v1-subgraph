@@ -11,6 +11,7 @@ type UnderlyingToken @entity {
   id: ID!
 
   name: String!
+  decimals: BigInt!
 }
 
 type RateOracle @entity {
