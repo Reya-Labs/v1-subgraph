@@ -1,6 +1,6 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
-import { LiquidatePosition } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { PositionLiquidation } from '../../../generated/templates/MarginEngine/MarginEngine';
 import {
   createPositionSnapshot,
   getAMMFromMarginEngineAddress,
@@ -8,7 +8,7 @@ import {
   getOrCreateTick,
 } from '../../utilities';
 
-function handleLiquidatePosition(event: LiquidatePosition): void {
+function handleLiquidatePosition(event: PositionLiquidation): void {
   const owner = event.params.owner.toHexString();
   const marginEngineAddress = event.address.toHexString();
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);

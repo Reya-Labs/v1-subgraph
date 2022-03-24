@@ -1,6 +1,6 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
 
-import { IrsInstanceDeployed } from '../../../generated/Factory/Factory';
+import { IrsInstance } from '../../../generated/Factory/Factory';
 import { UnderlyingToken, RateOracle, MarginEngine } from '../../../generated/schema';
 import {
   MarginEngine as MarginEngineTemplate,
@@ -8,7 +8,7 @@ import {
 } from '../../../generated/templates';
 import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
 
-function handleIrsInstanceDeployed(event: IrsInstanceDeployed): void {
+function handleIrsInstanceDeployed(event: IrsInstance): void {
   const underlyingTokenAddress = event.params.underlyingToken.toHexString();
   const underlyingToken = new UnderlyingToken(underlyingTokenAddress);
 

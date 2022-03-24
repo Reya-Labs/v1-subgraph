@@ -21,11 +21,11 @@ dataSources:
         - name: Factory
           file: ./artifacts/Factory.json
       eventHandlers:
-        - event: ApprovalSet(indexed address,indexed address,indexed bool)
+        - event: Approval(indexed address,indexed address,indexed bool)
           handler: handleApprovalSet
-        - event: IrsInstanceDeployed(indexed address,indexed address,uint256,uint256,int24,address,address,address,uint8)
+        - event: IrsInstance(indexed address,indexed address,uint256,uint256,int24,address,address,address,uint8,uint8)
           handler: handleIrsInstanceDeployed
-        - event: MasterFCMSet(address,uint8)
+        - event: MasterFCM(address,uint8)
           handler: handleMasterFCMSet
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
@@ -46,11 +46,15 @@ templates:
         - name: VAMM
           file: ./artifacts/VAMM.json
       eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
         - event: Burn(address,indexed address,indexed int24,indexed int24,uint128)
           handler: handleBurn
-        - event: FeeSet(uint256,uint256)
+        - event: Fee(uint256)
           handler: handleFeeSet
-        - event: InitializeVAMM(uint160,int24)
+        - event: VAMMInitialization(uint160,int24)
           handler: handleInitializeVAMM
         - event: Mint(address,indexed address,indexed int24,indexed int24,uint128)
           handler: handleMint
@@ -58,12 +62,14 @@ templates:
           handler: handleOwnershipTransferred
         - event: Paused(address)
           handler: handlePaused
-        - event: SetFeeProtocol(uint8,uint8)
+        - event: FeeProtocol(uint8)
           handler: handleSetFeeProtocol
         - event: Swap(indexed address,indexed address,uint160,uint128,int24,int24,int24)
           handler: handleSwap
         - event: Unpaused(address)
           handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
   - kind: ethereum/contract
     name: MarginEngine
     network: mainnet
@@ -84,35 +90,35 @@ templates:
           handler: handleAdminChanged
         - event: BeaconUpgraded(indexed address)
           handler: handleBeaconUpgraded
-        - event: CacheMaxAgeSet(uint256)
+        - event: CacheMaxAgeSetting(uint256)
           handler: handleCacheMaxAgeSet
-        - event: CollectProtocol(address,indexed address,uint256)
+        - event: ProtocolCollection(address,indexed address,uint256)
           handler: handleCollectProtocol
-        - event: FCMSet(indexed address)
+        - event: FCMSetting(indexed address)
           handler: handleFCMSet
-        - event: HistoricalApyWindowSet(uint256)
+        - event: HistoricalApyWindowSetting(uint256)
           handler: handleHistoricalApyWindowSet
-        - event: LiquidatePosition(indexed address,indexed int24,indexed int24,int256,int256,int256,uint128)
+        - event: PositionLiquidation(indexed address,indexed int24,indexed int24,int256,int256,int256,uint128)
           handler: handleLiquidatePosition
-        - event: LiquidatorRewardSet(uint256)
+        - event: LiquidatorRewardSetting(uint256)
           handler: handleLiquidatorRewardSet
-        - event: MarginCalculatorParametersSet((uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
+        - event: MarginCalculatorParametersSetting((uint256,uint256,int256,int256,int256,int256,int256,int256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
           handler: handleMarginCalculatorParametersSet
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
         - event: Paused(address)
           handler: handlePaused
-        - event: SettlePosition(indexed address,indexed int24,indexed int24,int256,int256,int256,int256,bool)
+        - event: PositionSettlement(indexed address,indexed int24,indexed int24,int256,int256,int256,int256,bool)
           handler: handleSettlePosition
         - event: Unpaused(address)
           handler: handleUnpaused
-        - event: UpdatePositionMargin(indexed address,indexed int24,indexed int24,int256)
+        - event: PositionMarginUpdate(indexed address,indexed int24,indexed int24,int256)
           handler: handleUpdatePositionMargin
-        - event: UpdatePositionPostMintBurn(indexed address,indexed int24,indexed int24,uint128)
+        - event: PositionPostMintBurnUpdate(indexed address,indexed int24,indexed int24,uint128)
           handler: handleUpdatePositionPostMintBurn
-        - event: UpdatePositionPostSwap(indexed address,indexed int24,indexed int24,int256,int256,int256)
+        - event: PositionPostSwapUpdate(indexed address,indexed int24,indexed int24,int256,int256,int256)
           handler: handleUpdatePositionPostSwap
         - event: Upgraded(indexed address)
           handler: handleUpgraded
-        - event: VAMMSet(indexed address)
+        - event: VAMMSetting(indexed address)
           handler: handleVAMMSet

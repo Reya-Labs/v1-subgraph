@@ -1,5 +1,5 @@
-import { VAMMSet } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { VAMMSetting } from '../../../generated/templates/MarginEngine/MarginEngine';
 
-function handleVAMMSet(_event: VAMMSet): void {}
+function handleVAMMSet(_event: VAMMSetting): void {}
 
 export default handleVAMMSet;

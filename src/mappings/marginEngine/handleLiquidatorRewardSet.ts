@@ -1,5 +1,5 @@
-import { LiquidatorRewardSet } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { LiquidatorRewardSetting } from '../../../generated/templates/MarginEngine/MarginEngine';
 
-function handleLiquidatorRewardSet(_event: LiquidatorRewardSet): void {}
+function handleLiquidatorRewardSet(_event: LiquidatorRewardSetting): void {}
 
 export default handleLiquidatorRewardSet;
