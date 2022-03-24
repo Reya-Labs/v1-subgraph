@@ -1,6 +1,6 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
 
-import { UpdatePositionMargin } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { PositionMarginUpdate } from '../../../generated/templates/MarginEngine/MarginEngine';
 import {
   createPositionSnapshot,
   getAMMFromMarginEngineAddress,
@@ -8,7 +8,7 @@ import {
   getOrCreateTick,
 } from '../../utilities';
 
-function handleUpdatePositionMargin(event: UpdatePositionMargin): void {
+function handleUpdatePositionMargin(event: PositionMarginUpdate): void {
   const owner = event.params.owner.toHexString();
   const marginEngineAddress = event.address.toHexString();
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);

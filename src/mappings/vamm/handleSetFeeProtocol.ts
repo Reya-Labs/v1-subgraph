@@ -1,5 +1,5 @@
-import { SetFeeProtocol } from '../../../generated/templates/VAMM/VAMM';
+import { FeeProtocol } from '../../../generated/templates/VAMM/VAMM';
 
-function handleSetFeeProtocol(_event: SetFeeProtocol): void {}
+function handleSetFeeProtocol(_event: FeeProtocol): void {}
 
 export default handleSetFeeProtocol;

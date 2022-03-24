@@ -1,5 +1,5 @@
-import { ApprovalSet } from '../../../generated/Factory/Factory';
+import { Approval } from '../../../generated/Factory/Factory';
 
-function handleApprovalSet(_event: ApprovalSet): void {}
+function handleApprovalSet(_event: Approval): void {}
 
 export default handleApprovalSet;

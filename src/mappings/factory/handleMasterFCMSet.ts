@@ -1,5 +1,5 @@
-import { MasterFCMSet } from '../../../generated/Factory/Factory';
+import { MasterFCM } from '../../../generated/Factory/Factory';
 
-function handleMasterFCMSet(_event: MasterFCMSet): void {}
+function handleMasterFCMSet(_event: MasterFCM): void {}
 
 export default handleMasterFCMSet;

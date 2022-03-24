@@ -84,47 +84,39 @@ export class Burn__Params {
   }
 }
 
-export class FeeSet extends ethereum.Event {
-  get params(): FeeSet__Params {
-    return new FeeSet__Params(this);
+export class Fee extends ethereum.Event {
+  get params(): Fee__Params {
+    return new Fee__Params(this);
   }
 }
 
-export class FeeSet__Params {
-  _event: FeeSet;
+export class Fee__Params {
+  _event: Fee;
 
-  constructor(event: FeeSet) {
+  constructor(event: Fee) {
     this._event = event;
-  }
-
-  get feeWadOld(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
   }
 
   get feeWad(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[0].value.toBigInt();
   }
 }
 
-export class InitializeVAMM extends ethereum.Event {
-  get params(): InitializeVAMM__Params {
-    return new InitializeVAMM__Params(this);
+export class FeeProtocol extends ethereum.Event {
+  get params(): FeeProtocol__Params {
+    return new FeeProtocol__Params(this);
   }
 }
 
-export class InitializeVAMM__Params {
-  _event: InitializeVAMM;
+export class FeeProtocol__Params {
+  _event: FeeProtocol;
 
-  constructor(event: InitializeVAMM) {
+  constructor(event: FeeProtocol) {
     this._event = event;
   }
 
-  get sqrtPriceX96(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get tick(): i32 {
-    return this._event.parameters[1].value.toI32();
+  get feeProtocol(): i32 {
+    return this._event.parameters[0].value.toI32();
   }
 }
 
@@ -199,28 +191,6 @@ export class Paused__Params {
 
   get account(): Address {
     return this._event.parameters[0].value.toAddress();
-  }
-}
-
-export class SetFeeProtocol extends ethereum.Event {
-  get params(): SetFeeProtocol__Params {
-    return new SetFeeProtocol__Params(this);
-  }
-}
-
-export class SetFeeProtocol__Params {
-  _event: SetFeeProtocol;
-
-  constructor(event: SetFeeProtocol) {
-    this._event = event;
-  }
-
-  get feeProtocolOld(): i32 {
-    return this._event.parameters[0].value.toI32();
-  }
-
-  get feeProtocol(): i32 {
-    return this._event.parameters[1].value.toI32();
   }
 }
 
@@ -299,6 +269,28 @@ export class Upgraded__Params {
 
   get implementation(): Address {
     return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class VAMMInitialization extends ethereum.Event {
+  get params(): VAMMInitialization__Params {
+    return new VAMMInitialization__Params(this);
+  }
+}
+
+export class VAMMInitialization__Params {
+  _event: VAMMInitialization;
+
+  constructor(event: VAMMInitialization) {
+    this._event = event;
+  }
+
+  get sqrtPriceX96(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get tick(): i32 {
+    return this._event.parameters[1].value.toI32();
   }
 }
 
@@ -419,6 +411,21 @@ export class VAMM__vammVarsResultValue0Struct extends ethereum.Tuple {
 export class VAMM extends ethereum.SmartContract {
   static bind(address: Address): VAMM {
     return new VAMM("VAMM", address);
+  }
+
+  MAX_FEE(): BigInt {
+    let result = super.call("MAX_FEE", "MAX_FEE():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_MAX_FEE(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("MAX_FEE", "MAX_FEE():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   burn(

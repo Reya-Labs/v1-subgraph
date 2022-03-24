@@ -10,16 +10,16 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class ApprovalSet extends ethereum.Event {
-  get params(): ApprovalSet__Params {
-    return new ApprovalSet__Params(this);
+export class Approval extends ethereum.Event {
+  get params(): Approval__Params {
+    return new Approval__Params(this);
   }
 }
 
-export class ApprovalSet__Params {
-  _event: ApprovalSet;
+export class Approval__Params {
+  _event: Approval;
 
-  constructor(event: ApprovalSet) {
+  constructor(event: Approval) {
     this._event = event;
   }
 
@@ -36,16 +36,16 @@ export class ApprovalSet__Params {
   }
 }
 
-export class IrsInstanceDeployed extends ethereum.Event {
-  get params(): IrsInstanceDeployed__Params {
-    return new IrsInstanceDeployed__Params(this);
+export class IrsInstance extends ethereum.Event {
+  get params(): IrsInstance__Params {
+    return new IrsInstance__Params(this);
   }
 }
 
-export class IrsInstanceDeployed__Params {
-  _event: IrsInstanceDeployed;
+export class IrsInstance__Params {
+  _event: IrsInstance;
 
-  constructor(event: IrsInstanceDeployed) {
+  constructor(event: IrsInstance) {
     this._event = event;
   }
 
@@ -84,31 +84,31 @@ export class IrsInstanceDeployed__Params {
   get yieldBearingProtocolID(): i32 {
     return this._event.parameters[8].value.toI32();
   }
-}
 
-export class MasterFCMSet extends ethereum.Event {
-  get params(): MasterFCMSet__Params {
-    return new MasterFCMSet__Params(this);
+  get underlyingTokenDecimals(): i32 {
+    return this._event.parameters[9].value.toI32();
   }
 }
 
-export class MasterFCMSet__Params {
-  _event: MasterFCMSet;
+export class MasterFCM extends ethereum.Event {
+  get params(): MasterFCM__Params {
+    return new MasterFCM__Params(this);
+  }
+}
 
-  constructor(event: MasterFCMSet) {
+export class MasterFCM__Params {
+  _event: MasterFCM;
+
+  constructor(event: MasterFCM) {
     this._event = event;
   }
 
-  get masterFCMAddressOld(): Address {
+  get masterFCMAddress(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get masterFCMAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get yieldBearingProtocolID(): i32 {
-    return this._event.parameters[2].value.toI32();
+    return this._event.parameters[1].value.toI32();
   }
 }
 
@@ -484,11 +484,11 @@ export class SetMasterFCMCall__Inputs {
     this._call = call;
   }
 
-  get masterFCM(): Address {
+  get _masterFCM(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get yieldBearingProtocolID(): i32 {
+  get _yieldBearingProtocolID(): i32 {
     return this._call.inputValues[1].value.toI32();
   }
 }
@@ -497,6 +497,66 @@ export class SetMasterFCMCall__Outputs {
   _call: SetMasterFCMCall;
 
   constructor(call: SetMasterFCMCall) {
+    this._call = call;
+  }
+}
+
+export class SetMasterMarginEngineCall extends ethereum.Call {
+  get inputs(): SetMasterMarginEngineCall__Inputs {
+    return new SetMasterMarginEngineCall__Inputs(this);
+  }
+
+  get outputs(): SetMasterMarginEngineCall__Outputs {
+    return new SetMasterMarginEngineCall__Outputs(this);
+  }
+}
+
+export class SetMasterMarginEngineCall__Inputs {
+  _call: SetMasterMarginEngineCall;
+
+  constructor(call: SetMasterMarginEngineCall) {
+    this._call = call;
+  }
+
+  get _masterMarginEngine(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetMasterMarginEngineCall__Outputs {
+  _call: SetMasterMarginEngineCall;
+
+  constructor(call: SetMasterMarginEngineCall) {
+    this._call = call;
+  }
+}
+
+export class SetMasterVAMMCall extends ethereum.Call {
+  get inputs(): SetMasterVAMMCall__Inputs {
+    return new SetMasterVAMMCall__Inputs(this);
+  }
+
+  get outputs(): SetMasterVAMMCall__Outputs {
+    return new SetMasterVAMMCall__Outputs(this);
+  }
+}
+
+export class SetMasterVAMMCall__Inputs {
+  _call: SetMasterVAMMCall;
+
+  constructor(call: SetMasterVAMMCall) {
+    this._call = call;
+  }
+
+  get _masterVAMM(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetMasterVAMMCall__Outputs {
+  _call: SetMasterVAMMCall;
+
+  constructor(call: SetMasterVAMMCall) {
     this._call = call;
   }
 }
