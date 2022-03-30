@@ -1,6 +1,6 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
-import { UpdatePositionPostMintBurn } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { PositionPostMintBurnUpdate } from '../../../generated/templates/MarginEngine/MarginEngine';
 import { ZERO_BI } from '../../constants';
 import {
   createPositionSnapshot,
@@ -9,7 +9,7 @@ import {
   getOrCreateTick,
 } from '../../utilities';
 
-function handleUpdatePositionPostMintBurn(event: UpdatePositionPostMintBurn): void {
+function handleUpdatePositionPostMintBurn(event: PositionPostMintBurnUpdate): void {
   const owner = event.params.owner.toHexString();
   const marginEngineAddress = event.address.toHexString();
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);

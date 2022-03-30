@@ -1,5 +1,5 @@
-import { CollectProtocol } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { ProtocolCollection } from '../../../generated/templates/MarginEngine/MarginEngine';
 
-function handleCollectProtocol(_event: CollectProtocol): void {}
+function handleCollectProtocol(_event: ProtocolCollection): void {}
 
 export default handleCollectProtocol;

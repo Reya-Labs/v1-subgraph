@@ -1,10 +1,10 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
-import { InitializeVAMM } from '../../../generated/templates/VAMM/VAMM';
+import { VAMMInitialization } from '../../../generated/templates/VAMM/VAMM';
 import { ZERO_BI } from '../../constants';
 import { getOrCreateAMM } from '../../utilities';
 
-function handleInitializeVAMM(event: InitializeVAMM): void {
+function handleInitializeVAMM(event: VAMMInitialization): void {
   const vammAddress = event.address.toHexString();
   const amm = getOrCreateAMM(vammAddress, event.block.timestamp);
 

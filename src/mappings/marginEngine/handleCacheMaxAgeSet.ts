@@ -1,5 +1,5 @@
-import { CacheMaxAgeSet } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { CacheMaxAgeSetting } from '../../../generated/templates/MarginEngine/MarginEngine';
 
-function handleCacheMaxAgeSet(_event: CacheMaxAgeSet): void {}
+function handleCacheMaxAgeSet(_event: CacheMaxAgeSetting): void {}
 
 export default handleCacheMaxAgeSet;

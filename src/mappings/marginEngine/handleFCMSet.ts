@@ -1,5 +1,5 @@
-import { FCMSet } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { FCMSetting } from '../../../generated/templates/MarginEngine/MarginEngine';
 
-function handleFCMSet(_event: FCMSet): void {}
+function handleFCMSet(_event: FCMSetting): void {}
 
 export default handleFCMSet;

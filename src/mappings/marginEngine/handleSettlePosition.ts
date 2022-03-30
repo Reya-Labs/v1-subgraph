@@ -1,6 +1,6 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
-import { SettlePosition } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { PositionSettlement } from '../../../generated/templates/MarginEngine/MarginEngine';
 import {
   createPositionSnapshot,
   getAMMFromMarginEngineAddress,
@@ -8,7 +8,7 @@ import {
   getOrCreateTick,
 } from '../../utilities';
 
-function handleSettlePosition(event: SettlePosition): void {
+function handleSettlePosition(event: PositionSettlement): void {
   const owner = event.params.owner.toHexString();
   const marginEngineAddress = event.address.toHexString();
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);

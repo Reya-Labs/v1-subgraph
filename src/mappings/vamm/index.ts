@@ -1,3 +1,5 @@
+export { default as handleAdminChanged } from './handleAdminChanged';
+export { default as handleBeaconUpgraded } from './handleBeaconUpgraded';
 export { default as handleBurn } from './handleBurn';
 export { default as handleFeeSet } from './handleFeeSet';
 export { default as handleInitializeVAMM } from './handleInitializeVAMM';
@@ -6,3 +8,4 @@ export { default as handleOwnershipTransferred } from './handleOwnershipTransfer
 export { default as handlePaused } from './handlePaused';
 export { default as handleSwap } from './handleSwap';
 export { default as handleUnpaused } from './handleUnpaused';
+export { default as handleUpgraded } from './handleUpgraded';
