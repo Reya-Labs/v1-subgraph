@@ -3,4 +3,4 @@
 
 yarn lint-staged
 # yalc check
-yarn build
+yarn configure:kovan && yarn build

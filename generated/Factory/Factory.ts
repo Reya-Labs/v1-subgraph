@@ -134,6 +134,24 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class PeripheryUpdate extends ethereum.Event {
+  get params(): PeripheryUpdate__Params {
+    return new PeripheryUpdate__Params(this);
+  }
+}
+
+export class PeripheryUpdate__Params {
+  _event: PeripheryUpdate;
+
+  constructor(event: PeripheryUpdate) {
+    this._event = event;
+  }
+
+  get periphery(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class Factory__deployIrsInstanceResult {
   value0: Address;
   value1: Address;
@@ -216,24 +234,30 @@ export class Factory extends ethereum.SmartContract {
     );
   }
 
-  isApproved(param0: Address, param1: Address): boolean {
+  isApproved(_owner: Address, _intAddress: Address): boolean {
     let result = super.call(
       "isApproved",
       "isApproved(address,address):(bool)",
-      [ethereum.Value.fromAddress(param0), ethereum.Value.fromAddress(param1)]
+      [
+        ethereum.Value.fromAddress(_owner),
+        ethereum.Value.fromAddress(_intAddress)
+      ]
     );
 
     return result[0].toBoolean();
   }
 
   try_isApproved(
-    param0: Address,
-    param1: Address
+    _owner: Address,
+    _intAddress: Address
   ): ethereum.CallResult<boolean> {
     let result = super.tryCall(
       "isApproved",
       "isApproved(address,address):(bool)",
-      [ethereum.Value.fromAddress(param0), ethereum.Value.fromAddress(param1)]
+      [
+        ethereum.Value.fromAddress(_owner),
+        ethereum.Value.fromAddress(_intAddress)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -307,6 +331,21 @@ export class Factory extends ethereum.SmartContract {
 
   try_owner(): ethereum.CallResult<Address> {
     let result = super.tryCall("owner", "owner():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  periphery(): Address {
+    let result = super.call("periphery", "periphery():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_periphery(): ethereum.CallResult<Address> {
+    let result = super.tryCall("periphery", "periphery():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -557,6 +596,36 @@ export class SetMasterVAMMCall__Outputs {
   _call: SetMasterVAMMCall;
 
   constructor(call: SetMasterVAMMCall) {
+    this._call = call;
+  }
+}
+
+export class SetPeripheryCall extends ethereum.Call {
+  get inputs(): SetPeripheryCall__Inputs {
+    return new SetPeripheryCall__Inputs(this);
+  }
+
+  get outputs(): SetPeripheryCall__Outputs {
+    return new SetPeripheryCall__Outputs(this);
+  }
+}
+
+export class SetPeripheryCall__Inputs {
+  _call: SetPeripheryCall;
+
+  constructor(call: SetPeripheryCall) {
+    this._call = call;
+  }
+
+  get _periphery(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetPeripheryCall__Outputs {
+  _call: SetPeripheryCall;
+
+  constructor(call: SetPeripheryCall) {
     this._call = call;
   }
 }
