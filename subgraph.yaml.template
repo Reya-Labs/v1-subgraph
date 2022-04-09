@@ -100,7 +100,7 @@ templates:
           handler: handleFCMSet
         - event: HistoricalApyWindowSetting(uint256)
           handler: handleHistoricalApyWindowSet
-        - event: PositionLiquidation(indexed address,indexed int24,indexed int24,int256,int256,int256,uint128)
+        - event: PositionLiquidation(indexed address,indexed int24,indexed int24,int256,int256,int256,uint128,address)
           handler: handleLiquidatePosition
         - event: LiquidatorRewardSetting(uint256)
           handler: handleLiquidatorRewardSet
