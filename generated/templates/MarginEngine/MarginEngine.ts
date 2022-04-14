@@ -296,6 +296,10 @@ export class PositionLiquidation__Params {
   get liquidity(): BigInt {
     return this._event.parameters[6].value.toBigInt();
   }
+
+  get liquidator(): Address {
+    return this._event.parameters[7].value.toAddress();
+  }
 }
 
 export class PositionMarginUpdate extends ethereum.Event {
