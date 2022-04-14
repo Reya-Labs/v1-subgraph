@@ -5,12 +5,13 @@ import { ZERO_BI, ONE_BI } from '../constants';
 import getOrCreateWallet from './getOrCreateWallet';
 
 const getOrCreatePosition = (
+  marginEngineAddress: string,
   address: string,
   tickLower: Tick,
   tickUpper: Tick,
   timestamp: BigInt,
 ): Position => {
-  const positionId = `${address}#${tickLower.value}#${tickUpper.value}`;
+  const positionId = `${marginEngineAddress}#${address}#${tickLower.value}#${tickUpper.value}`;
   const existingPosition = Position.load(positionId);
 
   if (existingPosition !== null) {

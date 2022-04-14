@@ -20,7 +20,13 @@ function handleSwap(event: SwapEvent): void {
 
   const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
   const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
-  const position = getOrCreatePosition(owner, tickLower, tickUpper, event.block.timestamp);
+  const position = getOrCreatePosition(
+    amm.marginEngineAddress,
+    owner,
+    tickLower,
+    tickUpper,
+    event.block.timestamp,
+  );
 
   const swapId = `${transaction.id}#${amm.txCount.toString()}`;
   const swap = new Swap(swapId);

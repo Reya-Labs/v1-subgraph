@@ -21,7 +21,13 @@ function handleUpdatePositionMargin(event: PositionMarginUpdate): void {
 
   const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
   const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
-  const position = getOrCreatePosition(owner, tickLower, tickUpper, event.block.timestamp);
+  const position = getOrCreatePosition(
+    marginEngineAddress,
+    owner,
+    tickLower,
+    tickUpper,
+    event.block.timestamp,
+  );
 
   position.updatedTimestamp = event.block.timestamp;
   position.amm = amm.id;
