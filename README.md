@@ -27,3 +27,7 @@ Do not modify any files in the `generated/` directory directly.
 1. Remove containers: `docker-compose down`
 2. Remove `data/` directory containing database files
 3. Run `docker-compose up`
+
+## Contributing
+
+If you wish to contribute to the Voltz subgraph codebase please install husky `v7.0.2` or above to make sure your commits are checked for linting and that your commit messages are correctly formatted. Husky has been exluded from the devDependecies as it broke the npm install.
