@@ -1,17 +1,17 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
-import { Position, Tick } from '../../generated/schema';
+import { AMM, Position } from '../../generated/schema';
 import { ZERO_BI, ONE_BI } from '../constants';
 import getOrCreateWallet from './getOrCreateWallet';
 
 const getOrCreatePosition = (
-  marginEngineAddress: string,
+  amm: AMM,
   address: string,
-  tickLower: Tick,
-  tickUpper: Tick,
+  tickLower: BigInt,
+  tickUpper: BigInt,
   timestamp: BigInt,
 ): Position => {
-  const positionId = `${marginEngineAddress}#${address}#${tickLower.value}#${tickUpper.value}`;
+  const positionId = `${amm.marginEngine}#${address}#${tickLower}#${tickUpper}`;
   const existingPosition = Position.load(positionId);
 
   if (existingPosition !== null) {
@@ -23,7 +23,10 @@ const getOrCreatePosition = (
 
   position.owner = wallet.id;
   position.createdTimestamp = timestamp;
+  position.tickLower = tickLower;
+  position.tickUpper = tickUpper;
   position.snapshotCount = ZERO_BI;
+  position.amm = amm.id;
   position.save();
 
   wallet.positionCount = wallet.positionCount.plus(ONE_BI);

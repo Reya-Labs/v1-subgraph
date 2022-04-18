@@ -10,3 +10,5 @@ export { default as handleSwap } from './handleSwap';
 export { default as handleUnpaused } from './handleUnpaused';
 export { default as handleUpgraded } from './handleUpgraded';
 export { default as handleSetFeeProtocol } from './handleSetFeeProtocol';
+export { default as handleIsAlpha } from './handleIsAlpha';
+export { default as handleVAMMPriceChange } from './handleVAMMPriceChange';

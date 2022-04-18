@@ -3,12 +3,7 @@ import { BigInt } from '@graphprotocol/graph-ts';
 import { Mint as MintEvent } from '../../../generated/templates/VAMM/VAMM';
 import { Mint } from '../../../generated/schema';
 import { ONE_BI } from '../../constants';
-import {
-  getOrCreateAMM,
-  getOrCreatePosition,
-  getOrCreateTick,
-  getOrCreateTransaction,
-} from '../../utilities';
+import { getOrCreateAMM, getOrCreatePosition, getOrCreateTransaction } from '../../utilities';
 
 function handleMint(event: MintEvent): void {
   const sender = event.params.sender.toHexString();
@@ -18,13 +13,11 @@ function handleMint(event: MintEvent): void {
   const vammAddress = event.address.toHexString();
   const amm = getOrCreateAMM(vammAddress, event.block.timestamp);
 
-  const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
-  const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(
-    amm.marginEngineAddress,
+    amm,
     owner,
-    tickLower,
-    tickUpper,
+    BigInt.fromI32(event.params.tickLower),
+    BigInt.fromI32(event.params.tickUpper),
     event.block.timestamp,
   );
 
@@ -35,10 +28,11 @@ function handleMint(event: MintEvent): void {
   mint.amm = amm.id;
   mint.position = position.id;
   mint.sender = sender;
-  mint.tickLower = tickLower.id;
-  mint.tickUpper = tickUpper.id;
   mint.amount = event.params.amount;
   mint.save();
+
+  position.isLiquidityProvider = true;
+  position.save();
 
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();

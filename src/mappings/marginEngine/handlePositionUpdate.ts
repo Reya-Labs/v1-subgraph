@@ -1,15 +1,15 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
-import { PositionPostSwapUpdate } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { PositionUpdate } from '../../../generated/templates/MarginEngine/MarginEngine';
 import {
   createPositionSnapshot,
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
-  getOrCreateTick,
 } from '../../utilities';
 
-function handleUpdatePositionPostSwap(event: PositionPostSwapUpdate): void {
+function handlePositionUpdate(event: PositionUpdate): void {
   const owner = event.params.owner.toHexString();
+
   const marginEngineAddress = event.address.toHexString();
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
 
@@ -17,30 +17,24 @@ function handleUpdatePositionPostSwap(event: PositionPostSwapUpdate): void {
     return;
   }
 
-  const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
-  const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(
-    marginEngineAddress,
+    amm,
     owner,
-    tickLower,
-    tickUpper,
+    BigInt.fromI32(event.params.tickLower),
+    BigInt.fromI32(event.params.tickUpper),
     event.block.timestamp,
   );
 
   position.updatedTimestamp = event.block.timestamp;
-  position.amm = amm.id;
-  position.owner = owner;
-  position.tickLower = tickLower.id;
-  position.tickUpper = tickUpper.id;
-  position.margin = event.params.margin;
-  position.isLiquidityProvider = false;
-  position.isSettled = false;
   position.fixedTokenBalance = event.params.fixedTokenBalance;
   position.variableTokenBalance = event.params.variableTokenBalance;
+  // eslint-disable-next-line no-underscore-dangle
+  position.liquidity = event.params._liquidity;
+  position.margin = event.params.margin;
+  position.accumulatedFees = event.params.accumulatedFees;
+  position.save();
 
   createPositionSnapshot(position, event.block.timestamp);
-
-  position.save();
 }
 
-export default handleUpdatePositionPostSwap;
+export default handlePositionUpdate;

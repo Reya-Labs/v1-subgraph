@@ -1,14 +1,18 @@
-import { BigInt, log } from '@graphprotocol/graph-ts';
+import { log, BigInt } from '@graphprotocol/graph-ts';
 
 import { PositionMarginUpdate } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { ONE_BI } from '../../constants';
+import { MarginUpdate } from '../../../generated/schema';
 import {
-  createPositionSnapshot,
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
-  getOrCreateTick,
+  getOrCreateTransaction,
 } from '../../utilities';
 
 function handleUpdatePositionMargin(event: PositionMarginUpdate): void {
+  const transaction = getOrCreateTransaction(event);
+
+  const sender = event.params.sender.toHexString();
   const owner = event.params.owner.toHexString();
   const marginEngineAddress = event.address.toHexString();
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
@@ -19,26 +23,26 @@ function handleUpdatePositionMargin(event: PositionMarginUpdate): void {
     return;
   }
 
-  const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
-  const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(
-    marginEngineAddress,
+    amm,
     owner,
-    tickLower,
-    tickUpper,
+    BigInt.fromI32(event.params.tickLower),
+    BigInt.fromI32(event.params.tickUpper),
     event.block.timestamp,
   );
 
-  position.updatedTimestamp = event.block.timestamp;
-  position.amm = amm.id;
-  position.owner = owner;
-  position.tickLower = tickLower.id;
-  position.tickUpper = tickUpper.id;
-  position.margin = event.params.positionMargin;
+  const marginUpdateId = `${transaction.id}#${amm.txCount.toString()}`;
+  const marginUpdate = new MarginUpdate(marginUpdateId);
 
-  createPositionSnapshot(position, event.block.timestamp);
+  marginUpdate.transaction = transaction.id;
+  marginUpdate.amm = amm.id;
+  marginUpdate.position = position.id;
+  marginUpdate.depositer = sender;
+  marginUpdate.marginDelta = event.params.marginDelta;
+  marginUpdate.save();
 
-  position.save();
+  amm.txCount = amm.txCount.plus(ONE_BI);
+  amm.save();
 }
 
 export default handleUpdatePositionMargin;

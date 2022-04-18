@@ -120,6 +120,24 @@ export class FeeProtocol__Params {
   }
 }
 
+export class IsAlpha extends ethereum.Event {
+  get params(): IsAlpha__Params {
+    return new IsAlpha__Params(this);
+  }
+}
+
+export class IsAlpha__Params {
+  _event: IsAlpha;
+
+  constructor(event: IsAlpha) {
+    this._event = event;
+  }
+
+  get __isAlpha(): boolean {
+    return this._event.parameters[0].value.toBoolean();
+  }
+}
+
 export class Mint extends ethereum.Event {
   get params(): Mint__Params {
     return new Mint__Params(this);
@@ -215,24 +233,36 @@ export class Swap__Params {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get sqrtPriceX96(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get liquidity(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-
-  get tick(): i32 {
-    return this._event.parameters[4].value.toI32();
-  }
-
   get tickLower(): i32 {
-    return this._event.parameters[5].value.toI32();
+    return this._event.parameters[2].value.toI32();
   }
 
   get tickUpper(): i32 {
-    return this._event.parameters[6].value.toI32();
+    return this._event.parameters[3].value.toI32();
+  }
+
+  get desiredNotional(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get sqrtPriceLimitX96(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
+  }
+
+  get cumulativeFeeIncurred(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
+
+  get fixedTokenDelta(): BigInt {
+    return this._event.parameters[7].value.toBigInt();
+  }
+
+  get variableTokenDelta(): BigInt {
+    return this._event.parameters[8].value.toBigInt();
+  }
+
+  get fixedTokenDeltaUnbalanced(): BigInt {
+    return this._event.parameters[9].value.toBigInt();
   }
 }
 
@@ -291,6 +321,24 @@ export class VAMMInitialization__Params {
 
   get tick(): i32 {
     return this._event.parameters[1].value.toI32();
+  }
+}
+
+export class VAMMPriceChange extends ethereum.Event {
+  get params(): VAMMPriceChange__Params {
+    return new VAMMPriceChange__Params(this);
+  }
+}
+
+export class VAMMPriceChange__Params {
+  _event: VAMMPriceChange;
+
+  constructor(event: VAMMPriceChange) {
+    this._event = event;
+  }
+
+  get tick(): i32 {
+    return this._event.parameters[0].value.toI32();
   }
 }
 
@@ -584,6 +632,21 @@ export class VAMM extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  isAlpha(): boolean {
+    let result = super.call("isAlpha", "isAlpha():(bool)", []);
+
+    return result[0].toBoolean();
+  }
+
+  try_isAlpha(): ethereum.CallResult<boolean> {
+    let result = super.tryCall("isAlpha", "isAlpha():(bool)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   liquidity(): BigInt {
@@ -1142,6 +1205,36 @@ export class SetFeeProtocolCall__Outputs {
   }
 }
 
+export class SetIsAlphaCall extends ethereum.Call {
+  get inputs(): SetIsAlphaCall__Inputs {
+    return new SetIsAlphaCall__Inputs(this);
+  }
+
+  get outputs(): SetIsAlphaCall__Outputs {
+    return new SetIsAlphaCall__Outputs(this);
+  }
+}
+
+export class SetIsAlphaCall__Inputs {
+  _call: SetIsAlphaCall;
+
+  constructor(call: SetIsAlphaCall) {
+    this._call = call;
+  }
+
+  get __isAlpha(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class SetIsAlphaCall__Outputs {
+  _call: SetIsAlphaCall;
+
+  constructor(call: SetIsAlphaCall) {
+    this._call = call;
+  }
+}
+
 export class SwapCall extends ethereum.Call {
   get inputs(): SwapCall__Inputs {
     return new SwapCall__Inputs(this);
@@ -1173,23 +1266,23 @@ export class SwapCall__Outputs {
     this._call = call;
   }
 
-  get _fixedTokenDelta(): BigInt {
+  get fixedTokenDelta(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
   }
 
-  get _variableTokenDelta(): BigInt {
+  get variableTokenDelta(): BigInt {
     return this._call.outputValues[1].value.toBigInt();
   }
 
-  get _cumulativeFeeIncurred(): BigInt {
+  get cumulativeFeeIncurred(): BigInt {
     return this._call.outputValues[2].value.toBigInt();
   }
 
-  get _fixedTokenDeltaUnbalanced(): BigInt {
+  get fixedTokenDeltaUnbalanced(): BigInt {
     return this._call.outputValues[3].value.toBigInt();
   }
 
-  get _marginRequirement(): BigInt {
+  get marginRequirement(): BigInt {
     return this._call.outputValues[4].value.toBigInt();
   }
 }
