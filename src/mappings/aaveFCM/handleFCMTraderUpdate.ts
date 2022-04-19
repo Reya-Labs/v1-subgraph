@@ -1,3 +1,4 @@
+import { log } from '@graphprotocol/graph-ts';
 import { FCMTraderUpdate } from '../../../generated/templates/aaveFCM/aaveFCM';
 import { createFCMPositionSnapshot, getAMMFromFCMAddress } from '../../utilities';
 import getOrCreateFCMPosition from '../../utilities/getOrCreateFCMPosition';
@@ -9,6 +10,9 @@ function handlePositionUpdate(event: FCMTraderUpdate): void {
   const amm = getAMMFromFCMAddress(fcmAddress);
 
   if (amm === null) {
+    log.info('Event (FCMTraderUpdate: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 

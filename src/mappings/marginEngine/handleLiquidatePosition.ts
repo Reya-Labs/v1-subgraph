@@ -1,4 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts';
+import { BigInt, log } from '@graphprotocol/graph-ts';
 
 import { Liquidation } from '../../../generated/schema';
 import { PositionLiquidation } from '../../../generated/templates/MarginEngine/MarginEngine';
@@ -19,6 +19,9 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
 
   if (amm === null) {
+    log.info('Event (PositionLiquidation: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 

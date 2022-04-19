@@ -1,3 +1,4 @@
+import { log } from '@graphprotocol/graph-ts';
 import { ONE_BI } from '../../constants';
 import { FCMSwap } from '../../../generated/schema';
 import { FullyCollateralisedSwap } from '../../../generated/templates/aaveFCM/aaveFCM';
@@ -12,6 +13,9 @@ function handleFCMSwap(event: FullyCollateralisedSwap): void {
   const amm = getAMMFromFCMAddress(fcmAddress);
 
   if (amm === null) {
+    log.info('Event (FCMSwap: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 

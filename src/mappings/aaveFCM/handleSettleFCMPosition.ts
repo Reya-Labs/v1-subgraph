@@ -1,3 +1,5 @@
+import { log } from '@graphprotocol/graph-ts';
+
 import { ONE_BI } from '../../constants';
 import { FCMSettlement } from '../../../generated/schema';
 import { getAMMFromFCMAddress, getOrCreateTransaction } from '../../utilities';
@@ -12,6 +14,9 @@ function handleSettleFCMPosition(event: fcmPositionSettlement): void {
   const amm = getAMMFromFCMAddress(fcmAddress);
 
   if (amm === null) {
+    log.info('Event (fcmPositionSettlement: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 

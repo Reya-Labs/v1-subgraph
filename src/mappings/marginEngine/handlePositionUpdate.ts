@@ -1,4 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts';
+import { BigInt, log } from '@graphprotocol/graph-ts';
 
 import { PositionUpdate } from '../../../generated/templates/MarginEngine/MarginEngine';
 import {
@@ -14,6 +14,9 @@ function handlePositionUpdate(event: PositionUpdate): void {
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
 
   if (amm === null) {
+    log.info('Event (PositionUpdate: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 

@@ -1,3 +1,5 @@
+import { log } from '@graphprotocol/graph-ts';
+
 import { ONE_BI } from '../../constants';
 import { FCMUnwind } from '../../../generated/schema';
 import { FullyCollateralisedUnwind } from '../../../generated/templates/aaveFCM/aaveFCM';
@@ -12,6 +14,9 @@ function handleFCMUnwind(event: FullyCollateralisedUnwind): void {
   const amm = getAMMFromFCMAddress(fcmAddress);
 
   if (amm === null) {
+    log.info('Event (FCMUnwind: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 

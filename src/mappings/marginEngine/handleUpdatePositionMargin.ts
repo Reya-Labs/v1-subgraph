@@ -20,6 +20,9 @@ function handleUpdatePositionMargin(event: PositionMarginUpdate): void {
   log.info('marginEngineAddress: {}', [marginEngineAddress]);
 
   if (amm === null) {
+    log.info('Event (PositionMarginUpdate: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 

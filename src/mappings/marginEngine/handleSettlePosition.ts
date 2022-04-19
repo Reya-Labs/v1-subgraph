@@ -1,4 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts';
+import { BigInt, log } from '@graphprotocol/graph-ts';
 
 import { PositionSettlement } from '../../../generated/templates/MarginEngine/MarginEngine';
 import { ONE_BI } from '../../constants';
@@ -17,6 +17,9 @@ function handleSettlePosition(event: PositionSettlement): void {
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
 
   if (amm === null) {
+    log.info('Event (PositionSettlement: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 
