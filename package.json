@@ -1,6 +1,6 @@
 {
   "name": "@voltz-protocol/v1-subgraph",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A TypeScript graph interface for Voltz smart contract",
   "main": "dist/index.js",
   "types": "dist/types",
