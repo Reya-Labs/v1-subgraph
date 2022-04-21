@@ -29,3 +29,13 @@ export class MarginEngine extends DataSourceTemplate {
     );
   }
 }
+
+export class aaveFCM extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("aaveFCM", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext("aaveFCM", [address.toHex()], context);
+  }
+}

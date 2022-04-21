@@ -1,45 +1,50 @@
-import { BigInt } from '@graphprotocol/graph-ts';
+import { BigInt, log } from '@graphprotocol/graph-ts';
 
 import { PositionSettlement } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { ONE_BI } from '../../constants';
+import { Settlement } from '../../../generated/schema';
 import {
-  createPositionSnapshot,
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
-  getOrCreateTick,
+  getOrCreateTransaction,
 } from '../../utilities';
 
 function handleSettlePosition(event: PositionSettlement): void {
+  const transaction = getOrCreateTransaction(event);
+
   const owner = event.params.owner.toHexString();
   const marginEngineAddress = event.address.toHexString();
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
 
   if (amm === null) {
+    log.info('Event (PositionSettlement: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 
-  const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
-  const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(
-    marginEngineAddress,
+    amm,
     owner,
-    tickLower,
-    tickUpper,
+    BigInt.fromI32(event.params.tickLower),
+    BigInt.fromI32(event.params.tickUpper),
     event.block.timestamp,
   );
 
-  position.updatedTimestamp = event.block.timestamp;
-  position.amm = amm.id;
-  position.owner = owner;
-  position.tickLower = tickLower.id;
-  position.tickUpper = tickUpper.id;
-  position.margin = event.params.margin;
-  position.isSettled = event.params.isSettled;
-  position.fixedTokenBalance = event.params.fixedTokenBalance;
-  position.variableTokenBalance = event.params.variableTokenBalance;
+  const SettlementId = `${transaction.id}#${amm.txCount.toString()}`;
+  const settlement = new Settlement(SettlementId);
 
-  createPositionSnapshot(position, event.block.timestamp);
+  settlement.transaction = transaction.id;
+  settlement.amm = amm.id;
+  settlement.position = position.id;
+  settlement.settlementCashflow = event.params.settlementCashflow;
+  settlement.save();
 
+  position.isSettled = true;
   position.save();
+
+  amm.txCount = amm.txCount.plus(ONE_BI);
+  amm.save();
 }
 
 export default handleSettlePosition;

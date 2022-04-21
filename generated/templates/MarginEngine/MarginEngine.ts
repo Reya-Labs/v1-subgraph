@@ -86,6 +86,24 @@ export class FCMSetting__Params {
   }
 }
 
+export class HistoricalApy extends ethereum.Event {
+  get params(): HistoricalApy__Params {
+    return new HistoricalApy__Params(this);
+  }
+}
+
+export class HistoricalApy__Params {
+  _event: HistoricalApy;
+
+  constructor(event: HistoricalApy) {
+    this._event = event;
+  }
+
+  get value(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
 export class HistoricalApyWindowSetting extends ethereum.Event {
   get params(): HistoricalApyWindowSetting__Params {
     return new HistoricalApyWindowSetting__Params(this);
@@ -281,24 +299,16 @@ export class PositionLiquidation__Params {
     return this._event.parameters[2].value.toI32();
   }
 
-  get fixedTokenBalance(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+  get liquidator(): Address {
+    return this._event.parameters[3].value.toAddress();
   }
 
-  get variableTokenBalance(): BigInt {
+  get notionalUnwound(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get margin(): BigInt {
+  get liquidatorReward(): BigInt {
     return this._event.parameters[5].value.toBigInt();
-  }
-
-  get liquidity(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
-  }
-
-  get liquidator(): Address {
-    return this._event.parameters[7].value.toAddress();
   }
 }
 
@@ -315,88 +325,24 @@ export class PositionMarginUpdate__Params {
     this._event = event;
   }
 
-  get owner(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get tickLower(): i32 {
-    return this._event.parameters[1].value.toI32();
-  }
-
-  get tickUpper(): i32 {
-    return this._event.parameters[2].value.toI32();
-  }
-
-  get positionMargin(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
-export class PositionPostMintBurnUpdate extends ethereum.Event {
-  get params(): PositionPostMintBurnUpdate__Params {
-    return new PositionPostMintBurnUpdate__Params(this);
-  }
-}
-
-export class PositionPostMintBurnUpdate__Params {
-  _event: PositionPostMintBurnUpdate;
-
-  constructor(event: PositionPostMintBurnUpdate) {
-    this._event = event;
-  }
-
   get owner(): Address {
-    return this._event.parameters[0].value.toAddress();
+    return this._event.parameters[1].value.toAddress();
   }
 
   get tickLower(): i32 {
-    return this._event.parameters[1].value.toI32();
-  }
-
-  get tickUpper(): i32 {
     return this._event.parameters[2].value.toI32();
   }
 
-  get liquidity(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
-export class PositionPostSwapUpdate extends ethereum.Event {
-  get params(): PositionPostSwapUpdate__Params {
-    return new PositionPostSwapUpdate__Params(this);
-  }
-}
-
-export class PositionPostSwapUpdate__Params {
-  _event: PositionPostSwapUpdate;
-
-  constructor(event: PositionPostSwapUpdate) {
-    this._event = event;
-  }
-
-  get owner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get tickLower(): i32 {
-    return this._event.parameters[1].value.toI32();
-  }
-
   get tickUpper(): i32 {
-    return this._event.parameters[2].value.toI32();
+    return this._event.parameters[3].value.toI32();
   }
 
-  get fixedTokenBalance(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-
-  get variableTokenBalance(): BigInt {
+  get marginDelta(): BigInt {
     return this._event.parameters[4].value.toBigInt();
-  }
-
-  get margin(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -425,24 +371,54 @@ export class PositionSettlement__Params {
     return this._event.parameters[2].value.toI32();
   }
 
-  get fixedTokenBalance(): BigInt {
+  get settlementCashflow(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+}
+
+export class PositionUpdate extends ethereum.Event {
+  get params(): PositionUpdate__Params {
+    return new PositionUpdate__Params(this);
+  }
+}
+
+export class PositionUpdate__Params {
+  _event: PositionUpdate;
+
+  constructor(event: PositionUpdate) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get tickLower(): i32 {
+    return this._event.parameters[1].value.toI32();
+  }
+
+  get tickUpper(): i32 {
+    return this._event.parameters[2].value.toI32();
+  }
+
+  get _liquidity(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get variableTokenBalance(): BigInt {
+  get margin(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get margin(): BigInt {
+  get fixedTokenBalance(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
 
-  get settlementCashflow(): BigInt {
+  get variableTokenBalance(): BigInt {
     return this._event.parameters[6].value.toBigInt();
   }
 
-  get isSettled(): boolean {
-    return this._event.parameters[7].value.toBoolean();
+  get accumulatedFees(): BigInt {
+    return this._event.parameters[7].value.toBigInt();
   }
 }
 
@@ -561,6 +537,10 @@ export class MarginEngine__getPositionResultValue0Struct extends ethereum.Tuple 
 
   get rewardPerAmount(): BigInt {
     return this[8].toBigInt();
+  }
+
+  get accumulatedFees(): BigInt {
+    return this[9].toBigInt();
   }
 }
 
@@ -785,7 +765,7 @@ export class MarginEngine extends ethereum.SmartContract {
   ): MarginEngine__getPositionResultValue0Struct {
     let result = super.call(
       "getPosition",
-      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256,uint256))",
+      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256,uint256,uint256))",
       [
         ethereum.Value.fromAddress(_owner),
         ethereum.Value.fromI32(_tickLower),
@@ -805,7 +785,7 @@ export class MarginEngine extends ethereum.SmartContract {
   ): ethereum.CallResult<MarginEngine__getPositionResultValue0Struct> {
     let result = super.tryCall(
       "getPosition",
-      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256,uint256))",
+      "getPosition(address,int24,int24):((bool,uint128,int256,int256,int256,int256,int256,uint256,uint256,uint256))",
       [
         ethereum.Value.fromAddress(_owner),
         ethereum.Value.fromI32(_tickLower),
@@ -1329,6 +1309,10 @@ export class GetPositionCallValue0Struct extends ethereum.Tuple {
   get rewardPerAmount(): BigInt {
     return this[8].toBigInt();
   }
+
+  get accumulatedFees(): BigInt {
+    return this[9].toBigInt();
+  }
 }
 
 export class GetPositionMarginRequirementCall extends ethereum.Call {
@@ -1372,7 +1356,7 @@ export class GetPositionMarginRequirementCall__Outputs {
     this._call = call;
   }
 
-  get _margin(): BigInt {
+  get value0(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
   }
 }

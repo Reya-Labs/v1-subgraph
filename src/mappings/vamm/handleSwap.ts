@@ -3,12 +3,7 @@ import { BigInt } from '@graphprotocol/graph-ts';
 import { Swap as SwapEvent } from '../../../generated/templates/VAMM/VAMM';
 import { Swap } from '../../../generated/schema';
 import { ONE_BI } from '../../constants';
-import {
-  getOrCreateAMM,
-  getOrCreatePosition,
-  getOrCreateTick,
-  getOrCreateTransaction,
-} from '../../utilities';
+import { getOrCreateAMM, getOrCreatePosition, getOrCreateTransaction } from '../../utilities';
 
 function handleSwap(event: SwapEvent): void {
   const sender = event.params.sender.toHexString();
@@ -18,13 +13,11 @@ function handleSwap(event: SwapEvent): void {
   const vammAddress = event.address.toHexString();
   const amm = getOrCreateAMM(vammAddress, event.block.timestamp);
 
-  const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
-  const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(
-    amm.marginEngineAddress,
+    amm,
     owner,
-    tickLower,
-    tickUpper,
+    BigInt.fromI32(event.params.tickLower),
+    BigInt.fromI32(event.params.tickUpper),
     event.block.timestamp,
   );
 
@@ -35,14 +28,14 @@ function handleSwap(event: SwapEvent): void {
   swap.amm = amm.id;
   swap.position = position.id;
   swap.sender = sender;
-  swap.sqrtPriceX96 = event.params.sqrtPriceX96;
-  swap.liquidity = event.params.liquidity;
-  swap.tick = BigInt.fromI32(event.params.tick);
+  swap.desiredNotional = event.params.desiredNotional;
+  swap.sqrtPriceLimitX96 = event.params.sqrtPriceLimitX96;
+  swap.cumulativeFeeIncurred = event.params.cumulativeFeeIncurred;
+  swap.fixedTokenDelta = event.params.fixedTokenDelta;
+  swap.variableTokenDelta = event.params.variableTokenDelta;
+  swap.fixedTokenDeltaUnbalanced = event.params.fixedTokenDeltaUnbalanced;
   swap.save();
 
-  amm.sqrtPriceX96 = event.params.sqrtPriceX96;
-  amm.liquidity = event.params.liquidity;
-  amm.tick = BigInt.fromI32(event.params.tick);
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();
 }

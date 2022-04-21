@@ -13,7 +13,7 @@ const getOrCreateTransaction = (event: ethereum.Event): Transaction => {
   const transaction = new Transaction(transactionHash);
 
   transaction.blockNumber = event.block.number;
-  transaction.timestamp = event.block.timestamp;
+  transaction.createdTimestamp = event.block.timestamp;
   transaction.gasPrice = event.transaction.gasPrice;
   transaction.save();
 

@@ -1,15 +1,10 @@
-# First-class objects
 type Factory @entity {
-  # factory address
   id: ID!
-
   owner: ID!
 }
 
 type UnderlyingToken @entity {
-  # token address
   id: ID!
-
   name: String!
   decimals: BigInt!
 }
@@ -20,42 +15,39 @@ type RateOracle @entity {
   token: UnderlyingToken!
 }
 
-type AMM @entity {
-  # actually the address of the VAMM
-  id: ID!
-
-  createdTimestamp: BigInt!
-  updatedTimestamp: BigInt!
-  fcmAddress: String!
-  marginEngineAddress: String!
-  rateOracle: RateOracle!
-  termStartTimestamp: BigInt!
-  termEndTimestamp: BigInt!
-  tickSpacing: BigInt!
-  sqrtPriceX96: BigInt!
-  liquidity: BigInt!
-  tick: BigInt!
-
-  # tracking attributes
-  txCount: BigInt!
-
-  # derived values
-  mints: [Mint!]! @derivedFrom(field: "amm")
-  burns: [Burn!]! @derivedFrom(field: "amm")
-  swaps: [Swap!]! @derivedFrom(field: "amm")
-}
-
 type MarginEngine @entity {
   id: ID!
   amm: AMM!
 }
 
-type Tick @entity {
-  # format: <amm>#<tick value>
+type FCM @entity {
   id: ID!
-
   amm: AMM!
-  value: BigInt!
+}
+
+type AMM @entity {
+  id: ID!
+  createdTimestamp: BigInt!
+
+  fcm: FCM!
+  marginEngine: MarginEngine!
+  rateOracle: RateOracle!
+
+  tickSpacing: BigInt!
+  termStartTimestamp: BigInt!
+  termEndTimestamp: BigInt!
+
+  updatedTimestamp: BigInt!
+  tick: BigInt!
+
+  txCount: BigInt!
+
+  mints:         [Mint!]!          @derivedFrom(field: "amm")
+  burns:         [Burn!]!          @derivedFrom(field: "amm")
+  swaps:         [Swap!]!          @derivedFrom(field: "amm")
+  marginUpdates: [MarginUpdate!]!  @derivedFrom(field: "amm")
+  liquidations:  [Liquidation!]!   @derivedFrom(field: "amm")
+  settlements:   [Settlement!]!    @derivedFrom(field: "amm")
 }
 
 type Wallet @entity {
@@ -63,125 +55,213 @@ type Wallet @entity {
 
   positions: [Position!]! @derivedFrom(field: "owner")
   positionCount: BigInt!
+
+  fcmPositions: [FCMPosition!]! @derivedFrom(field: "owner")
+  fcmPositionCount: BigInt!
 }
 
 type Position @entity {
-  # format: <owner>#<tickLower>#<tickUpper>
   id: ID!
-
   createdTimestamp: BigInt!
-  updatedTimestamp: BigInt!
-
   amm: AMM!
 
-  # owner of the position
   owner: Wallet!
+  tickLower: BigInt!
+  tickUpper: BigInt!
 
-  # lower tick of the position
-  tickLower: Tick!
-  # upper tick of the position
-  tickUpper: Tick!
-  # total position liquidity
+  updatedTimestamp: BigInt!
+
   liquidity: BigInt!
-  # total position margin
   margin: BigInt!
   fixedTokenBalance: BigInt!
   variableTokenBalance: BigInt!
+  accumulatedFees: BigInt!
+
   isLiquidityProvider: Boolean!
   isSettled: Boolean!
-  isEmpty: Boolean!
 
-  # derived values
-  mints: [Mint!]! @derivedFrom(field: "position")
-  burns: [Burn!]! @derivedFrom(field: "position")
-  swaps: [Swap!]! @derivedFrom(field: "position")
-  snapshots: [PositionSnapshot!]! @derivedFrom(field: "position")
+  mints:         [Mint!]!             @derivedFrom(field: "position")
+  burns:         [Burn!]!             @derivedFrom(field: "position")
+  swaps:         [Swap!]!             @derivedFrom(field: "position")
+  marginUpdates: [MarginUpdate!]!     @derivedFrom(field: "position")
+  liquidations:  [Liquidation!]!      @derivedFrom(field: "position")
+  settlements:   [Settlement!]!       @derivedFrom(field: "position")
+  snapshots:     [PositionSnapshot!]! @derivedFrom(field: "position")
   snapshotCount: BigInt!
 }
 
 type PositionSnapshot @entity {
-  # format: <position>#<index>
   id: ID!
-
   createdTimestamp: BigInt!
   position: Position!
 
-  # total position liquidity
   liquidity: BigInt!
-  # total position margin
   margin: BigInt!
   fixedTokenBalance: BigInt!
   variableTokenBalance: BigInt!
-  isSettled: Boolean!
-  isEmpty: Boolean!
+  accumulatedFees: BigInt!
 
-  # In future, can add USD or underlying values
+  isLiquidityProvider: Boolean!
+  isSettled: Boolean!
 }
 
 # Event tracking
 type Transaction @entity {
-  # transaction hash
   id: ID!
-  # block transaction was included in
+  amm: AMM!
   blockNumber: BigInt!
-  # timestamp transaction was confirmed
-  timestamp: BigInt!
-  # gas used during transaction execution
+  createdTimestamp: BigInt!
   gasPrice: BigInt!
 
-  # derived values
-  mints: [Mint!]! @derivedFrom(field: "transaction")
-  burns: [Burn!]! @derivedFrom(field: "transaction")
-  swaps: [Swap!]! @derivedFrom(field: "transaction")
+  mints:         [Mint!]!             @derivedFrom(field: "transaction")
+  burns:         [Burn!]!             @derivedFrom(field: "transaction")
+  swaps:         [Swap!]!             @derivedFrom(field: "transaction")
+  marginUpdates: [MarginUpdate!]!     @derivedFrom(field: "transaction")
+  liquidations:  [Liquidation!]!      @derivedFrom(field: "transaction")
+  settlements:   [Settlement!]!       @derivedFrom(field: "transaction")
 }
 
 type Mint @entity {
-  # transaction hash + "#" + index in mints Transaction array
   id: ID!
-
   transaction: Transaction!
 
-  # Get from transaction
   amm: AMM!
   position: Position!
 
-  # Passed with Mint event
   sender: String!
-  tickLower: Tick!
-  tickUpper: Tick!
   amount: BigInt!
 }
 
 type Burn @entity {
-  # format: <transaction hash>#<index in burns Transaction array>
   id: ID!
-
   transaction: Transaction!
+
   amm: AMM!
   position: Position!
-  sender: String!
 
-  # Passed with Burn event
-  tickLower: Tick!
-  tickUpper: Tick!
+  sender: String!
   amount: BigInt!
 }
 
 type Swap @entity {
-  # format: <transaction hash>#<index in burns Transaction array>
   id: ID!
-
   transaction: Transaction!
-  amm: AMM!
-  sender: String!
 
-  # Get from recipient
+  amm: AMM!
   position: Position!
 
-  # index within the txn
-  txIndex: BigInt!
+  sender: String!
+  desiredNotional: BigInt!
+  sqrtPriceLimitX96: BigInt!
+  cumulativeFeeIncurred: BigInt!
+  fixedTokenDelta: BigInt!
+  variableTokenDelta: BigInt!
+  fixedTokenDeltaUnbalanced: BigInt!
+}
 
-  sqrtPriceX96: BigInt!
-  liquidity: BigInt!
-  tick: BigInt!
+type Liquidation @entity {
+  id: ID!
+  transaction: Transaction!
+
+  amm: AMM!
+  position: Position!
+
+  liquidator: String!
+  reward: BigInt!
+  notionalUnwound: BigInt!
+}
+
+type Settlement @entity {
+  id: ID!
+  transaction: Transaction!
+
+  amm: AMM!
+  position: Position!
+
+  settlementCashflow: BigInt!
+}
+
+type MarginUpdate @entity {
+  id: ID!
+  transaction: Transaction!
+
+  amm: AMM!
+  position: Position!
+
+  depositer: String!
+  marginDelta: BigInt!
+}
+
+type FCMPosition @entity {
+  id: ID!
+  createdTimestamp: BigInt!
+  amm: AMM!
+
+  owner: Wallet!
+
+  updatedTimestamp: BigInt!
+
+  fixedTokenBalance: BigInt!
+  variableTokenBalance: BigInt!
+  marginInScaledYieldBearingTokens: BigInt!
+  
+  isSettled: Boolean!
+
+  fcmSwaps:       [FCMSwap!]!             @derivedFrom(field: "fcmPosition")
+  fcmUnwinds:     [FCMUnwind!]!           @derivedFrom(field: "fcmPosition")
+  fcmSettlements: [FCMSettlement!]!       @derivedFrom(field: "fcmPosition")
+  snapshots:      [FCMPositionSnapshot!]! @derivedFrom(field: "fcmPosition")
+  snapshotCount: BigInt!
+}
+
+type FCMPositionSnapshot @entity {
+  id: ID!
+  createdTimestamp: BigInt!
+  fcmPosition: FCMPosition!
+
+  fixedTokenBalance: BigInt!
+  variableTokenBalance: BigInt!
+  marginInScaledYieldBearingTokens: BigInt!
+  
+  isSettled: Boolean!
+}
+
+type FCMSwap @entity {
+  id: ID!
+  transaction: Transaction!
+
+  amm: AMM!
+  fcmPosition: FCMPosition!
+
+  desiredNotional: BigInt!
+  sqrtPriceLimitX96: BigInt!
+  cumulativeFeeIncurred: BigInt!
+  fixedTokenDelta: BigInt!
+  variableTokenDelta: BigInt!
+  fixedTokenDeltaUnbalanced: BigInt!
+}
+
+type FCMUnwind @entity {
+  id: ID!
+  transaction: Transaction!
+
+  amm: AMM!
+  fcmPosition: FCMPosition!
+
+  desiredNotional: BigInt!
+  sqrtPriceLimitX96: BigInt!
+  cumulativeFeeIncurred: BigInt!
+  fixedTokenDelta: BigInt!
+  variableTokenDelta: BigInt!
+  fixedTokenDeltaUnbalanced: BigInt!
+}
+
+type FCMSettlement @entity {
+  id: ID!
+  transaction: Transaction!
+
+  amm: AMM!
+  fcmPosition: FCMPosition!
+
+  settlementCashflow: BigInt!
 }

@@ -1,45 +1,51 @@
-import { BigInt } from '@graphprotocol/graph-ts';
+import { BigInt, log } from '@graphprotocol/graph-ts';
 
+import { Liquidation } from '../../../generated/schema';
 import { PositionLiquidation } from '../../../generated/templates/MarginEngine/MarginEngine';
+import { ONE_BI } from '../../constants';
 import {
-  createPositionSnapshot,
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
-  getOrCreateTick,
+  getOrCreateTransaction,
 } from '../../utilities';
 
 function handleLiquidatePosition(event: PositionLiquidation): void {
+  const transaction = getOrCreateTransaction(event);
+
   const owner = event.params.owner.toHexString();
+  const liquidator = event.params.liquidator.toHexString();
+
   const marginEngineAddress = event.address.toHexString();
   const amm = getAMMFromMarginEngineAddress(marginEngineAddress);
 
   if (amm === null) {
+    log.info('Event (PositionLiquidation: {}) cannot be linked to a pool', [
+      event.transaction.hash.toHexString(),
+    ]);
     return;
   }
 
-  const tickLower = getOrCreateTick(amm, BigInt.fromI32(event.params.tickLower));
-  const tickUpper = getOrCreateTick(amm, BigInt.fromI32(event.params.tickUpper));
   const position = getOrCreatePosition(
-    marginEngineAddress,
+    amm,
     owner,
-    tickLower,
-    tickUpper,
+    BigInt.fromI32(event.params.tickLower),
+    BigInt.fromI32(event.params.tickUpper),
     event.block.timestamp,
   );
 
-  position.updatedTimestamp = event.block.timestamp;
-  position.amm = amm.id;
-  position.owner = owner;
-  position.tickLower = tickLower.id;
-  position.tickUpper = tickUpper.id;
-  position.margin = event.params.margin;
-  position.liquidity = event.params.liquidity;
-  position.fixedTokenBalance = event.params.fixedTokenBalance;
-  position.variableTokenBalance = event.params.variableTokenBalance;
+  const liquidationId = `${transaction.id}#${amm.txCount.toString()}`;
+  const liquidation = new Liquidation(liquidationId);
 
-  createPositionSnapshot(position, event.block.timestamp);
+  liquidation.transaction = transaction.id;
+  liquidation.amm = amm.id;
+  liquidation.position = position.id;
+  liquidation.liquidator = liquidator;
+  liquidation.reward = event.params.liquidatorReward;
+  liquidation.notionalUnwound = event.params.notionalUnwound;
+  liquidation.save();
 
-  position.save();
+  amm.txCount = amm.txCount.plus(ONE_BI);
+  amm.save();
 }
 
 export default handleLiquidatePosition;

@@ -31,6 +31,8 @@ dataSources:
           handler: handleMasterFCMSet
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
+        - event: PeripheryUpdate(address)
+          handler: handlePeripheryUpdate
 templates:
   - kind: ethereum/contract
     name: VAMM
@@ -66,12 +68,16 @@ templates:
           handler: handlePaused
         - event: FeeProtocol(uint8)
           handler: handleSetFeeProtocol
-        - event: Swap(indexed address,indexed address,uint160,uint128,int24,int24,int24)
+        - event: Swap(address,indexed address,indexed int24,indexed int24,int256,uint160,uint256,int256,int256,int256)
           handler: handleSwap
         - event: Unpaused(address)
           handler: handleUnpaused
         - event: Upgraded(indexed address)
           handler: handleUpgraded
+        - event: IsAlpha(bool)
+          handler: handleIsAlpha
+        - event: VAMMPriceChange(int24)
+          handler: handleVAMMPriceChange
   - kind: ethereum/contract
     name: MarginEngine
     network: {{name}}
@@ -98,9 +104,11 @@ templates:
           handler: handleCollectProtocol
         - event: FCMSetting(indexed address)
           handler: handleFCMSet
+        - event: HistoricalApy(uint256)
+          handler: handleHistoricalApy
         - event: HistoricalApyWindowSetting(uint256)
           handler: handleHistoricalApyWindowSet
-        - event: PositionLiquidation(indexed address,indexed int24,indexed int24,int256,int256,int256,uint128,address)
+        - event: PositionLiquidation(indexed address,indexed int24,indexed int24,address,int256,uint256)
           handler: handleLiquidatePosition
         - event: LiquidatorRewardSetting(uint256)
           handler: handleLiquidatorRewardSet
@@ -110,17 +118,51 @@ templates:
           handler: handleOwnershipTransferred
         - event: Paused(address)
           handler: handlePaused
-        - event: PositionSettlement(indexed address,indexed int24,indexed int24,int256,int256,int256,int256,bool)
+        - event: PositionSettlement(indexed address,indexed int24,indexed int24,int256)
           handler: handleSettlePosition
         - event: Unpaused(address)
           handler: handleUnpaused
-        - event: PositionMarginUpdate(indexed address,indexed int24,indexed int24,int256)
+        - event: PositionMarginUpdate(address,indexed address,indexed int24,indexed int24,int256)
           handler: handleUpdatePositionMargin
-        - event: PositionPostMintBurnUpdate(indexed address,indexed int24,indexed int24,uint128)
-          handler: handleUpdatePositionPostMintBurn
-        - event: PositionPostSwapUpdate(indexed address,indexed int24,indexed int24,int256,int256,int256)
-          handler: handleUpdatePositionPostSwap
         - event: Upgraded(indexed address)
           handler: handleUpgraded
+        - event: PositionUpdate(indexed address,indexed int24,indexed int24,uint128,int256,int256,int256,uint256)
+          handler: handlePositionUpdate
         - event: VAMMSetting(indexed address)
           handler: handleVAMMSet
+  - kind: ethereum/contract
+    name: aaveFCM
+    network: {{name}}
+    source:
+      abi: aaveFCM
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/aaveFCM/index.ts
+      entities:
+        - aaveFCM
+      abis:
+        - name: aaveFCM
+          file: ./artifacts/aaveFCM.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: FCMTraderUpdate(indexed address,uint256,int256,int256)
+          handler: handleFCMTraderUpdate
+        - event: FullyCollateralisedSwap(indexed address,uint256,uint160,uint256,int256,int256,int256)
+          handler: handleFCMSwap
+        - event: FullyCollateralisedUnwind(indexed address,uint256,uint160,uint256,int256,int256,int256)
+          handler: handleFCMUnwind
+        - event: fcmPositionSettlement(indexed address,int256)
+          handler: handleSettleFCMPosition
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Paused(address)
+          handler: handlePaused
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
