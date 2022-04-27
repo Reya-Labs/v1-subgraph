@@ -36,17 +36,17 @@ function handlePositionUpdate(event: PositionUpdate): void {
   position.liquidity = event.params._liquidity;
   position.margin = event.params.margin;
   position.accumulatedFees = event.params.accumulatedFees;
+  position.save();
 
-  if (position.positionType === BigInt.zero()) {
+  if (position.positionType.equals(BigInt.zero())) {
     // if it's not already liquidity provider
 
-    if (position.fixedTokenBalance < BigInt.zero()) {
-      position.positionType = FIXED_TAKER;
-    } else if (position.variableTokenBalance > BigInt.zero()) {
+    if (position.fixedTokenBalance.lt(BigInt.zero())) {
       position.positionType = VARIABLE_TAKER;
+    } else if (position.fixedTokenBalance.gt(BigInt.zero())) {
+      position.positionType = FIXED_TAKER;
     }
   }
-
   position.save();
 
   createPositionSnapshot(position, event.block.timestamp);
