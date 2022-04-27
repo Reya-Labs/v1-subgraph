@@ -1,7 +1,7 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
 
 import { PositionUpdate } from '../../../generated/templates/MarginEngine/MarginEngine';
-import { FIXED_TAKER, VARIABLE_TAKER } from '../../constants';
+import { FIXED_TAKER, LIQUIDITY_PROVIDER, VARIABLE_TAKER } from '../../constants';
 import {
   createPositionSnapshot,
   getAMMFromMarginEngineAddress,
@@ -38,7 +38,7 @@ function handlePositionUpdate(event: PositionUpdate): void {
   position.accumulatedFees = event.params.accumulatedFees;
   position.save();
 
-  if (position.positionType.equals(BigInt.zero())) {
+  if (position.positionType.notEqual(LIQUIDITY_PROVIDER)) {
     // if it's not already liquidity provider
 
     if (position.fixedTokenBalance.lt(BigInt.zero())) {
