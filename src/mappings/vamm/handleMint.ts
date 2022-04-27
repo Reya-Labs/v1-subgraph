@@ -2,7 +2,7 @@ import { BigInt } from '@graphprotocol/graph-ts';
 
 import { Mint as MintEvent } from '../../../generated/templates/VAMM/VAMM';
 import { Mint } from '../../../generated/schema';
-import { ONE_BI } from '../../constants';
+import { LIQUIDITY_PROVIDER, ONE_BI } from '../../constants';
 import { getOrCreateAMM, getOrCreatePosition, getOrCreateTransaction } from '../../utilities';
 
 function handleMint(event: MintEvent): void {
@@ -31,7 +31,7 @@ function handleMint(event: MintEvent): void {
   mint.amount = event.params.amount;
   mint.save();
 
-  position.isLiquidityProvider = true;
+  position.positionType = LIQUIDITY_PROVIDER;
   position.save();
 
   amm.txCount = amm.txCount.plus(ONE_BI);

@@ -77,7 +77,7 @@ type Position @entity {
   variableTokenBalance: BigInt!
   accumulatedFees: BigInt!
 
-  isLiquidityProvider: Boolean!
+  positionType: BigInt!
   isSettled: Boolean!
 
   mints:         [Mint!]!             @derivedFrom(field: "position")
@@ -101,7 +101,7 @@ type PositionSnapshot @entity {
   variableTokenBalance: BigInt!
   accumulatedFees: BigInt!
 
-  isLiquidityProvider: Boolean!
+  positionType: BigInt!
   isSettled: Boolean!
 }
 

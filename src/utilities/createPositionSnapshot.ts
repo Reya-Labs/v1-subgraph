@@ -15,7 +15,7 @@ const createPositionSnapshot = (position: Position, timestamp: BigInt): void => 
   positionSnapshot.variableTokenBalance = position.variableTokenBalance;
   positionSnapshot.accumulatedFees = position.accumulatedFees;
   positionSnapshot.isSettled = position.isSettled;
-  positionSnapshot.isLiquidityProvider = position.isLiquidityProvider;
+  positionSnapshot.positionType = position.positionType;
   positionSnapshot.save();
 
   // eslint-disable-next-line no-param-reassign

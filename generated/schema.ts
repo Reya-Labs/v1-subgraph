@@ -527,7 +527,7 @@ export class Position extends Entity {
     this.set("fixedTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("accumulatedFees", Value.fromBigInt(BigInt.zero()));
-    this.set("isLiquidityProvider", Value.fromBoolean(false));
+    this.set("positionType", Value.fromBigInt(BigInt.zero()));
     this.set("isSettled", Value.fromBoolean(false));
     this.set("snapshotCount", Value.fromBigInt(BigInt.zero()));
   }
@@ -657,13 +657,13 @@ export class Position extends Entity {
     this.set("accumulatedFees", Value.fromBigInt(value));
   }
 
-  get isLiquidityProvider(): boolean {
-    let value = this.get("isLiquidityProvider");
-    return value!.toBoolean();
+  get positionType(): BigInt {
+    let value = this.get("positionType");
+    return value!.toBigInt();
   }
 
-  set isLiquidityProvider(value: boolean) {
-    this.set("isLiquidityProvider", Value.fromBoolean(value));
+  set positionType(value: BigInt) {
+    this.set("positionType", Value.fromBigInt(value));
   }
 
   get isSettled(): boolean {
@@ -760,7 +760,7 @@ export class PositionSnapshot extends Entity {
     this.set("fixedTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("accumulatedFees", Value.fromBigInt(BigInt.zero()));
-    this.set("isLiquidityProvider", Value.fromBoolean(false));
+    this.set("positionType", Value.fromBigInt(BigInt.zero()));
     this.set("isSettled", Value.fromBoolean(false));
   }
 
@@ -855,13 +855,13 @@ export class PositionSnapshot extends Entity {
     this.set("accumulatedFees", Value.fromBigInt(value));
   }
 
-  get isLiquidityProvider(): boolean {
-    let value = this.get("isLiquidityProvider");
-    return value!.toBoolean();
+  get positionType(): BigInt {
+    let value = this.get("positionType");
+    return value!.toBigInt();
   }
 
-  set isLiquidityProvider(value: boolean) {
-    this.set("isLiquidityProvider", Value.fromBoolean(value));
+  set positionType(value: BigInt) {
+    this.set("positionType", Value.fromBigInt(value));
   }
 
   get isSettled(): boolean {
