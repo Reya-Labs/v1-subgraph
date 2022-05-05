@@ -18,6 +18,8 @@ const getOrCreateFCMPosition = (amm: AMM, trader: string, timestamp: BigInt): FC
   fcmPosition.owner = wallet.id;
   fcmPosition.createdTimestamp = timestamp;
   fcmPosition.snapshotCount = ZERO_BI;
+  fcmPosition.totalNotionalTraded = ZERO_BI;
+  fcmPosition.sumOfWeightedFixedRate = ZERO_BI;
   fcmPosition.amm = amm.id;
   fcmPosition.save();
 

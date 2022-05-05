@@ -26,6 +26,8 @@ const getOrCreatePosition = (
   position.tickLower = tickLower;
   position.tickUpper = tickUpper;
   position.snapshotCount = ZERO_BI;
+  position.totalNotionalTraded = ZERO_BI;
+  position.sumOfWeightedFixedRate = ZERO_BI;
   position.amm = amm.id;
   position.save();
 

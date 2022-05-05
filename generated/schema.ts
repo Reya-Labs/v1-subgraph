@@ -263,6 +263,8 @@ export class AMM extends Entity {
     this.set("tickSpacing", Value.fromBigInt(BigInt.zero()));
     this.set("termStartTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("termEndTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("totalNotionalTraded", Value.fromBigInt(BigInt.zero()));
+    this.set("totalLiquidity", Value.fromBigInt(BigInt.zero()));
     this.set("updatedTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("tick", Value.fromBigInt(BigInt.zero()));
     this.set("txCount", Value.fromBigInt(BigInt.zero()));
@@ -355,6 +357,24 @@ export class AMM extends Entity {
 
   set termEndTimestamp(value: BigInt) {
     this.set("termEndTimestamp", Value.fromBigInt(value));
+  }
+
+  get totalNotionalTraded(): BigInt {
+    let value = this.get("totalNotionalTraded");
+    return value!.toBigInt();
+  }
+
+  set totalNotionalTraded(value: BigInt) {
+    this.set("totalNotionalTraded", Value.fromBigInt(value));
+  }
+
+  get totalLiquidity(): BigInt {
+    let value = this.get("totalLiquidity");
+    return value!.toBigInt();
+  }
+
+  set totalLiquidity(value: BigInt) {
+    this.set("totalLiquidity", Value.fromBigInt(value));
   }
 
   get updatedTimestamp(): BigInt {
@@ -527,6 +547,8 @@ export class Position extends Entity {
     this.set("fixedTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("accumulatedFees", Value.fromBigInt(BigInt.zero()));
+    this.set("totalNotionalTraded", Value.fromBigInt(BigInt.zero()));
+    this.set("sumOfWeightedFixedRate", Value.fromBigInt(BigInt.zero()));
     this.set("positionType", Value.fromBigInt(BigInt.zero()));
     this.set("isSettled", Value.fromBoolean(false));
     this.set("snapshotCount", Value.fromBigInt(BigInt.zero()));
@@ -657,6 +679,24 @@ export class Position extends Entity {
     this.set("accumulatedFees", Value.fromBigInt(value));
   }
 
+  get totalNotionalTraded(): BigInt {
+    let value = this.get("totalNotionalTraded");
+    return value!.toBigInt();
+  }
+
+  set totalNotionalTraded(value: BigInt) {
+    this.set("totalNotionalTraded", Value.fromBigInt(value));
+  }
+
+  get sumOfWeightedFixedRate(): BigInt {
+    let value = this.get("sumOfWeightedFixedRate");
+    return value!.toBigInt();
+  }
+
+  set sumOfWeightedFixedRate(value: BigInt) {
+    this.set("sumOfWeightedFixedRate", Value.fromBigInt(value));
+  }
+
   get positionType(): BigInt {
     let value = this.get("positionType");
     return value!.toBigInt();
@@ -760,6 +800,8 @@ export class PositionSnapshot extends Entity {
     this.set("fixedTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("variableTokenBalance", Value.fromBigInt(BigInt.zero()));
     this.set("accumulatedFees", Value.fromBigInt(BigInt.zero()));
+    this.set("totalNotionalTraded", Value.fromBigInt(BigInt.zero()));
+    this.set("sumOfWeightedFixedRate", Value.fromBigInt(BigInt.zero()));
     this.set("positionType", Value.fromBigInt(BigInt.zero()));
     this.set("isSettled", Value.fromBoolean(false));
   }
@@ -853,6 +895,24 @@ export class PositionSnapshot extends Entity {
 
   set accumulatedFees(value: BigInt) {
     this.set("accumulatedFees", Value.fromBigInt(value));
+  }
+
+  get totalNotionalTraded(): BigInt {
+    let value = this.get("totalNotionalTraded");
+    return value!.toBigInt();
+  }
+
+  set totalNotionalTraded(value: BigInt) {
+    this.set("totalNotionalTraded", Value.fromBigInt(value));
+  }
+
+  get sumOfWeightedFixedRate(): BigInt {
+    let value = this.get("sumOfWeightedFixedRate");
+    return value!.toBigInt();
+  }
+
+  set sumOfWeightedFixedRate(value: BigInt) {
+    this.set("sumOfWeightedFixedRate", Value.fromBigInt(value));
   }
 
   get positionType(): BigInt {
@@ -1571,6 +1631,8 @@ export class FCMPosition extends Entity {
       "marginInScaledYieldBearingTokens",
       Value.fromBigInt(BigInt.zero())
     );
+    this.set("totalNotionalTraded", Value.fromBigInt(BigInt.zero()));
+    this.set("sumOfWeightedFixedRate", Value.fromBigInt(BigInt.zero()));
     this.set("isSettled", Value.fromBoolean(false));
     this.set("snapshotCount", Value.fromBigInt(BigInt.zero()));
   }
@@ -1664,6 +1726,24 @@ export class FCMPosition extends Entity {
     this.set("marginInScaledYieldBearingTokens", Value.fromBigInt(value));
   }
 
+  get totalNotionalTraded(): BigInt {
+    let value = this.get("totalNotionalTraded");
+    return value!.toBigInt();
+  }
+
+  set totalNotionalTraded(value: BigInt) {
+    this.set("totalNotionalTraded", Value.fromBigInt(value));
+  }
+
+  get sumOfWeightedFixedRate(): BigInt {
+    let value = this.get("sumOfWeightedFixedRate");
+    return value!.toBigInt();
+  }
+
+  set sumOfWeightedFixedRate(value: BigInt) {
+    this.set("sumOfWeightedFixedRate", Value.fromBigInt(value));
+  }
+
   get isSettled(): boolean {
     let value = this.get("isSettled");
     return value!.toBoolean();
@@ -1732,6 +1812,8 @@ export class FCMPositionSnapshot extends Entity {
       "marginInScaledYieldBearingTokens",
       Value.fromBigInt(BigInt.zero())
     );
+    this.set("totalNotionalTraded", Value.fromBigInt(BigInt.zero()));
+    this.set("sumOfWeightedFixedRate", Value.fromBigInt(BigInt.zero()));
     this.set("isSettled", Value.fromBoolean(false));
   }
 
@@ -1806,6 +1888,24 @@ export class FCMPositionSnapshot extends Entity {
 
   set marginInScaledYieldBearingTokens(value: BigInt) {
     this.set("marginInScaledYieldBearingTokens", Value.fromBigInt(value));
+  }
+
+  get totalNotionalTraded(): BigInt {
+    let value = this.get("totalNotionalTraded");
+    return value!.toBigInt();
+  }
+
+  set totalNotionalTraded(value: BigInt) {
+    this.set("totalNotionalTraded", Value.fromBigInt(value));
+  }
+
+  get sumOfWeightedFixedRate(): BigInt {
+    let value = this.get("sumOfWeightedFixedRate");
+    return value!.toBigInt();
+  }
+
+  set sumOfWeightedFixedRate(value: BigInt) {
+    this.set("sumOfWeightedFixedRate", Value.fromBigInt(value));
   }
 
   get isSettled(): boolean {

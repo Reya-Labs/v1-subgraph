@@ -16,6 +16,8 @@ const createPositionSnapshot = (position: Position, timestamp: BigInt): void => 
   positionSnapshot.accumulatedFees = position.accumulatedFees;
   positionSnapshot.isSettled = position.isSettled;
   positionSnapshot.positionType = position.positionType;
+  positionSnapshot.totalNotionalTraded = position.totalNotionalTraded;
+  positionSnapshot.sumOfWeightedFixedRate = position.sumOfWeightedFixedRate;
   positionSnapshot.save();
 
   // eslint-disable-next-line no-param-reassign

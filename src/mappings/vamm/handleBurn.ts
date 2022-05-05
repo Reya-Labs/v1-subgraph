@@ -31,6 +31,7 @@ function handleBurn(event: BurnEvent): void {
   burn.amount = event.params.amount;
   burn.save();
 
+  amm.totalLiquidity = amm.totalLiquidity.minus(burn.amount);
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();
 }

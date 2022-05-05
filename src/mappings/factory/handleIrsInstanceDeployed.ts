@@ -12,7 +12,6 @@ import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
 function handleIrsInstanceDeployed(event: IrsInstance): void {
   const underlyingTokenAddress = event.params.underlyingToken.toHexString();
   const underlyingToken = new UnderlyingToken(underlyingTokenAddress);
-
   underlyingToken.name = getUnderlyingTokenName(underlyingTokenAddress);
   underlyingToken.decimals = BigInt.fromI32(event.params.underlyingTokenDecimals);
   underlyingToken.save();

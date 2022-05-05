@@ -34,6 +34,7 @@ function handleMint(event: MintEvent): void {
   position.positionType = LIQUIDITY_PROVIDER;
   position.save();
 
+  amm.totalLiquidity = amm.totalLiquidity.plus(mint.amount);
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();
 }

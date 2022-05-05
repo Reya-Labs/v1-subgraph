@@ -2,7 +2,7 @@ import { BigInt } from '@graphprotocol/graph-ts';
 
 import { Swap as SwapEvent } from '../../../generated/templates/VAMM/VAMM';
 import { Swap } from '../../../generated/schema';
-import { ONE_BI } from '../../constants';
+import { ONE_BI, ZERO_BI } from '../../constants';
 import { getOrCreateAMM, getOrCreatePosition, getOrCreateTransaction } from '../../utilities';
 
 function handleSwap(event: SwapEvent): void {
@@ -36,7 +36,16 @@ function handleSwap(event: SwapEvent): void {
   swap.fixedTokenDeltaUnbalanced = event.params.fixedTokenDeltaUnbalanced;
   swap.save();
 
+  if (swap.variableTokenDelta.abs().gt(ZERO_BI)) {
+    position.totalNotionalTraded = position.totalNotionalTraded.plus(swap.variableTokenDelta);
+    position.sumOfWeightedFixedRate = position.sumOfWeightedFixedRate.plus(
+      swap.fixedTokenDeltaUnbalanced,
+    );
+    position.save();
+  }
+
   amm.txCount = amm.txCount.plus(ONE_BI);
+  amm.totalNotionalTraded = amm.totalNotionalTraded.plus(swap.variableTokenDelta.abs());
   amm.save();
 }
 

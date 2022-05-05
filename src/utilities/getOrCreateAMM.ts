@@ -13,6 +13,8 @@ const getOrCreateAMM = (vammAddress: string, timestamp: BigInt): AMM => {
   const amm = new AMM(vammAddress);
 
   amm.txCount = ZERO_BI;
+  amm.totalNotionalTraded = ZERO_BI;
+  amm.totalLiquidity = ZERO_BI;
   amm.createdTimestamp = timestamp;
   amm.save();
 

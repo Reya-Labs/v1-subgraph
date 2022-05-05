@@ -1,5 +1,5 @@
 import { log } from '@graphprotocol/graph-ts';
-import { ONE_BI } from '../../constants';
+import { ONE_BI, ZERO_BI } from '../../constants';
 import { FCMSwap } from '../../../generated/schema';
 import { FullyCollateralisedSwap } from '../../../generated/templates/aaveFCM/aaveFCM';
 import { getAMMFromFCMAddress, getOrCreateTransaction } from '../../utilities';
@@ -34,6 +34,16 @@ function handleFCMSwap(event: FullyCollateralisedSwap): void {
   fcmSwap.variableTokenDelta = event.params.variableTokenDelta;
   fcmSwap.fixedTokenDeltaUnbalanced = event.params.fixedTokenDeltaUnbalanced;
   fcmSwap.save();
+
+  if (fcmSwap.variableTokenDelta.abs().gt(ZERO_BI)) {
+    fcmPosition.totalNotionalTraded = fcmPosition.totalNotionalTraded.plus(
+      fcmSwap.variableTokenDelta,
+    );
+    fcmPosition.sumOfWeightedFixedRate = fcmPosition.sumOfWeightedFixedRate.plus(
+      fcmSwap.fixedTokenDeltaUnbalanced,
+    );
+    fcmPosition.save();
+  }
 
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();

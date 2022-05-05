@@ -43,6 +43,7 @@ function handleSettlePosition(event: PositionSettlement): void {
   position.isSettled = true;
   position.save();
 
+  amm.totalLiquidity = amm.totalLiquidity.minus(position.liquidity);
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();
 }

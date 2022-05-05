@@ -37,6 +37,9 @@ type AMM @entity {
   termStartTimestamp: BigInt!
   termEndTimestamp: BigInt!
 
+  totalNotionalTraded: BigInt!
+  totalLiquidity: BigInt!
+
   updatedTimestamp: BigInt!
   tick: BigInt!
 
@@ -77,6 +80,9 @@ type Position @entity {
   variableTokenBalance: BigInt!
   accumulatedFees: BigInt!
 
+  totalNotionalTraded: BigInt!
+  sumOfWeightedFixedRate: BigInt!
+
   positionType: BigInt!
   isSettled: Boolean!
 
@@ -100,6 +106,9 @@ type PositionSnapshot @entity {
   fixedTokenBalance: BigInt!
   variableTokenBalance: BigInt!
   accumulatedFees: BigInt!
+
+  totalNotionalTraded: BigInt!
+  sumOfWeightedFixedRate: BigInt!
 
   positionType: BigInt!
   isSettled: Boolean!
@@ -204,6 +213,9 @@ type FCMPosition @entity {
   fixedTokenBalance: BigInt!
   variableTokenBalance: BigInt!
   marginInScaledYieldBearingTokens: BigInt!
+
+  totalNotionalTraded: BigInt!
+  sumOfWeightedFixedRate: BigInt!
   
   isSettled: Boolean!
 
@@ -222,6 +234,9 @@ type FCMPositionSnapshot @entity {
   fixedTokenBalance: BigInt!
   variableTokenBalance: BigInt!
   marginInScaledYieldBearingTokens: BigInt!
+
+  totalNotionalTraded: BigInt!
+  sumOfWeightedFixedRate: BigInt!
   
   isSettled: Boolean!
 }

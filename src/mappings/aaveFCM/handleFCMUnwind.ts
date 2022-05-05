@@ -1,6 +1,6 @@
 import { log } from '@graphprotocol/graph-ts';
 
-import { ONE_BI } from '../../constants';
+import { ONE_BI, ZERO_BI } from '../../constants';
 import { FCMUnwind } from '../../../generated/schema';
 import { FullyCollateralisedUnwind } from '../../../generated/templates/aaveFCM/aaveFCM';
 import { getAMMFromFCMAddress, getOrCreateTransaction } from '../../utilities';
@@ -35,6 +35,16 @@ function handleFCMUnwind(event: FullyCollateralisedUnwind): void {
   fcmUnwind.variableTokenDelta = event.params.variableTokenDelta;
   fcmUnwind.fixedTokenDeltaUnbalanced = event.params.fixedTokenDeltaUnbalanced;
   fcmUnwind.save();
+
+  if (fcmUnwind.variableTokenDelta.abs().gt(ZERO_BI)) {
+    fcmPosition.totalNotionalTraded = fcmPosition.totalNotionalTraded.plus(
+      fcmUnwind.variableTokenDelta,
+    );
+    fcmPosition.sumOfWeightedFixedRate = fcmPosition.sumOfWeightedFixedRate.plus(
+      fcmUnwind.fixedTokenDeltaUnbalanced,
+    );
+    fcmPosition.save();
+  }
 
   amm.txCount = amm.txCount.plus(ONE_BI);
   amm.save();
