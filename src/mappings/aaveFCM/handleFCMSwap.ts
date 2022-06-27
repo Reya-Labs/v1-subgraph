@@ -37,10 +37,10 @@ function handleFCMSwap(event: FullyCollateralisedSwap): void {
 
   if (fcmSwap.variableTokenDelta.abs().gt(ZERO_BI)) {
     fcmPosition.totalNotionalTraded = fcmPosition.totalNotionalTraded.plus(
-      fcmSwap.variableTokenDelta,
+      fcmSwap.variableTokenDelta.abs(),
     );
     fcmPosition.sumOfWeightedFixedRate = fcmPosition.sumOfWeightedFixedRate.plus(
-      fcmSwap.fixedTokenDeltaUnbalanced,
+      fcmSwap.fixedTokenDeltaUnbalanced.abs(),
     );
     fcmPosition.save();
   }

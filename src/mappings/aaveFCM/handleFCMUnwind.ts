@@ -38,10 +38,10 @@ function handleFCMUnwind(event: FullyCollateralisedUnwind): void {
 
   if (fcmUnwind.variableTokenDelta.abs().gt(ZERO_BI)) {
     fcmPosition.totalNotionalTraded = fcmPosition.totalNotionalTraded.plus(
-      fcmUnwind.variableTokenDelta,
+      fcmUnwind.variableTokenDelta.abs(),
     );
     fcmPosition.sumOfWeightedFixedRate = fcmPosition.sumOfWeightedFixedRate.plus(
-      fcmUnwind.fixedTokenDeltaUnbalanced,
+      fcmUnwind.fixedTokenDeltaUnbalanced.abs(),
     );
     fcmPosition.save();
   }
