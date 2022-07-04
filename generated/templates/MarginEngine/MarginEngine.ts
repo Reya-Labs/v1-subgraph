@@ -122,6 +122,24 @@ export class HistoricalApyWindowSetting__Params {
   }
 }
 
+export class IsAlpha extends ethereum.Event {
+  get params(): IsAlpha__Params {
+    return new IsAlpha__Params(this);
+  }
+}
+
+export class IsAlpha__Params {
+  _event: IsAlpha;
+
+  constructor(event: IsAlpha) {
+    this._event = event;
+  }
+
+  get __isAlpha(): boolean {
+    return this._event.parameters[0].value.toBoolean();
+  }
+}
+
 export class LiquidatorRewardSetting extends ethereum.Event {
   get params(): LiquidatorRewardSetting__Params {
     return new LiquidatorRewardSetting__Params(this);
@@ -253,24 +271,6 @@ export class OwnershipTransferred__Params {
 
   get newOwner(): Address {
     return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class Paused extends ethereum.Event {
-  get params(): Paused__Params {
-    return new Paused__Params(this);
-  }
-}
-
-export class Paused__Params {
-  _event: Paused;
-
-  constructor(event: Paused) {
-    this._event = event;
-  }
-
-  get account(): Address {
-    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -448,20 +448,38 @@ export class ProtocolCollection__Params {
   }
 }
 
-export class Unpaused extends ethereum.Event {
-  get params(): Unpaused__Params {
-    return new Unpaused__Params(this);
+export class RateOracle extends ethereum.Event {
+  get params(): RateOracle__Params {
+    return new RateOracle__Params(this);
   }
 }
 
-export class Unpaused__Params {
-  _event: Unpaused;
+export class RateOracle__Params {
+  _event: RateOracle;
 
-  constructor(event: Unpaused) {
+  constructor(event: RateOracle) {
     this._event = event;
   }
 
-  get account(): Address {
+  get cacheMaxAgeInSeconds(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
+export class RateOracleSetting extends ethereum.Event {
+  get params(): RateOracleSetting__Params {
+    return new RateOracleSetting__Params(this);
+  }
+}
+
+export class RateOracleSetting__Params {
+  _event: RateOracleSetting;
+
+  constructor(event: RateOracleSetting) {
+    this._event = event;
+  }
+
+  get rateOracle(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 }
@@ -659,6 +677,59 @@ export class MarginEngine extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  ONE(): BigInt {
+    let result = super.call("ONE", "ONE():(int256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_ONE(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("ONE", "ONE():(int256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  ONE_UINT(): BigInt {
+    let result = super.call("ONE_UINT", "ONE_UINT():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_ONE_UINT(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("ONE_UINT", "ONE_UINT():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  SECONDS_IN_YEAR(): BigInt {
+    let result = super.call(
+      "SECONDS_IN_YEAR",
+      "SECONDS_IN_YEAR():(int256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_SECONDS_IN_YEAR(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "SECONDS_IN_YEAR",
+      "SECONDS_IN_YEAR():(int256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   cacheMaxAgeInSeconds(): BigInt {
     let result = super.call(
       "cacheMaxAgeInSeconds",
@@ -844,6 +915,21 @@ export class MarginEngine extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  isAlpha(): boolean {
+    let result = super.call("isAlpha", "isAlpha():(bool)", []);
+
+    return result[0].toBoolean();
+  }
+
+  try_isAlpha(): ethereum.CallResult<boolean> {
+    let result = super.tryCall("isAlpha", "isAlpha():(bool)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   liquidatePosition(_owner: Address, _tickLower: i32, _tickUpper: i32): BigInt {
@@ -1531,6 +1617,36 @@ export class SetFCMCall__Outputs {
   }
 }
 
+export class SetIsAlphaCall extends ethereum.Call {
+  get inputs(): SetIsAlphaCall__Inputs {
+    return new SetIsAlphaCall__Inputs(this);
+  }
+
+  get outputs(): SetIsAlphaCall__Outputs {
+    return new SetIsAlphaCall__Outputs(this);
+  }
+}
+
+export class SetIsAlphaCall__Inputs {
+  _call: SetIsAlphaCall;
+
+  constructor(call: SetIsAlphaCall) {
+    this._call = call;
+  }
+
+  get __isAlpha(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class SetIsAlphaCall__Outputs {
+  _call: SetIsAlphaCall;
+
+  constructor(call: SetIsAlphaCall) {
+    this._call = call;
+  }
+}
+
 export class SetLiquidatorRewardCall extends ethereum.Call {
   get inputs(): SetLiquidatorRewardCall__Inputs {
     return new SetLiquidatorRewardCall__Inputs(this);
@@ -1694,6 +1810,66 @@ export class SetMarginCalculatorParametersCall_marginCalculatorParametersStruct 
 
   get minMarginToIncentiviseLiquidators(): BigInt {
     return this[17].toBigInt();
+  }
+}
+
+export class SetPausabilityCall extends ethereum.Call {
+  get inputs(): SetPausabilityCall__Inputs {
+    return new SetPausabilityCall__Inputs(this);
+  }
+
+  get outputs(): SetPausabilityCall__Outputs {
+    return new SetPausabilityCall__Outputs(this);
+  }
+}
+
+export class SetPausabilityCall__Inputs {
+  _call: SetPausabilityCall;
+
+  constructor(call: SetPausabilityCall) {
+    this._call = call;
+  }
+
+  get state(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class SetPausabilityCall__Outputs {
+  _call: SetPausabilityCall;
+
+  constructor(call: SetPausabilityCall) {
+    this._call = call;
+  }
+}
+
+export class SetRateOracleCall extends ethereum.Call {
+  get inputs(): SetRateOracleCall__Inputs {
+    return new SetRateOracleCall__Inputs(this);
+  }
+
+  get outputs(): SetRateOracleCall__Outputs {
+    return new SetRateOracleCall__Outputs(this);
+  }
+}
+
+export class SetRateOracleCall__Inputs {
+  _call: SetRateOracleCall;
+
+  constructor(call: SetRateOracleCall) {
+    this._call = call;
+  }
+
+  get __rateOracle(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetRateOracleCall__Outputs {
+  _call: SetRateOracleCall;
+
+  constructor(call: SetRateOracleCall) {
+    this._call = call;
   }
 }
 
