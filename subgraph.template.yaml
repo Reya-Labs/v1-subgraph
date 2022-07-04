@@ -65,14 +65,10 @@ templates:
           handler: handleMint
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
         - event: FeeProtocol(uint8)
           handler: handleSetFeeProtocol
         - event: Swap(address,indexed address,indexed int24,indexed int24,int256,uint160,uint256,int256,int256,int256)
           handler: handleSwap
-        - event: Unpaused(address)
-          handler: handleUnpaused
         - event: Upgraded(indexed address)
           handler: handleUpgraded
         - event: IsAlpha(bool)
@@ -117,12 +113,8 @@ templates:
           handler: handleMarginCalculatorParametersSet
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
         - event: PositionSettlement(indexed address,indexed int24,indexed int24,int256)
           handler: handleSettlePosition
-        - event: Unpaused(address)
-          handler: handleUnpaused
         - event: PositionMarginUpdate(address,indexed address,indexed int24,indexed int24,int256)
           handler: handleUpdatePositionMargin
         - event: Upgraded(indexed address)
@@ -161,9 +153,5 @@ templates:
           handler: handleSettleFCMPosition
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
-        - event: Unpaused(address)
-          handler: handleUnpaused
         - event: Upgraded(indexed address)
           handler: handleUpgraded
