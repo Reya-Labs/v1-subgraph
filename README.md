@@ -1,15 +1,16 @@
 # Installation
 
-1. Run `yarn`
-2. Start graph node: `docker-compose up`
-3. Place ABIs in the `artifacts/` directory
-4. In `voltz-core`, start `hardhat`: `npx hardhat node --hostname 0.0.0.0`
-5. Create subgraph: `yarn create-local`
-6. Deploy subgraph: `yarn deploy-local`
+1. Start hardhat in `voltz-core`: e.g., if running on localhost, run `yarn deploy:localhost`.
+2. Place ABIs in the `artifacts/` directory: e.g., if running on localhost, copy all `.json` files from `voltz-core/deployments/localhost/` into the `artifacts/` directory.
+3. Run `yarn`
+4. Start graph node: `docker-compose up`
+5. Create subgraph: `yarn create-local`.
+6. If running on localhost, then: (1) remove line starting with `startBlock:` from `subgraph.yaml` and (2) run `yarn remove-errors`.
+7. Deploy subgraph: `yarn deploy-local`. 
 
 ## Modifying code
 
-After any change to the `subgraph.yaml.template`, `schema.graphql`, or any files in the `src/` directory, run:
+After any change to the `subgraph.template.yaml`, `schema.graphql`, or any files in the `src/` directory, run:
 
 Either `yarn configure:kovan` or `configure:localhost` or `configure:mainnet`, to populate the correct contract addresses
 `yarn codegen`
