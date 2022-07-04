@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/test/MockStEth.sol": {
+      "content": "// SPDX-License-Identifier: Apache-2.0\npragma solidity =0.8.9;\n\n/**\n * @dev StETH mock - only for testing purposes.\n */\ncontract MockStEth {\n    uint256 private sharesMultiplier = 1e27;\n\n    function getPooledEthByShares(uint256 _sharesAmount)\n        public\n        view\n        returns (uint256)\n    {\n        return (_sharesAmount * sharesMultiplier) / 1e27;\n    }\n\n    function setSharesMultiplierInRay(uint256 _sharesMultiplier) public {\n        sharesMultiplier = _sharesMultiplier;\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 10
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "storageLayout",
+          "devdoc",
+          "userdoc",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

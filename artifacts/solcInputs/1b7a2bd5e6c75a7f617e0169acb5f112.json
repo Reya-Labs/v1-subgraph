@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/test/MockRocketEth.sol": {
+      "content": "// SPDX-License-Identifier: Apache-2.0\npragma solidity =0.8.9;\n\n/**\n * @dev RocketPool RETH mock - only for testing purposes.\n */\ncontract MockRocketEth {\n    uint256 private rethMultiplier = 1e27;\n\n    function getEthValue(uint256 _rethAmount) public view returns (uint256) {\n        return (_rethAmount * rethMultiplier) / 1e27;\n    }\n\n    function setRethMultiplierInRay(uint256 _rethMultiplier) public {\n        rethMultiplier = _rethMultiplier;\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 10
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "storageLayout",
+          "devdoc",
+          "userdoc",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
