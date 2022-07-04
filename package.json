@@ -14,6 +14,7 @@
     "remove-errors": "ts-node deploy/removeErrors.ts",
     "codegen": "graph codegen",
     "configure:kovan": "mustache ../voltz-core/deployments/kovanDeployment.json subgraph.template.yaml > subgraph.yaml",
+    "configure:goerli": "mustache ../voltz-core/deployments/goerliDeployment.json subgraph.template.yaml > subgraph.yaml",
     "configure:localhost": "mustache ../voltz-core/deployments/localhostDeployment.json subgraph.template.yaml > subgraph.yaml && replace --silent 'network: localhost' 'network: mainnet' subgraph.yaml",
     "create-local": "yarn configure:localhost && graph create nicholaspiano/v1-subgraph --node http://127.0.0.1:8020",
     "build": "graph build",

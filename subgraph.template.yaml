@@ -123,6 +123,8 @@ templates:
           handler: handlePositionUpdate
         - event: VAMMSetting(indexed address)
           handler: handleVAMMSet
+        - event: RateOracleSetting(address)
+          handler: handleRateOracleSetting
   - kind: ethereum/contract
     name: aaveFCM
     network: {{name}}

@@ -37,9 +37,9 @@ function handleSwap(event: SwapEvent): void {
   swap.save();
 
   if (swap.variableTokenDelta.abs().gt(ZERO_BI)) {
-    position.totalNotionalTraded = position.totalNotionalTraded.plus(swap.variableTokenDelta);
+    position.totalNotionalTraded = position.totalNotionalTraded.plus(swap.variableTokenDelta.abs());
     position.sumOfWeightedFixedRate = position.sumOfWeightedFixedRate.plus(
-      swap.fixedTokenDeltaUnbalanced,
+      swap.fixedTokenDeltaUnbalanced.abs(),
     );
     position.save();
   }
