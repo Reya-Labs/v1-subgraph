@@ -1,5 +1,5 @@
-import { Unpaused } from '../../../generated/templates/MarginEngine/MarginEngine';
+// import { Unpaused } from '../../../generated/templates/MarginEngine/MarginEngine';
 
-function handleUnpaused(_event: Unpaused): void {}
+// function handleUnpaused(_event: Unpaused): void {}
 
-export default handleUnpaused;
+// export default handleUnpaused;

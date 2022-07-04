@@ -1,5 +1,5 @@
-import { Paused } from '../../../generated/templates/MarginEngine/MarginEngine';
+// import { Paused } from '../../../generated/templates/MarginEngine/MarginEngine';
 
-function handlePaused(_event: Paused): void {}
+// function handlePaused(_event: Paused): void {}
 
-export default handlePaused;
+// export default handlePaused;
