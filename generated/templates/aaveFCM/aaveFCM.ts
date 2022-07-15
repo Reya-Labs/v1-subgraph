@@ -186,42 +186,6 @@ export class OwnershipTransferred__Params {
   }
 }
 
-export class Paused extends ethereum.Event {
-  get params(): Paused__Params {
-    return new Paused__Params(this);
-  }
-}
-
-export class Paused__Params {
-  _event: Paused;
-
-  constructor(event: Paused) {
-    this._event = event;
-  }
-
-  get account(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
-export class Unpaused extends ethereum.Event {
-  get params(): Unpaused__Params {
-    return new Unpaused__Params(this);
-  }
-}
-
-export class Unpaused__Params {
-  _event: Unpaused;
-
-  constructor(event: Unpaused) {
-    this._event = event;
-  }
-
-  get account(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
 export class Upgraded extends ethereum.Event {
   get params(): Upgraded__Params {
     return new Upgraded__Params(this);
@@ -839,6 +803,36 @@ export class RenounceOwnershipCall__Outputs {
   _call: RenounceOwnershipCall;
 
   constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class SetPausabilityCall extends ethereum.Call {
+  get inputs(): SetPausabilityCall__Inputs {
+    return new SetPausabilityCall__Inputs(this);
+  }
+
+  get outputs(): SetPausabilityCall__Outputs {
+    return new SetPausabilityCall__Outputs(this);
+  }
+}
+
+export class SetPausabilityCall__Inputs {
+  _call: SetPausabilityCall;
+
+  constructor(call: SetPausabilityCall) {
+    this._call = call;
+  }
+
+  get state(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class SetPausabilityCall__Outputs {
+  _call: SetPausabilityCall;
+
+  constructor(call: SetPausabilityCall) {
     this._call = call;
   }
 }

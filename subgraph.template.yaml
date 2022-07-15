@@ -19,7 +19,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/mappings/factory/index.ts
       entities:
-        - AMM
+        - Factory
       abis:
         - name: Factory
           file: ./artifacts/Factory.json
@@ -123,8 +123,10 @@ templates:
           handler: handlePositionUpdate
         - event: VAMMSetting(indexed address)
           handler: handleVAMMSet
-        - event: RateOracleSetting(address)
+        - event: RateOracleSetting(indexed address)
           handler: handleRateOracleSetting
+        - event: IsAlpha(bool)
+          handler: handleIsAlpha
   - kind: ethereum/contract
     name: aaveFCM
     network: {{name}}
@@ -134,9 +136,9 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/mappings/aaveFCM/index.ts
+      file: ./src/mappings/FCM/index.ts
       entities:
-        - aaveFCM
+        - FCM
       abis:
         - name: aaveFCM
           file: ./artifacts/aaveFCM.json
@@ -157,3 +159,156 @@ templates:
           handler: handleOwnershipTransferred
         - event: Upgraded(indexed address)
           handler: handleUpgraded
+  - kind: ethereum/contract
+    name: compoundFCM
+    network: {{name}}
+    source:
+      abi: compoundFCM
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/FCM/index.ts
+      entities:
+        - FCM
+      abis:
+        - name: compoundFCM
+          file: ./artifacts/compoundFCM.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: FCMTraderUpdate(indexed address,uint256,int256,int256)
+          handler: handleFCMTraderUpdate
+        - event: FullyCollateralisedSwap(indexed address,uint256,uint160,uint256,int256,int256,int256)
+          handler: handleFCMSwap
+        - event: FullyCollateralisedUnwind(indexed address,uint256,uint160,uint256,int256,int256,int256)
+          handler: handleFCMUnwind
+        - event: fcmPositionSettlement(indexed address,int256)
+          handler: handleSettleFCMPosition
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+  - kind: ethereum/contract
+    name: AaveRateOracle_DAI
+    network: {{name}}
+    source:
+      abi: AaveRateOracle_DAI
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/rateOracle/index.ts
+      entities:
+        - RateOracleUpdate
+      abis:
+        - name: AaveRateOracle_DAI
+          file: ./artifacts/AaveRateOracle_DAI.json
+      eventHandlers:
+        - event: MinSecondsSinceLastUpdate(uint256)
+          handler: handleMinSecondsSinceLastUpdate
+        - event: OracleBufferUpdate(uint256,address,uint16,uint32,uint256,uint16,uint16)
+          handler: handleOracleBufferUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RateCardinalityNext(uint16)
+          handler: handleRateCardinalityNext
+  - kind: ethereum/contract
+    name: AaveRateOracle_USDC
+    network: {{name}}
+    source:
+      abi: AaveRateOracle_USDC
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/rateOracle/index.ts
+      entities:
+        - RateOracleUpdate
+      abis:
+        - name: AaveRateOracle_USDC
+          file: ./artifacts/AaveRateOracle_USDC.json
+      eventHandlers:
+        - event: MinSecondsSinceLastUpdate(uint256)
+          handler: handleMinSecondsSinceLastUpdate
+        - event: OracleBufferUpdate(uint256,address,uint16,uint32,uint256,uint16,uint16)
+          handler: handleOracleBufferUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RateCardinalityNext(uint16)
+          handler: handleRateCardinalityNext
+  - kind: ethereum/contract
+    name: CompoundRateOracle_cDAI
+    network: {{name}}
+    source:
+      abi: CompoundRateOracle_cDAI
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/rateOracle/index.ts
+      entities:
+        - RateOracleUpdate
+      abis:
+        - name: CompoundRateOracle_cDAI
+          file: ./artifacts/CompoundRateOracle_cDAI.json
+      eventHandlers:
+        - event: MinSecondsSinceLastUpdate(uint256)
+          handler: handleMinSecondsSinceLastUpdate
+        - event: OracleBufferUpdate(uint256,address,uint16,uint32,uint256,uint16,uint16)
+          handler: handleOracleBufferUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RateCardinalityNext(uint16)
+          handler: handleRateCardinalityNext      
+  - kind: ethereum/contract
+    name: LidoRateOracle
+    network: {{name}}
+    source:
+      abi: LidoRateOracle
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/rateOracle/index.ts
+      entities:
+        - RateOracleUpdate
+      abis:
+        - name: LidoRateOracle
+          file: ./artifacts/LidoRateOracle.json
+      eventHandlers:
+        - event: MinSecondsSinceLastUpdate(uint256)
+          handler: handleMinSecondsSinceLastUpdate
+        - event: OracleBufferUpdate(uint256,address,uint16,uint32,uint256,uint16,uint16)
+          handler: handleOracleBufferUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RateCardinalityNext(uint16)
+          handler: handleRateCardinalityNext
+  - kind: ethereum/contract
+    name: RocketPoolRateOracle
+    network: {{name}}
+    source:
+      abi: RocketPoolRateOracle
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/rateOracle/index.ts
+      entities:
+        - RateOracleUpdate
+      abis:
+        - name: RocketPoolRateOracle
+          file: ./artifacts/RocketPoolRateOracle.json
+      eventHandlers:
+        - event: MinSecondsSinceLastUpdate(uint256)
+          handler: handleMinSecondsSinceLastUpdate
+        - event: OracleBufferUpdate(uint256,address,uint16,uint32,uint256,uint16,uint16)
+          handler: handleOracleBufferUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RateCardinalityNext(uint16)
+          handler: handleRateCardinalityNext
+

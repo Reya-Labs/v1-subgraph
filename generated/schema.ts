@@ -116,6 +116,9 @@ export class RateOracle extends Entity {
 
     this.set("protocolId", Value.fromBigInt(BigInt.zero()));
     this.set("token", Value.fromString(""));
+    this.set("minSecondsSinceLastUpdate", Value.fromBigInt(BigInt.zero()));
+    this.set("rateCardinalityNext", Value.fromI32(0));
+    this.set("rateOracleUpdateCount", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -160,6 +163,148 @@ export class RateOracle extends Entity {
 
   set token(value: string) {
     this.set("token", Value.fromString(value));
+  }
+
+  get minSecondsSinceLastUpdate(): BigInt {
+    let value = this.get("minSecondsSinceLastUpdate");
+    return value!.toBigInt();
+  }
+
+  set minSecondsSinceLastUpdate(value: BigInt) {
+    this.set("minSecondsSinceLastUpdate", Value.fromBigInt(value));
+  }
+
+  get rateCardinalityNext(): i32 {
+    let value = this.get("rateCardinalityNext");
+    return value!.toI32();
+  }
+
+  set rateCardinalityNext(value: i32) {
+    this.set("rateCardinalityNext", Value.fromI32(value));
+  }
+
+  get rateOracleUpdateCount(): BigInt {
+    let value = this.get("rateOracleUpdateCount");
+    return value!.toBigInt();
+  }
+
+  set rateOracleUpdateCount(value: BigInt) {
+    this.set("rateOracleUpdateCount", Value.fromBigInt(value));
+  }
+
+  get rateUpdates(): Array<string> {
+    let value = this.get("rateUpdates");
+    return value!.toStringArray();
+  }
+
+  set rateUpdates(value: Array<string>) {
+    this.set("rateUpdates", Value.fromStringArray(value));
+  }
+}
+
+export class RateOracleUpdate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("rateOracle", Value.fromString(""));
+    this.set("updateTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("observationIndex", Value.fromI32(0));
+    this.set("blockTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("resultRay", Value.fromBigInt(BigInt.zero()));
+    this.set("cardinality", Value.fromI32(0));
+    this.set("cardinalityNext", Value.fromI32(0));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RateOracleUpdate entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save RateOracleUpdate entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("RateOracleUpdate", id.toString(), this);
+    }
+  }
+
+  static load(id: string): RateOracleUpdate | null {
+    return changetype<RateOracleUpdate | null>(
+      store.get("RateOracleUpdate", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get rateOracle(): string {
+    let value = this.get("rateOracle");
+    return value!.toString();
+  }
+
+  set rateOracle(value: string) {
+    this.set("rateOracle", Value.fromString(value));
+  }
+
+  get updateTimestamp(): BigInt {
+    let value = this.get("updateTimestamp");
+    return value!.toBigInt();
+  }
+
+  set updateTimestamp(value: BigInt) {
+    this.set("updateTimestamp", Value.fromBigInt(value));
+  }
+
+  get observationIndex(): i32 {
+    let value = this.get("observationIndex");
+    return value!.toI32();
+  }
+
+  set observationIndex(value: i32) {
+    this.set("observationIndex", Value.fromI32(value));
+  }
+
+  get blockTimestamp(): BigInt {
+    let value = this.get("blockTimestamp");
+    return value!.toBigInt();
+  }
+
+  set blockTimestamp(value: BigInt) {
+    this.set("blockTimestamp", Value.fromBigInt(value));
+  }
+
+  get resultRay(): BigInt {
+    let value = this.get("resultRay");
+    return value!.toBigInt();
+  }
+
+  set resultRay(value: BigInt) {
+    this.set("resultRay", Value.fromBigInt(value));
+  }
+
+  get cardinality(): i32 {
+    let value = this.get("cardinality");
+    return value!.toI32();
+  }
+
+  set cardinality(value: i32) {
+    this.set("cardinality", Value.fromI32(value));
+  }
+
+  get cardinalityNext(): i32 {
+    let value = this.get("cardinalityNext");
+    return value!.toI32();
+  }
+
+  set cardinalityNext(value: i32) {
+    this.set("cardinalityNext", Value.fromI32(value));
   }
 }
 

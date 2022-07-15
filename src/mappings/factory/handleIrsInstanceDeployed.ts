@@ -1,13 +1,15 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
 
 import { IrsInstance } from '../../../generated/Factory/Factory';
-import { UnderlyingToken, RateOracle, MarginEngine, FCM } from '../../../generated/schema';
+import { UnderlyingToken, MarginEngine, FCM } from '../../../generated/schema';
 import {
   MarginEngine as MarginEngineTemplate,
   VAMM as VAMMTemplate,
   aaveFCM as AaveFCMTemplate,
+  compoundFCM as CompoundFCMTemplate,
 } from '../../../generated/templates';
-import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
+
+import { getUnderlyingTokenName, getOrCreateAMM, createRateOracle } from '../../utilities';
 
 function handleIrsInstanceDeployed(event: IrsInstance): void {
   const underlyingTokenAddress = event.params.underlyingToken.toHexString();
@@ -16,11 +18,11 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   underlyingToken.decimals = BigInt.fromI32(event.params.underlyingTokenDecimals);
   underlyingToken.save();
 
-  const rateOracle = new RateOracle(event.params.rateOracle.toHexString());
-
-  rateOracle.token = underlyingToken.id;
-  rateOracle.protocolId = BigInt.fromI32(event.params.yieldBearingProtocolID);
-  rateOracle.save();
+  const rateOracle = createRateOracle(
+    event.params.rateOracle.toHexString(),
+    BigInt.fromI32(event.params.yieldBearingProtocolID),
+    underlyingToken.id,
+  );
 
   const amm = getOrCreateAMM(event.params.vamm.toHexString(), event.block.timestamp);
 
@@ -36,7 +38,32 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
 
   MarginEngineTemplate.create(event.params.marginEngine);
   VAMMTemplate.create(event.params.vamm);
-  AaveFCMTemplate.create(event.params.fcm);
+  switch (event.params.yieldBearingProtocolID) {
+    case 1: {
+      AaveFCMTemplate.create(event.params.fcm);
+      break;
+    }
+
+    case 2: {
+      CompoundFCMTemplate.create(event.params.fcm);
+      break;
+    }
+
+    case 3: {
+      // currently no FCM for Lido
+      break;
+    }
+
+    case 4: {
+      // currently no FCM for Rocket
+      break;
+    }
+
+    default: {
+      log.info('Unrecognised Yield Bearing Protocol ID: {}', [event.params.yieldBearingProtocolID.toString()]);
+      break;
+    }
+  }
 
   log.info('Initializing new MarginEngine: {}, VAMM: {}, FCM: {}', [
     event.params.vamm.toHexString(),

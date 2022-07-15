@@ -39,3 +39,87 @@ export class aaveFCM extends DataSourceTemplate {
     DataSourceTemplate.createWithContext("aaveFCM", [address.toHex()], context);
   }
 }
+
+export class compoundFCM extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("compoundFCM", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "compoundFCM",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class AaveRateOracle_DAI extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("AaveRateOracle_DAI", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "AaveRateOracle_DAI",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class AaveRateOracle_USDC extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("AaveRateOracle_USDC", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "AaveRateOracle_USDC",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class CompoundRateOracle_cDAI extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("CompoundRateOracle_cDAI", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "CompoundRateOracle_cDAI",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class LidoRateOracle extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("LidoRateOracle", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "LidoRateOracle",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class RocketPoolRateOracle extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("RocketPoolRateOracle", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "RocketPoolRateOracle",
+      [address.toHex()],
+      context
+    );
+  }
+}

@@ -1,11 +1,9 @@
 import { log } from '@graphprotocol/graph-ts';
 import { RateOracle } from '../../../generated/schema';
 import { RateOracleSetting } from '../../../generated/templates/MarginEngine/MarginEngine';
-import { getAMMFromMarginEngineAddress } from '../../utilities';
+import { createRateOracle, getAMMFromMarginEngineAddress } from '../../utilities';
 
 function handleRateOracleSetting(event: RateOracleSetting): void {
-  const newRateOracle = new RateOracle(event.params.rateOracle.toHexString());
-
   // eslint-disable-next-line no-underscore-dangle
   const marginEngine = event.address.toHexString();
 
@@ -26,10 +24,14 @@ function handleRateOracleSetting(event: RateOracleSetting): void {
     ]);
     return;
   }
-
-  newRateOracle.token = oldRateOracle.token;
-  newRateOracle.protocolId = oldRateOracle.protocolId;
-  newRateOracle.save();
+  const newRateOracle = createRateOracle(
+    event.params.rateOracle.toHexString(),
+    oldRateOracle.protocolId,
+    oldRateOracle.token,
+    oldRateOracle.minSecondsSinceLastUpdate,
+    oldRateOracle.rateCardinalityNext,
+    oldRateOracle.rateOracleUpdateCount,
+  );
 
   amm.rateOracle = newRateOracle.id;
   amm.save();
