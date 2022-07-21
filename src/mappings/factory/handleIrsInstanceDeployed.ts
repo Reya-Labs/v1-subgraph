@@ -7,7 +7,12 @@ import {
   VAMM as VAMMTemplate,
   BaseFCM as BaseFCMTemplate,
 } from '../../../generated/templates';
-import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
+import { ONE_BI, ZERO_BI } from '../../constants';
+import {
+  getUnderlyingTokenName,
+  getOrCreateAMM,
+  createMarginCalculatorParameters,
+} from '../../utilities';
 
 function handleIrsInstanceDeployed(event: IrsInstance): void {
   const underlyingTokenAddress = event.params.underlyingToken.toHexString();
@@ -27,6 +32,11 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   const marginEngine = new MarginEngine(event.params.marginEngine.toHexString());
 
   marginEngine.amm = amm.id;
+  marginEngine.mcpCount = ZERO_BI;
+  marginEngine.marginCalculatorParameters = createMarginCalculatorParameters(
+    `${marginEngine.id}#${marginEngine.mcpCount.toString()}`,
+  ).id;
+  marginEngine.mcpCount = marginEngine.mcpCount.plus(ONE_BI);
   marginEngine.save();
 
   const fcm = new FCM(event.params.fcm.toHexString());

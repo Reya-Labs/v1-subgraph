@@ -631,6 +631,25 @@ export class VAMM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getRateOracle(): Address {
+    let result = super.call("getRateOracle", "getRateOracle():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_getRateOracle(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getRateOracle",
+      "getRateOracle():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   isAlpha(): boolean {
     let result = super.call("isAlpha", "isAlpha():(bool)", []);
 
@@ -1166,6 +1185,32 @@ export class MintCall__Outputs {
 
   get positionMarginRequirement(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class RefreshRateOracleCall extends ethereum.Call {
+  get inputs(): RefreshRateOracleCall__Inputs {
+    return new RefreshRateOracleCall__Inputs(this);
+  }
+
+  get outputs(): RefreshRateOracleCall__Outputs {
+    return new RefreshRateOracleCall__Outputs(this);
+  }
+}
+
+export class RefreshRateOracleCall__Inputs {
+  _call: RefreshRateOracleCall;
+
+  constructor(call: RefreshRateOracleCall) {
+    this._call = call;
+  }
+}
+
+export class RefreshRateOracleCall__Outputs {
+  _call: RefreshRateOracleCall;
+
+  constructor(call: RefreshRateOracleCall) {
+    this._call = call;
   }
 }
 
