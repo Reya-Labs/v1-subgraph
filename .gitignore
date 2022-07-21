@@ -9,3 +9,4 @@ data
 localhostDeployment.json
 .env
 subgraph.yaml
+yarn.lock
