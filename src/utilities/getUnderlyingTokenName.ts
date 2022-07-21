@@ -5,6 +5,11 @@ const getUnderlyingTokenName = (address: string): string => {
   }
 
   // goerli
+  if (address.toLowerCase().includes('0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C'.toLowerCase())) {
+    return 'USDC';
+  }
+
+  // goerli
   if (address.toLowerCase().includes('0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557'.toLowerCase())) {
     return 'USDC';
   }
