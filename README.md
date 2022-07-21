@@ -3,10 +3,11 @@
 1. Start hardhat in `voltz-core`: e.g., if running on localhost, run `yarn deploy:localhost`.
 2. Place ABIs in the `artifacts/` directory: e.g., if running on localhost, copy all `.json` files from `voltz-core/deployments/localhost/` into the `artifacts/` directory.
 3. Run `yarn`
-4. Start graph node: `docker-compose up`
-5. Create subgraph: `yarn create-local`.
-6. If running on localhost, then: (1) remove line starting with `startBlock:` from `subgraph.yaml` and (2) run `yarn remove-errors`.
-7. Deploy subgraph: `yarn deploy-local`. 
+4. Run `yarn generate-base-abis`
+5. Start graph node: `docker-compose up`
+6. Create subgraph: `yarn create-local`.
+7. If running on localhost, then: (1) remove line starting with `startBlock:` from `subgraph.yaml` and (2) run `yarn remove-errors`.
+8. Deploy subgraph: `yarn deploy-local`. 
 
 ## Modifying code
 
