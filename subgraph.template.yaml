@@ -12,7 +12,7 @@ dataSources:
       address: '{{address}}'
       {{/contracts.Factory}}
       abi: Factory
-      startBlock: 31135000
+      startBlock: 0
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -123,7 +123,7 @@ templates:
           handler: handlePositionUpdate
         - event: VAMMSetting(indexed address)
           handler: handleVAMMSet
-        - event: RateOracleSetting(address)
+        - event: RateOracleSetting(indexed address)
           handler: handleRateOracleSetting
   - kind: ethereum/contract
     name: aaveFCM
