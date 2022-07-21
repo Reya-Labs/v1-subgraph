@@ -30,12 +30,26 @@ export class MarginEngine extends DataSourceTemplate {
   }
 }
 
-export class aaveFCM extends DataSourceTemplate {
+export class BaseFCM extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("aaveFCM", [address.toHex()]);
+    DataSourceTemplate.create("BaseFCM", [address.toHex()]);
   }
 
   static createWithContext(address: Address, context: DataSourceContext): void {
-    DataSourceTemplate.createWithContext("aaveFCM", [address.toHex()], context);
+    DataSourceTemplate.createWithContext("BaseFCM", [address.toHex()], context);
+  }
+}
+
+export class BaseRateOracle extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("BaseRateOracle", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "BaseRateOracle",
+      [address.toHex()],
+      context
+    );
   }
 }

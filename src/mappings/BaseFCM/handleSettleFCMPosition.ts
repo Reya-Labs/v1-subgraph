@@ -3,7 +3,7 @@ import { log } from '@graphprotocol/graph-ts';
 import { ONE_BI } from '../../constants';
 import { FCMSettlement } from '../../../generated/schema';
 import { getAMMFromFCMAddress, getOrCreateTransaction } from '../../utilities';
-import { fcmPositionSettlement } from '../../../generated/templates/aaveFCM/aaveFCM';
+import { fcmPositionSettlement } from '../../../generated/templates/BaseFCM/BaseFCM';
 import getOrCreateFCMPosition from '../../utilities/getOrCreateFCMPosition';
 
 function handleSettleFCMPosition(event: fcmPositionSettlement): void {

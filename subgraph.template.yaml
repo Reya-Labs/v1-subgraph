@@ -12,14 +12,14 @@ dataSources:
       address: '{{address}}'
       {{/contracts.Factory}}
       abi: Factory
-      startBlock: 0
+      startBlock: 31135000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: ./src/mappings/factory/index.ts
       entities:
-        - AMM
+        - Factory
       abis:
         - name: Factory
           file: ./artifacts/Factory.json
@@ -125,21 +125,23 @@ templates:
           handler: handleVAMMSet
         - event: RateOracleSetting(indexed address)
           handler: handleRateOracleSetting
+        - event: IsAlpha(bool)
+          handler: handleIsAlpha
   - kind: ethereum/contract
-    name: aaveFCM
+    name: BaseFCM
     network: {{name}}
     source:
-      abi: aaveFCM
+      abi: BaseFCM
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/mappings/aaveFCM/index.ts
+      file: ./src/mappings/BaseFCM/index.ts
       entities:
-        - aaveFCM
+        - FCM
       abis:
-        - name: aaveFCM
-          file: ./artifacts/aaveFCM.json
+        - name: BaseFCM
+          file: ./artifacts/BaseFCM.json
       eventHandlers:
         - event: AdminChanged(address,address)
           handler: handleAdminChanged
@@ -157,3 +159,27 @@ templates:
           handler: handleOwnershipTransferred
         - event: Upgraded(indexed address)
           handler: handleUpgraded
+  - kind: ethereum/contract
+    name: BaseRateOracle
+    network: {{name}}
+    source:
+      abi: BaseRateOracle
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/rateOracle/index.ts
+      entities:
+        - RateOracleUpdate
+      abis:
+        - name: BaseRateOracle
+          file: ./artifacts/BaseRateOracle.json
+      eventHandlers:
+        - event: MinSecondsSinceLastUpdate(uint256)
+          handler: handleMinSecondsSinceLastUpdate
+        - event: OracleBufferUpdate(uint256,address,uint16,uint32,uint256,uint16,uint16)
+          handler: handleOracleBufferUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RateCardinalityNext(uint16)
+          handler: handleRateCardinalityNext

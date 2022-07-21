@@ -1,7 +1,7 @@
 import { log } from '@graphprotocol/graph-ts';
 import { ONE_BI, ZERO_BI } from '../../constants';
 import { FCMSwap } from '../../../generated/schema';
-import { FullyCollateralisedSwap } from '../../../generated/templates/aaveFCM/aaveFCM';
+import { FullyCollateralisedSwap } from '../../../generated/templates/BaseFCM/BaseFCM';
 import { getAMMFromFCMAddress, getOrCreateTransaction } from '../../utilities';
 import getOrCreateFCMPosition from '../../utilities/getOrCreateFCMPosition';
 

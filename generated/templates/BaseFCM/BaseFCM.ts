@@ -164,6 +164,24 @@ export class FullyCollateralisedUnwind__Params {
   }
 }
 
+export class Initialized extends ethereum.Event {
+  get params(): Initialized__Params {
+    return new Initialized__Params(this);
+  }
+}
+
+export class Initialized__Params {
+  _event: Initialized;
+
+  constructor(event: Initialized) {
+    this._event = event;
+  }
+
+  get version(): i32 {
+    return this._event.parameters[0].value.toI32();
+  }
+}
+
 export class OwnershipTransferred extends ethereum.Event {
   get params(): OwnershipTransferred__Params {
     return new OwnershipTransferred__Params(this);
@@ -183,42 +201,6 @@ export class OwnershipTransferred__Params {
 
   get newOwner(): Address {
     return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class Paused extends ethereum.Event {
-  get params(): Paused__Params {
-    return new Paused__Params(this);
-  }
-}
-
-export class Paused__Params {
-  _event: Paused;
-
-  constructor(event: Paused) {
-    this._event = event;
-  }
-
-  get account(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
-export class Unpaused extends ethereum.Event {
-  get params(): Unpaused__Params {
-    return new Unpaused__Params(this);
-  }
-}
-
-export class Unpaused__Params {
-  _event: Unpaused;
-
-  constructor(event: Unpaused) {
-    this._event = event;
-  }
-
-  get account(): Address {
-    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -262,7 +244,7 @@ export class fcmPositionSettlement__Params {
   }
 }
 
-export class aaveFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct extends ethereum.Tuple {
+export class BaseFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct extends ethereum.Tuple {
   get marginInScaledYieldBearingTokens(): BigInt {
     return this[0].toBigInt();
   }
@@ -280,7 +262,7 @@ export class aaveFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct exte
   }
 }
 
-export class aaveFCM__initiateFullyCollateralisedFixedTakerSwapResult {
+export class BaseFCM__initiateFullyCollateralisedFixedTakerSwapResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -303,7 +285,7 @@ export class aaveFCM__initiateFullyCollateralisedFixedTakerSwapResult {
   }
 }
 
-export class aaveFCM__tradersResult {
+export class BaseFCM__tradersResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -326,7 +308,7 @@ export class aaveFCM__tradersResult {
   }
 }
 
-export class aaveFCM__unwindFullyCollateralisedFixedTakerSwapResult {
+export class BaseFCM__unwindFullyCollateralisedFixedTakerSwapResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -349,62 +331,14 @@ export class aaveFCM__unwindFullyCollateralisedFixedTakerSwapResult {
   }
 }
 
-export class aaveFCM extends ethereum.SmartContract {
-  static bind(address: Address): aaveFCM {
-    return new aaveFCM("aaveFCM", address);
-  }
-
-  aaveLendingPool(): Address {
-    let result = super.call(
-      "aaveLendingPool",
-      "aaveLendingPool():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_aaveLendingPool(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "aaveLendingPool",
-      "aaveLendingPool():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  getTraderMarginInATokens(traderAddress: Address): BigInt {
-    let result = super.call(
-      "getTraderMarginInATokens",
-      "getTraderMarginInATokens(address):(uint256)",
-      [ethereum.Value.fromAddress(traderAddress)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_getTraderMarginInATokens(
-    traderAddress: Address
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "getTraderMarginInATokens",
-      "getTraderMarginInATokens(address):(uint256)",
-      [ethereum.Value.fromAddress(traderAddress)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+export class BaseFCM extends ethereum.SmartContract {
+  static bind(address: Address): BaseFCM {
+    return new BaseFCM("BaseFCM", address);
   }
 
   getTraderWithYieldBearingAssets(
     trader: Address
-  ): aaveFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct {
+  ): BaseFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct {
     let result = super.call(
       "getTraderWithYieldBearingAssets",
       "getTraderWithYieldBearingAssets(address):((uint256,int256,int256,bool))",
@@ -412,14 +346,14 @@ export class aaveFCM extends ethereum.SmartContract {
     );
 
     return changetype<
-      aaveFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct
+      BaseFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct
     >(result[0].toTuple());
   }
 
   try_getTraderWithYieldBearingAssets(
     trader: Address
   ): ethereum.CallResult<
-    aaveFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct
+    BaseFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct
   > {
     let result = super.tryCall(
       "getTraderWithYieldBearingAssets",
@@ -432,7 +366,7 @@ export class aaveFCM extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(
       changetype<
-        aaveFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct
+        BaseFCM__getTraderWithYieldBearingAssetsResultTraderInfoStruct
       >(value[0].toTuple())
     );
   }
@@ -440,7 +374,7 @@ export class aaveFCM extends ethereum.SmartContract {
   initiateFullyCollateralisedFixedTakerSwap(
     notional: BigInt,
     sqrtPriceLimitX96: BigInt
-  ): aaveFCM__initiateFullyCollateralisedFixedTakerSwapResult {
+  ): BaseFCM__initiateFullyCollateralisedFixedTakerSwapResult {
     let result = super.call(
       "initiateFullyCollateralisedFixedTakerSwap",
       "initiateFullyCollateralisedFixedTakerSwap(uint256,uint160):(int256,int256,uint256,int256)",
@@ -450,7 +384,7 @@ export class aaveFCM extends ethereum.SmartContract {
       ]
     );
 
-    return new aaveFCM__initiateFullyCollateralisedFixedTakerSwapResult(
+    return new BaseFCM__initiateFullyCollateralisedFixedTakerSwapResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -462,7 +396,7 @@ export class aaveFCM extends ethereum.SmartContract {
     notional: BigInt,
     sqrtPriceLimitX96: BigInt
   ): ethereum.CallResult<
-    aaveFCM__initiateFullyCollateralisedFixedTakerSwapResult
+    BaseFCM__initiateFullyCollateralisedFixedTakerSwapResult
   > {
     let result = super.tryCall(
       "initiateFullyCollateralisedFixedTakerSwap",
@@ -477,7 +411,7 @@ export class aaveFCM extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new aaveFCM__initiateFullyCollateralisedFixedTakerSwapResult(
+      new BaseFCM__initiateFullyCollateralisedFixedTakerSwapResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt(),
@@ -531,6 +465,25 @@ export class aaveFCM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  proxiableUUID(): Bytes {
+    let result = super.call("proxiableUUID", "proxiableUUID():(bytes32)", []);
+
+    return result[0].toBytes();
+  }
+
+  try_proxiableUUID(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "proxiableUUID",
+      "proxiableUUID():(bytes32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
   rateOracle(): Address {
     let result = super.call("rateOracle", "rateOracle():(address)", []);
 
@@ -561,14 +514,14 @@ export class aaveFCM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  traders(param0: Address): aaveFCM__tradersResult {
+  traders(param0: Address): BaseFCM__tradersResult {
     let result = super.call(
       "traders",
       "traders(address):(uint256,int256,int256,bool)",
       [ethereum.Value.fromAddress(param0)]
     );
 
-    return new aaveFCM__tradersResult(
+    return new BaseFCM__tradersResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -576,7 +529,7 @@ export class aaveFCM extends ethereum.SmartContract {
     );
   }
 
-  try_traders(param0: Address): ethereum.CallResult<aaveFCM__tradersResult> {
+  try_traders(param0: Address): ethereum.CallResult<BaseFCM__tradersResult> {
     let result = super.tryCall(
       "traders",
       "traders(address):(uint256,int256,int256,bool)",
@@ -587,7 +540,7 @@ export class aaveFCM extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new aaveFCM__tradersResult(
+      new BaseFCM__tradersResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt(),
@@ -619,33 +572,10 @@ export class aaveFCM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  underlyingYieldBearingToken(): Address {
-    let result = super.call(
-      "underlyingYieldBearingToken",
-      "underlyingYieldBearingToken():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_underlyingYieldBearingToken(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "underlyingYieldBearingToken",
-      "underlyingYieldBearingToken():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   unwindFullyCollateralisedFixedTakerSwap(
     notionalToUnwind: BigInt,
     sqrtPriceLimitX96: BigInt
-  ): aaveFCM__unwindFullyCollateralisedFixedTakerSwapResult {
+  ): BaseFCM__unwindFullyCollateralisedFixedTakerSwapResult {
     let result = super.call(
       "unwindFullyCollateralisedFixedTakerSwap",
       "unwindFullyCollateralisedFixedTakerSwap(uint256,uint160):(int256,int256,uint256,int256)",
@@ -655,7 +585,7 @@ export class aaveFCM extends ethereum.SmartContract {
       ]
     );
 
-    return new aaveFCM__unwindFullyCollateralisedFixedTakerSwapResult(
+    return new BaseFCM__unwindFullyCollateralisedFixedTakerSwapResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -667,7 +597,7 @@ export class aaveFCM extends ethereum.SmartContract {
     notionalToUnwind: BigInt,
     sqrtPriceLimitX96: BigInt
   ): ethereum.CallResult<
-    aaveFCM__unwindFullyCollateralisedFixedTakerSwapResult
+    BaseFCM__unwindFullyCollateralisedFixedTakerSwapResult
   > {
     let result = super.tryCall(
       "unwindFullyCollateralisedFixedTakerSwap",
@@ -682,7 +612,7 @@ export class aaveFCM extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new aaveFCM__unwindFullyCollateralisedFixedTakerSwapResult(
+      new BaseFCM__unwindFullyCollateralisedFixedTakerSwapResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt(),
@@ -839,6 +769,36 @@ export class RenounceOwnershipCall__Outputs {
   _call: RenounceOwnershipCall;
 
   constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class SetPausabilityCall extends ethereum.Call {
+  get inputs(): SetPausabilityCall__Inputs {
+    return new SetPausabilityCall__Inputs(this);
+  }
+
+  get outputs(): SetPausabilityCall__Outputs {
+    return new SetPausabilityCall__Outputs(this);
+  }
+}
+
+export class SetPausabilityCall__Inputs {
+  _call: SetPausabilityCall;
+
+  constructor(call: SetPausabilityCall) {
+    this._call = call;
+  }
+
+  get state(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class SetPausabilityCall__Outputs {
+  _call: SetPausabilityCall;
+
+  constructor(call: SetPausabilityCall) {
     this._call = call;
   }
 }

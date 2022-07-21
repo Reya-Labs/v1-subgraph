@@ -11,8 +11,10 @@
     "README.md"
   ],
   "scripts": {
-    "remove-errors": "ts-node deploy/removeErrors.ts",
+    "remove-errors": "ts-node scripts/removeErrors.ts",
+    "gen:base-abis": "ts-node scripts/genBaseABIs.ts",
     "codegen": "graph codegen",
+    "configure:mainnet": "mustache ../voltz-core/deployments/mainnetDeployment.json subgraph.template.yaml > subgraph.yaml",
     "configure:kovan": "mustache ../voltz-core/deployments/kovanDeployment.json subgraph.template.yaml > subgraph.yaml",
     "configure:goerli": "mustache ../voltz-core/deployments/goerliDeployment.json subgraph.template.yaml > subgraph.yaml",
     "configure:localhost": "mustache ../voltz-core/deployments/localhostDeployment.json subgraph.template.yaml > subgraph.yaml && replace --silent 'network: localhost' 'network: mainnet' subgraph.yaml",

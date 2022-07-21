@@ -2,7 +2,7 @@ import { log } from '@graphprotocol/graph-ts';
 
 import { ONE_BI, ZERO_BI } from '../../constants';
 import { FCMUnwind } from '../../../generated/schema';
-import { FullyCollateralisedUnwind } from '../../../generated/templates/aaveFCM/aaveFCM';
+import { FullyCollateralisedUnwind } from '../../../generated/templates/BaseFCM/BaseFCM';
 import { getAMMFromFCMAddress, getOrCreateTransaction } from '../../utilities';
 import getOrCreateFCMPosition from '../../utilities/getOrCreateFCMPosition';
 
