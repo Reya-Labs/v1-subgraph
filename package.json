@@ -11,8 +11,8 @@
     "README.md"
   ],
   "scripts": {
-    "remove-errors": "ts-node scripts/removeErrors.ts",
-    "gen:base-abis": "ts-node scripts/genBaseABIs.ts",
+    "remove-errors": "ts-node scripts/removeErrors.ts && ts-node scripts/generateBaseABIs.ts",
+    "generate-base-abis": "ts-node scripts/generateBaseABIs.ts",
     "codegen": "graph codegen",
     "configure:mainnet": "mustache ../voltz-core/deployments/mainnetDeployment.json subgraph.template.yaml > subgraph.yaml",
     "configure:goerli": "mustache ../voltz-core/deployments/goerliDeployment.json subgraph.template.yaml > subgraph.yaml",
