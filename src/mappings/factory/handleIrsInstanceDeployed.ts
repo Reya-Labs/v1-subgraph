@@ -5,7 +5,7 @@ import { UnderlyingToken, RateOracle, MarginEngine, FCM } from '../../../generat
 import {
   MarginEngine as MarginEngineTemplate,
   VAMM as VAMMTemplate,
-  aaveFCM as AaveFCMTemplate,
+  BaseFCM as BaseFCMTemplate,
 } from '../../../generated/templates';
 import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
 
@@ -36,7 +36,7 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
 
   MarginEngineTemplate.create(event.params.marginEngine);
   VAMMTemplate.create(event.params.vamm);
-  AaveFCMTemplate.create(event.params.fcm);
+  BaseFCMTemplate.create(event.params.fcm);
 
   log.info('Initializing new MarginEngine: {}, VAMM: {}, FCM: {}', [
     event.params.vamm.toHexString(),

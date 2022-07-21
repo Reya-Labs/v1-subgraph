@@ -1,5 +1,5 @@
 import { log } from '@graphprotocol/graph-ts';
-import { FCMTraderUpdate } from '../../../generated/templates/aaveFCM/aaveFCM';
+import { FCMTraderUpdate } from '../../../generated/templates/BaseFCM/BaseFCM';
 import { createFCMPositionSnapshot, getAMMFromFCMAddress } from '../../utilities';
 import getOrCreateFCMPosition from '../../utilities/getOrCreateFCMPosition';
 
