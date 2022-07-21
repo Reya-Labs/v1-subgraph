@@ -6,3 +6,4 @@ export { default as getOrCreatePosition } from './getOrCreatePosition';
 export { default as getOrCreateTransaction } from './getOrCreateTransaction';
 export { default as getUnderlyingTokenName } from './getUnderlyingTokenName';
 export { default as getAMMFromFCMAddress } from './getAMMFromFCMAddress';
+export { default as createMarginCalculatorParameters } from './createMarginCalculatorParameters';

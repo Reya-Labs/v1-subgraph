@@ -36,7 +36,33 @@ type RateOracleUpdate @entity {
 type MarginEngine @entity {
   id: ID!
   amm: AMM!
+  mcpCount: BigInt!
+  marginCalculatorParameters: MarginCalculatorParameters!
 }
+
+type MarginCalculatorParameters @entity {
+  id: ID!
+
+  apyUpperMultiplierWad: BigInt!
+  apyLowerMultiplierWad: BigInt!
+  sigmaSquaredWad: BigInt!
+  alphaWad: BigInt!
+  betaWad: BigInt!
+  xiUpperWad: BigInt!
+  xiLowerWad: BigInt!
+  tMaxWad: BigInt!
+  devMulLeftUnwindLMWad: BigInt!
+  devMulRightUnwindLMWad: BigInt!
+  devMulLeftUnwindIMWad: BigInt!
+  devMulRightUnwindIMWad: BigInt!
+  fixedRateDeviationMinLeftUnwindLMWad: BigInt!
+  fixedRateDeviationMinRightUnwindLMWad: BigInt!
+  fixedRateDeviationMinLeftUnwindIMWad: BigInt!
+  fixedRateDeviationMinRightUnwindIMWad: BigInt!
+  gammaWad: BigInt!
+  minMarginToIncentiviseLiquidators: BigInt!
+}
+
 
 type FCM @entity {
   id: ID!
