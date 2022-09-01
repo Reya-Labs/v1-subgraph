@@ -38,10 +38,14 @@ const createMarginCalculatorParameters = (
   marginCalculatorParameters.devMulRightUnwindLMWad = devMulRightUnwindLMWad;
   marginCalculatorParameters.devMulLeftUnwindIMWad = devMulLeftUnwindIMWad;
   marginCalculatorParameters.devMulRightUnwindIMWad = devMulRightUnwindIMWad;
-  marginCalculatorParameters.fixedRateDeviationMinLeftUnwindLMWad = fixedRateDeviationMinLeftUnwindLMWad;
-  marginCalculatorParameters.fixedRateDeviationMinRightUnwindLMWad = fixedRateDeviationMinRightUnwindLMWad;
-  marginCalculatorParameters.fixedRateDeviationMinLeftUnwindIMWad = fixedRateDeviationMinLeftUnwindIMWad;
-  marginCalculatorParameters.fixedRateDeviationMinRightUnwindIMWad = fixedRateDeviationMinRightUnwindIMWad;
+  marginCalculatorParameters.fixedRateDeviationMinLeftUnwindLMWad =
+    fixedRateDeviationMinLeftUnwindLMWad;
+  marginCalculatorParameters.fixedRateDeviationMinRightUnwindLMWad =
+    fixedRateDeviationMinRightUnwindLMWad;
+  marginCalculatorParameters.fixedRateDeviationMinLeftUnwindIMWad =
+    fixedRateDeviationMinLeftUnwindIMWad;
+  marginCalculatorParameters.fixedRateDeviationMinRightUnwindIMWad =
+    fixedRateDeviationMinRightUnwindIMWad;
   marginCalculatorParameters.gammaWad = gammaWad;
   marginCalculatorParameters.minMarginToIncentiviseLiquidators = minMarginToIncentiviseLiquidators;
   marginCalculatorParameters.save();

@@ -189,6 +189,24 @@ export class RateOracle extends Entity {
   set rateUpdates(value: Array<string>) {
     this.set("rateUpdates", Value.fromStringArray(value));
   }
+
+  get amm(): string {
+    let value = this.get("amm");
+    return value!.toString();
+  }
+
+  set amm(value: string) {
+    this.set("amm", Value.fromString(value));
+  }
+
+  get rateOracleIndexInAMM(): BigInt {
+    let value = this.get("rateOracleIndexInAMM");
+    return value!.toBigInt();
+  }
+
+  set rateOracleIndexInAMM(value: BigInt) {
+    this.set("rateOracleIndexInAMM", Value.fromBigInt(value));
+  }
 }
 
 export class RateOracleUpdate extends Entity {
@@ -648,6 +666,15 @@ export class AMM extends Entity {
 
   set marginEngine(value: string) {
     this.set("marginEngine", Value.fromString(value));
+  }
+
+  get rateOracleCount(): BigInt {
+    let value = this.get("rateOracleCount");
+    return value!.toBigInt();
+  }
+
+  set rateOracleCount(value: BigInt) {
+    this.set("rateOracleCount", Value.fromBigInt(value));
   }
 
   get rateOracle(): string {

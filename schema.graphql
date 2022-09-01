@@ -19,6 +19,9 @@ type RateOracle @entity {
 
   rateOracleUpdateCount: BigInt!
   rateUpdates: [RateOracleUpdate!]! @derivedFrom(field: "rateOracle")
+
+  amm: AMM!
+  rateOracleIndexInAMM: BigInt!
 }
 
 type RateOracleUpdate @entity {
@@ -75,6 +78,8 @@ type AMM @entity {
 
   fcm: FCM!
   marginEngine: MarginEngine!
+
+  rateOracleCount: BigInt!
   rateOracle: RateOracle!
 
   tickSpacing: BigInt!

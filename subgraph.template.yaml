@@ -12,7 +12,7 @@ dataSources:
       address: '{{address}}'
       {{/contracts.Factory}}
       abi: Factory
-      startBlock: 31135000
+      startBlock: 15444000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

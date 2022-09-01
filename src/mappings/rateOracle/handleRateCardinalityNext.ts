@@ -5,7 +5,7 @@ import { log } from '@graphprotocol/graph-ts';
 import { RateCardinalityNext } from '../../../generated/templates/BaseRateOracle/BaseRateOracle';
 import { RateOracle } from '../../../generated/schema';
 
-function handleRateCardinalityNext<T>(event: T): void {
+function handleRateCardinalityNext(event: RateCardinalityNext): void {
   const rateOracle = RateOracle.load(event.address.toHexString());
   if (rateOracle == null) {
     log.info('Event (RateCardinalityNext: {}) cannot be linked to a RateOracle', [

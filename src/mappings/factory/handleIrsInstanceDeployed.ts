@@ -1,7 +1,7 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
 
 import { IrsInstance } from '../../../generated/Factory/Factory';
-import { UnderlyingToken, RateOracle, MarginEngine, FCM } from '../../../generated/schema';
+import { UnderlyingToken, MarginEngine, FCM } from '../../../generated/schema';
 import {
   MarginEngine as MarginEngineTemplate,
   VAMM as VAMMTemplate,
@@ -12,6 +12,7 @@ import {
   getUnderlyingTokenName,
   getOrCreateAMM,
   createMarginCalculatorParameters,
+  createRateOracle,
 } from '../../utilities';
 
 function handleIrsInstanceDeployed(event: IrsInstance): void {
@@ -20,12 +21,6 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   underlyingToken.name = getUnderlyingTokenName(underlyingTokenAddress);
   underlyingToken.decimals = BigInt.fromI32(event.params.underlyingTokenDecimals);
   underlyingToken.save();
-
-  const rateOracle = new RateOracle(event.params.rateOracle.toHexString());
-
-  rateOracle.token = underlyingToken.id;
-  rateOracle.protocolId = BigInt.fromI32(event.params.yieldBearingProtocolID);
-  rateOracle.save();
 
   const amm = getOrCreateAMM(event.params.vamm.toHexString(), event.block.timestamp);
 
@@ -44,6 +39,14 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   fcm.amm = amm.id;
   fcm.save();
 
+  const rateOracle = createRateOracle(
+    event.params.rateOracle.toHexString(),
+    BigInt.fromI32(event.params.yieldBearingProtocolID),
+    underlyingToken.id,
+    amm.id,
+    BigInt.fromI32(0),
+  );
+
   MarginEngineTemplate.create(event.params.marginEngine);
   VAMMTemplate.create(event.params.vamm);
   BaseFCMTemplate.create(event.params.fcm);
@@ -61,6 +64,7 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   amm.termStartTimestamp = event.params.termStartTimestampWad;
   amm.termEndTimestamp = event.params.termEndTimestampWad;
   amm.tickSpacing = BigInt.fromI32(event.params.tickSpacing);
+  amm.rateOracleCount = BigInt.fromI32(1);
   amm.save();
 }
 
