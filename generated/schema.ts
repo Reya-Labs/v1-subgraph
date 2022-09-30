@@ -268,6 +268,7 @@ export class AMM extends Entity {
     this.set("updatedTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("tick", Value.fromBigInt(BigInt.zero()));
     this.set("txCount", Value.fromBigInt(BigInt.zero()));
+    this.set("vammPriceChangeCount", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -402,6 +403,15 @@ export class AMM extends Entity {
 
   set txCount(value: BigInt) {
     this.set("txCount", Value.fromBigInt(value));
+  }
+
+  get vammPriceChangeCount(): BigInt {
+    let value = this.get("vammPriceChangeCount");
+    return value!.toBigInt();
+  }
+
+  set vammPriceChangeCount(value: BigInt) {
+    this.set("vammPriceChangeCount", Value.fromBigInt(value));
   }
 
   get mints(): Array<string> {
@@ -1361,6 +1371,70 @@ export class Swap extends Entity {
 
   set fixedTokenDeltaUnbalanced(value: BigInt) {
     this.set("fixedTokenDeltaUnbalanced", Value.fromBigInt(value));
+  }
+}
+
+export class VAMMPriceChange extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("tick", Value.fromBigInt(BigInt.zero()));
+    this.set("amm", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save VAMMPriceChange entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save VAMMPriceChange entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("VAMMPriceChange", id.toString(), this);
+    }
+  }
+
+  static load(id: string): VAMMPriceChange | null {
+    return changetype<VAMMPriceChange | null>(store.get("VAMMPriceChange", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get tick(): BigInt {
+    let value = this.get("tick");
+    return value!.toBigInt();
+  }
+
+  set tick(value: BigInt) {
+    this.set("tick", Value.fromBigInt(value));
+  }
+
+  get amm(): string {
+    let value = this.get("amm");
+    return value!.toString();
+  }
+
+  set amm(value: string) {
+    this.set("amm", Value.fromString(value));
   }
 }
 

@@ -44,6 +44,7 @@ type AMM @entity {
   tick: BigInt!
 
   txCount: BigInt!
+  vammPriceChangeCount: BigInt!
 
   mints:         [Mint!]!          @derivedFrom(field: "amm")
   burns:         [Burn!]!          @derivedFrom(field: "amm")
@@ -166,6 +167,13 @@ type Swap @entity {
   fixedTokenDelta: BigInt!
   variableTokenDelta: BigInt!
   fixedTokenDeltaUnbalanced: BigInt!
+}
+
+type VAMMPriceChange @entity {
+  id: ID!
+  timestamp: BigInt!
+  tick: BigInt!
+  amm: AMM!
 }
 
 type Liquidation @entity {

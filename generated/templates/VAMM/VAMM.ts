@@ -120,6 +120,24 @@ export class FeeProtocol__Params {
   }
 }
 
+export class Initialized extends ethereum.Event {
+  get params(): Initialized__Params {
+    return new Initialized__Params(this);
+  }
+}
+
+export class Initialized__Params {
+  _event: Initialized;
+
+  constructor(event: Initialized) {
+    this._event = event;
+  }
+
+  get version(): i32 {
+    return this._event.parameters[0].value.toI32();
+  }
+}
+
 export class IsAlpha extends ethereum.Event {
   get params(): IsAlpha__Params {
     return new IsAlpha__Params(this);
@@ -194,24 +212,6 @@ export class OwnershipTransferred__Params {
   }
 }
 
-export class Paused extends ethereum.Event {
-  get params(): Paused__Params {
-    return new Paused__Params(this);
-  }
-}
-
-export class Paused__Params {
-  _event: Paused;
-
-  constructor(event: Paused) {
-    this._event = event;
-  }
-
-  get account(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
 export class Swap extends ethereum.Event {
   get params(): Swap__Params {
     return new Swap__Params(this);
@@ -263,24 +263,6 @@ export class Swap__Params {
 
   get fixedTokenDeltaUnbalanced(): BigInt {
     return this._event.parameters[9].value.toBigInt();
-  }
-}
-
-export class Unpaused extends ethereum.Event {
-  get params(): Unpaused__Params {
-    return new Unpaused__Params(this);
-  }
-}
-
-export class Unpaused__Params {
-  _event: Unpaused;
-
-  constructor(event: Unpaused) {
-    this._event = event;
-  }
-
-  get account(): Address {
-    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -476,6 +458,21 @@ export class VAMM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  VOLTZ_PAUSER(): Bytes {
+    let result = super.call("VOLTZ_PAUSER", "VOLTZ_PAUSER():(bytes32)", []);
+
+    return result[0].toBytes();
+  }
+
+  try_VOLTZ_PAUSER(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall("VOLTZ_PAUSER", "VOLTZ_PAUSER():(bytes32)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
   burn(
     recipient: Address,
     tickLower: i32,
@@ -634,6 +631,25 @@ export class VAMM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getRateOracle(): Address {
+    let result = super.call("getRateOracle", "getRateOracle():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_getRateOracle(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getRateOracle",
+      "getRateOracle():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   isAlpha(): boolean {
     let result = super.call("isAlpha", "isAlpha():(bool)", []);
 
@@ -788,6 +804,25 @@ export class VAMM extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  proxiableUUID(): Bytes {
+    let result = super.call("proxiableUUID", "proxiableUUID():(bytes32)", []);
+
+    return result[0].toBytes();
+  }
+
+  try_proxiableUUID(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "proxiableUUID",
+      "proxiableUUID():(bytes32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   swap(params: VAMM__swapInputParamsStruct): VAMM__swapResult {
@@ -1009,6 +1044,40 @@ export class BurnCall__Outputs {
   }
 }
 
+export class ChangePauserCall extends ethereum.Call {
+  get inputs(): ChangePauserCall__Inputs {
+    return new ChangePauserCall__Inputs(this);
+  }
+
+  get outputs(): ChangePauserCall__Outputs {
+    return new ChangePauserCall__Outputs(this);
+  }
+}
+
+export class ChangePauserCall__Inputs {
+  _call: ChangePauserCall;
+
+  constructor(call: ChangePauserCall) {
+    this._call = call;
+  }
+
+  get account(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get permission(): boolean {
+    return this._call.inputValues[1].value.toBoolean();
+  }
+}
+
+export class ChangePauserCall__Outputs {
+  _call: ChangePauserCall;
+
+  constructor(call: ChangePauserCall) {
+    this._call = call;
+  }
+}
+
 export class InitializeCall extends ethereum.Call {
   get inputs(): InitializeCall__Inputs {
     return new InitializeCall__Inputs(this);
@@ -1116,6 +1185,32 @@ export class MintCall__Outputs {
 
   get positionMarginRequirement(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class RefreshRateOracleCall extends ethereum.Call {
+  get inputs(): RefreshRateOracleCall__Inputs {
+    return new RefreshRateOracleCall__Inputs(this);
+  }
+
+  get outputs(): RefreshRateOracleCall__Outputs {
+    return new RefreshRateOracleCall__Outputs(this);
+  }
+}
+
+export class RefreshRateOracleCall__Inputs {
+  _call: RefreshRateOracleCall;
+
+  constructor(call: RefreshRateOracleCall) {
+    this._call = call;
+  }
+}
+
+export class RefreshRateOracleCall__Outputs {
+  _call: RefreshRateOracleCall;
+
+  constructor(call: RefreshRateOracleCall) {
+    this._call = call;
   }
 }
 
@@ -1231,6 +1326,36 @@ export class SetIsAlphaCall__Outputs {
   _call: SetIsAlphaCall;
 
   constructor(call: SetIsAlphaCall) {
+    this._call = call;
+  }
+}
+
+export class SetPausabilityCall extends ethereum.Call {
+  get inputs(): SetPausabilityCall__Inputs {
+    return new SetPausabilityCall__Inputs(this);
+  }
+
+  get outputs(): SetPausabilityCall__Outputs {
+    return new SetPausabilityCall__Outputs(this);
+  }
+}
+
+export class SetPausabilityCall__Inputs {
+  _call: SetPausabilityCall;
+
+  constructor(call: SetPausabilityCall) {
+    this._call = call;
+  }
+
+  get state(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class SetPausabilityCall__Outputs {
+  _call: SetPausabilityCall;
+
+  constructor(call: SetPausabilityCall) {
     this._call = call;
   }
 }
