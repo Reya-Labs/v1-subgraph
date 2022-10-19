@@ -51,6 +51,8 @@ templates:
         - name: VAMM
           file: ./artifacts/VAMM.json
       eventHandlers:
+        - event: VAMMPriceChange(int24)
+          handler: handleVAMMPriceChange
         - event: AdminChanged(address,address)
           handler: handleAdminChanged
         - event: BeaconUpgraded(indexed address)
@@ -65,20 +67,14 @@ templates:
           handler: handleMint
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
         - event: FeeProtocol(uint8)
           handler: handleSetFeeProtocol
         - event: Swap(address,indexed address,indexed int24,indexed int24,int256,uint160,uint256,int256,int256,int256)
           handler: handleSwap
-        - event: Unpaused(address)
-          handler: handleUnpaused
         - event: Upgraded(indexed address)
           handler: handleUpgraded
         - event: IsAlpha(bool)
           handler: handleIsAlpha
-        - event: VAMMPriceChange(int24)
-          handler: handleVAMMPriceChange
   - kind: ethereum/contract
     name: MarginEngine
     network: {{name}}
@@ -159,9 +155,5 @@ templates:
           handler: handleSettleFCMPosition
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
-        - event: Unpaused(address)
-          handler: handleUnpaused
         - event: Upgraded(indexed address)
           handler: handleUpgraded

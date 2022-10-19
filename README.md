@@ -3,9 +3,9 @@
 1. Run `yarn`
 2. Start graph node: `docker-compose up`
 3. Place ABIs in the `artifacts/` directory
-4. In `voltz-core`, start `hardhat`: `npx hardhat node --hostname 0.0.0.0`
+4. In `voltz-core`, start `hardhat`: `npx hardhat node --hostname 0.0.0.0` (just run `yarn deploy:localhost` if that doesn't work)
 5. Create subgraph: `yarn create-local`
-6. Deploy subgraph: `yarn deploy-local`
+6. Deploy subgraph: `yarn deploy-local` (could fail because the abis contain custom errors. Remove the custom errors from abi with `yarn remove-errors` and try again)
 
 ## Modifying code
 
