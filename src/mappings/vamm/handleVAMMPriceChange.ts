@@ -15,7 +15,7 @@ function handleVAMMPriceChange(event: VAMMPriceChangeEvent): void {
   amm.save();
 
   const vammPriceChange = new VAMMPriceChange(`${amm.id}#${amm.vammPriceChangeCount}`);
-  vammPriceChange.amm = amm.id;
+  vammPriceChange.amm = amm.id; // filter by amm.id
   vammPriceChange.timestamp = event.block.timestamp;
   vammPriceChange.tick = BigInt.fromI32(event.params.tick);
   vammPriceChange.save();

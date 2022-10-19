@@ -75,8 +75,6 @@ templates:
           handler: handleUpgraded
         - event: IsAlpha(bool)
           handler: handleIsAlpha
-        - event: VAMMPriceChange(int24)
-          handler: handleVAMMPriceChange
   - kind: ethereum/contract
     name: MarginEngine
     network: {{name}}
