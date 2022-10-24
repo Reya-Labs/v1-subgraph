@@ -18,9 +18,19 @@ Do not modify any files in the `generated/` directory directly.
 
 ## Deploy to hosted service
 
-1. Configure the hosted service using TheGraph's webapp, and save the appropriate access token in an `ACCESS_TOKEN` environment variable
+1. Configure the hosted service using TheGraph's webapp, and save the appropriate access token in an `ACCESS_TOKEN_HOSTED` and `GRAPH_URL_HOSTED` environment variable
 2. Run `yarn configure:kovan` or `configure:localhost` or `configure:mainnet`, to populate the correct contract addresses
-3. `yarn deploy`
+3. `yarn deploy-hosted-service`
+
+## Deploy to decentralized service aka Studio
+
+1. Ensure you have `DEPLOY_TOKEN_STUDIO` and `GRAPH_URL_STUDIO` access tokens in your environment variables.
+2. Run `yarn configure:mainnet` for mainnet deployment (there is no testnet support for Studio at the time of writing).
+3. Run `yarn deploy-studio`
+
+## Factory creation transaction
+
+The starting block to be used for mainnet deployment should be around the creation of the Factory contract which is at block 14853746
 
 ## To reset docker
 
