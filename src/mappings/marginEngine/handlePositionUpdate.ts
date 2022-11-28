@@ -41,9 +41,9 @@ function handlePositionUpdate(event: PositionUpdate): void {
   if (position.positionType.notEqual(LIQUIDITY_PROVIDER)) {
     // if it's not already liquidity provider
 
-    if (position.fixedTokenBalance.lt(BigInt.zero())) {
+    if (position.variableTokenBalance.gt(BigInt.zero())) {
       position.positionType = VARIABLE_TAKER;
-    } else if (position.fixedTokenBalance.gt(BigInt.zero())) {
+    } else if (position.variableTokenBalance.lt(BigInt.zero())) {
       position.positionType = FIXED_TAKER;
     }
   }
