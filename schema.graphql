@@ -54,6 +54,17 @@ type AMM @entity {
   settlements:   [Settlement!]!    @derivedFrom(field: "amm")
 }
 
+type EpnsNotificationCounter @entity {
+  id: ID!
+  totalCount: BigInt!
+}
+
+type EpnsPushNotification @entity {
+  id: ID!
+  notificationNumber: BigInt!
+  recipient: String!
+  notification: String!
+}
 type Wallet @entity {
   id: ID!
 

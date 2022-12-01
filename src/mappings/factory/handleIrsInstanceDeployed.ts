@@ -7,8 +7,11 @@ import {
   VAMM as VAMMTemplate,
   aaveFCM as AaveFCMTemplate,
 } from '../../../generated/templates';
+import { sendEPNSNotification } from '../../EPNSNotification';
 import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
+import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
 
+// reads whether a new AMM was deployed by the factory
 function handleIrsInstanceDeployed(event: IrsInstance): void {
   const underlyingTokenAddress = event.params.underlyingToken.toHexString();
   const underlyingToken = new UnderlyingToken(underlyingTokenAddress);
@@ -52,6 +55,35 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   amm.termEndTimestamp = event.params.termEndTimestampWad;
   amm.tickSpacing = BigInt.fromI32(event.params.tickSpacing);
   amm.save();
+
+  const recipient = ''; // leave empty for broadcast to everyone or include the channel address cc1?
+  const type = '1'; // broadcast to everyone
+  const title = 'New Pool Deployment on Voltz Protocol';
+  const body = `A new pool on ${getProtocolPrefix(Number(rateOracle.protocolId))} - ${
+    underlyingToken.name
+  } has been launched \
+  The new pool has been deployed with address ${amm.id} \
+  The pool starts at ${amm.termStartTimestamp} and matures on ${amm.termEndTimestamp} `;
+  const subject = `Pool Deployment`;
+  const message = `A brand new pool was launched`; // need to find a way to share which token the pool was launched on
+  const image = '';
+  const secret = 'null';
+  const cta = 'https://app.voltz.xyz/';
+
+  const notification = `{
+      "type": "${type}",
+      "title": "${title}",
+      "body": "${body}",
+      "subject": "${subject}",
+      "message": "${message}",
+      "image": "${image}",
+      "secret": "${secret}",
+      "cta": "${cta}"
+  }`;
+
+  // Any time a new event is fired by the factory to mark a new pool deployment handleIrsInstanceDeployed is fired which
+  // will fire a notification to the PUSH channel with info on the new pool.
+  sendEPNSNotification(recipient, notification);
 }
 
 export default handleIrsInstanceDeployed;
