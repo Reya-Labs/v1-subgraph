@@ -56,16 +56,17 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   amm.tickSpacing = BigInt.fromI32(event.params.tickSpacing);
   amm.save();
 
-  const recipient = ''; // leave empty for broadcast to everyone or include the channel address cc1?
+  const recipient = '0x45556408e543158f74403e882E3C8c23eCD9f73'; // goerli test channel address
   const type = '1'; // broadcast to everyone
   const title = 'New Pool Deployment on Voltz Protocol';
-  const body = `A new pool on ${getProtocolPrefix(Number(rateOracle.protocolId))} - ${
+  const body = `A brand new pool was launched`;
+  const subject = `Pool Deployment`;
+  const message = `A new pool on ${getProtocolPrefix(Number(rateOracle.protocolId))} - ${
     underlyingToken.name
   } has been launched \
   The new pool has been deployed with address ${amm.id} \
-  The pool starts at ${amm.termStartTimestamp} and matures on ${amm.termEndTimestamp} `;
-  const subject = `Pool Deployment`;
-  const message = `A brand new pool was launched`; // need to find a way to share which token the pool was launched on
+  The pool starts at ${amm.termStartTimestamp} and matures on ${amm.termEndTimestamp}`;
+
   const image = '';
   const secret = 'null';
   const cta = 'https://app.voltz.xyz/';

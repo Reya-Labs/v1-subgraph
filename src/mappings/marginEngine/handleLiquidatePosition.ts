@@ -51,23 +51,27 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
   amm.save();
 
   // Need to get the underlying token of the liquidated pool on line 64-65
-  const recipient = owner; // somehow get the address of the liquidated person here
+  const rateOracle = RateOracle.load(amm.rateOracle);
+
+  if (rateOracle === null) {
+    return;
+  }
+  const recipient = owner;
   const type = '3'; // only send it to a specific person
   const title = 'Liquidation Event Alert';
-  const body = `The address ${owner} has been liquidated. \n
-  The amount of notional unwound was ${liquidation.notionalUnwound}. \n
-  The lower tick and upper tick were ${position.tickLower} and ${
-    position.tickUpper
-  }, respectively. \n
-  The liquidation happened in the pool ${getProtocolPrefix(
+  const body = `Please check your portfolio as one of your positions was liquidated`;
+  const subject = `Liquidation Event Alert for ${owner}`;
+  const message = `The address ${owner} has been liquidated. \n
+  Liquidation took place in the pool: ${getProtocolPrefix(
     Number(rateOracle.protocolId),
-  )} - ${getUnderlyingTokenName(rateOracle.token)} \n
-
-  The liquidation happened in the pool ${position.amm} \n
-  The transaction id of the liquidation is ${liquidationId}
+  )}-${getUnderlyingTokenName(rateOracle.token)} \n
+  Pool matures on: ${amm.termEndTimestamp} \n
+  Amount of notional unwound was: ${Number(liquidation.notionalUnwound)} \n
+  The lower tick of the position was: ${Number(position.tickLower)} \n 
+  The upper tick of the position was: ${Number(position.tickUpper)} \n
+  The margin remaining in the position is: ${position.margin}
   `;
-  const subject = `Liquidation of ${owner}`;
-  const message = `Please check your portfolio as one of your positions was liquidated`;
+
   const image = '';
   const secret = 'null';
   const cta = 'https://app.voltz.xyz/';
@@ -85,5 +89,5 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
 
   sendEPNSNotification(recipient, notification);
 }
-export const subgraphID = 'voltzprotocol/voltz-goerli'; // change to mainnet when deploying to mainnet subgraph
+export const subgraphID = 'voltzprotocol/voltz-goerli'; // change to mainnet when deploying to mainnet subgraph, maybe keep this in the main mappings file?
 export default handleLiquidatePosition;
