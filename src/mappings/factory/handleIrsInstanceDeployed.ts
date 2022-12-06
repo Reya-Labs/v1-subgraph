@@ -7,7 +7,7 @@ import {
   VAMM as VAMMTemplate,
   aaveFCM as AaveFCMTemplate,
 } from '../../../generated/templates';
-import { sendEPNSNotification } from '../../EPNSNotification';
+import { sendEPNSNotification } from '../notifications/EPNSNotification';
 import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
 import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
 

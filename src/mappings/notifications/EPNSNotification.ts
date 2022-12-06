@@ -1,6 +1,6 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
-import { EpnsNotificationCounter, EpnsPushNotification } from '../generated/schema';
-import { subgraphID } from './mapping'; // Should this change to the handleLiquidatePosition.ts path?
+import { EpnsNotificationCounter, EpnsPushNotification } from '../../schema';
+import { subgraphID } from '../marginEngine/handleLiquidatePosition';
 
 export function sendEPNSNotification(recipient: string, notification: string): void {
   const id1 = subgraphID;

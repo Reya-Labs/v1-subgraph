@@ -3,7 +3,7 @@ import { BigInt, log } from '@graphprotocol/graph-ts';
 import { Liquidation, RateOracle } from '../../../generated/schema';
 import { PositionLiquidation } from '../../../generated/templates/MarginEngine/MarginEngine';
 import { ONE_BI } from '../../constants';
-import { sendEPNSNotification } from '../../EPNSNotification';
+import { sendEPNSNotification } from '../notifications/EPNSNotification';
 import {
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
