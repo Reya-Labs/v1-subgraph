@@ -1,5 +1,5 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
-import { EpnsNotificationCounter, EpnsPushNotification } from '../../schema';
+import { EpnsNotificationCounter, EpnsPushNotification } from '../../../generated/schema';
 import { NOTIFICATION_CONFIGS } from '../../constants';
 
 export function handleEPNSNotification(recipient: string, notification: string): void {
