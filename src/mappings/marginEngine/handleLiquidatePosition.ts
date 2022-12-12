@@ -75,5 +75,4 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
 
   sendPushNotification(recipient, type, title, body, subject, message);
 }
-export const subgraphID = 'voltzprotocol/voltz-goerli'; // change to mainnet when deploying to mainnet subgraph, maybe keep this in the main mappings file?
 export default handleLiquidatePosition;

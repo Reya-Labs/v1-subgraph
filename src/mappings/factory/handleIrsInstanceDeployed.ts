@@ -7,6 +7,7 @@ import {
   VAMM as VAMMTemplate,
   aaveFCM as AaveFCMTemplate,
 } from '../../../generated/templates';
+import { NOTIFICATION_CONFIGS } from '../../constants';
 import { getUnderlyingTokenName, getOrCreateAMM, sendPushNotification } from '../../utilities';
 import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
 
@@ -55,7 +56,7 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   amm.tickSpacing = BigInt.fromI32(event.params.tickSpacing);
   amm.save();
 
-  const recipient = '0x45556408e543158f74403e882E3C8c23eCD9f73'; // goerli test channel address
+  const recipient = NOTIFICATION_CONFIGS.goerli.channelAddress; // goerli test channel address
   const type = '1'; // broadcast to everyone
   const title = 'New Pool Deployment on Voltz Protocol';
   const body = `A brand new pool was launched`;

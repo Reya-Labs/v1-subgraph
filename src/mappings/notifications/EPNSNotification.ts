@@ -1,9 +1,9 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
 import { EpnsNotificationCounter, EpnsPushNotification } from '../../schema';
-import { subgraphID } from '../marginEngine/handleLiquidatePosition';
+import { NOTIFICATION_CONFIGS } from '../../constants';
 
 export function sendEPNSNotification(recipient: string, notification: string): void {
-  const id1 = subgraphID;
+  const id1 = NOTIFICATION_CONFIGS.goerli.subgraphID;
   log.info('New id of EpnsNotificationCounter is: {}', [id1]);
 
   let epnsNotificationCounter = EpnsNotificationCounter.load(id1);
@@ -14,7 +14,7 @@ export function sendEPNSNotification(recipient: string, notification: string): v
   epnsNotificationCounter.totalCount = epnsNotificationCounter.totalCount.plus(BigInt.fromI32(1));
 
   const count = epnsNotificationCounter.totalCount.toHexString();
-  const id2 = `${subgraphID}+${count}`;
+  const id2 = `${NOTIFICATION_CONFIGS.goerli.subgraphID}+${count}`;
   log.info('New id of EpnsPushNotification is: {}', [id2]);
 
   let epnsPushNotification = EpnsPushNotification.load(id2);

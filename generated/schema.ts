@@ -469,6 +469,121 @@ export class AMM extends Entity {
   }
 }
 
+export class EpnsNotificationCounter extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("totalCount", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save EpnsNotificationCounter entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EpnsNotificationCounter entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EpnsNotificationCounter", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EpnsNotificationCounter | null {
+    return changetype<EpnsNotificationCounter | null>(
+      store.get("EpnsNotificationCounter", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get totalCount(): BigInt {
+    let value = this.get("totalCount");
+    return value!.toBigInt();
+  }
+
+  set totalCount(value: BigInt) {
+    this.set("totalCount", Value.fromBigInt(value));
+  }
+}
+
+export class EpnsPushNotification extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("notificationNumber", Value.fromBigInt(BigInt.zero()));
+    this.set("recipient", Value.fromString(""));
+    this.set("notification", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EpnsPushNotification entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EpnsPushNotification entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EpnsPushNotification", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EpnsPushNotification | null {
+    return changetype<EpnsPushNotification | null>(
+      store.get("EpnsPushNotification", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get notificationNumber(): BigInt {
+    let value = this.get("notificationNumber");
+    return value!.toBigInt();
+  }
+
+  set notificationNumber(value: BigInt) {
+    this.set("notificationNumber", Value.fromBigInt(value));
+  }
+
+  get recipient(): string {
+    let value = this.get("recipient");
+    return value!.toString();
+  }
+
+  set recipient(value: string) {
+    this.set("recipient", Value.fromString(value));
+  }
+
+  get notification(): string {
+    let value = this.get("notification");
+    return value!.toString();
+  }
+
+  set notification(value: string) {
+    this.set("notification", Value.fromString(value));
+  }
+}
+
 export class Wallet extends Entity {
   constructor(id: string) {
     super();
