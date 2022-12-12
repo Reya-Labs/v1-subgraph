@@ -13,5 +13,5 @@ export const LIQUIDITY_PROVIDER = BigInt.fromI32(3);
 
 export const NOTIFICATION_CONFIGS = [
   ['0x....cc1', 'voltzprotocol/mainnet-v1'],
-  ['0x45556408e543158f74403e882E3C8c23eCD9f73', 'voltzprotocol/goerli-push-notifications'],
+  ['0x45556408e543158f74403e882E3C8c23eCD9f732', 'voltzprotocol/goerli-push-notifications'],
 ];
