@@ -2,7 +2,7 @@ import { BigInt, log } from '@graphprotocol/graph-ts';
 import { EpnsNotificationCounter, EpnsPushNotification } from '../../schema';
 import { NOTIFICATION_CONFIGS } from '../../constants';
 
-export function sendEPNSNotification(recipient: string, notification: string): void {
+export function handleEPNSNotification(recipient: string, notification: string): void {
   const id1 = NOTIFICATION_CONFIGS.goerli.subgraphID;
   log.info('New id of EpnsNotificationCounter is: {}', [id1]);
 
@@ -29,3 +29,5 @@ export function sendEPNSNotification(recipient: string, notification: string): v
   epnsPushNotification.save();
   epnsNotificationCounter.save();
 }
+
+export default handleEPNSNotification;

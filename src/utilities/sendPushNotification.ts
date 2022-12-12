@@ -1,4 +1,4 @@
-import { sendEPNSNotification } from '../mappings/notifications/EPNSNotification';
+import { handleEPNSNotification } from '../mappings/notifications/handleEPNSNotification';
 
 const sendPushNotification = (
   recipient: string,
@@ -22,7 +22,7 @@ const sendPushNotification = (
       "cta": "${cta}"
   }`;
 
-  sendEPNSNotification(recipient, notification);
+  handleEPNSNotification(recipient, notification);
 };
 
 export default sendPushNotification;

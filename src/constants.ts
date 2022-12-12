@@ -18,6 +18,6 @@ export const NOTIFICATION_CONFIGS = {
   },
   goerli: {
     channelAddress: '0x45556408e543158f74403e882E3C8c23eCD9f73',
-    subgraphID: 'voltzprotocol/voltz-goerli',
+    subgraphID: 'voltzprotocol/goerli-push-notifications',
   },
 };
