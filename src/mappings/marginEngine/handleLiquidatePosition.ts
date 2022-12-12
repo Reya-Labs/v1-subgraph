@@ -64,15 +64,18 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
   const subject = `Liquidation Event Alert for ${owner}`;
   const message = `The address ${owner} has been liquidated. \n
   Liquidation took place in the pool: ${getProtocolPrefix(
-    Number(rateOracle.protocolId),
+    rateOracle.protocolId,
   )}-${getUnderlyingTokenName(rateOracle.token)} \n
   Pool matures on: ${amm.termEndTimestamp} \n
-  Amount of notional unwound was: ${Number(liquidation.notionalUnwound)} \n
-  The lower tick of the position was: ${Number(position.tickLower)} \n
-  The upper tick of the position was: ${Number(position.tickUpper)} \n
+  Amount of notional unwound was: ${liquidation.notionalUnwound.toString()} \n
+  The lower tick of the position was: ${position.tickLower.toString()} \n
+  The upper tick of the position was: ${position.tickUpper.toString()} \n
   The margin remaining in the position is: ${position.margin}
   `;
+  const image = '';
+  const secret = 'null';
+  const cta = 'https://app.voltz.xyz';
 
-  sendPushNotification(recipient, type, title, body, subject, message);
+  sendPushNotification(recipient, type, title, body, subject, message, image, secret, cta);
 }
 export default handleLiquidatePosition;

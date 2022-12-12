@@ -3,7 +3,7 @@ import { EpnsNotificationCounter, EpnsPushNotification } from '../../../generate
 import { NOTIFICATION_CONFIGS } from '../../constants';
 
 export function handleEPNSNotification(recipient: string, notification: string): void {
-  const id1 = NOTIFICATION_CONFIGS.goerli.subgraphID;
+  const id1 = NOTIFICATION_CONFIGS[1][1];
   log.info('New id of EpnsNotificationCounter is: {}', [id1]);
 
   let epnsNotificationCounter = EpnsNotificationCounter.load(id1);
@@ -14,7 +14,7 @@ export function handleEPNSNotification(recipient: string, notification: string):
   epnsNotificationCounter.totalCount = epnsNotificationCounter.totalCount.plus(BigInt.fromI32(1));
 
   const count = epnsNotificationCounter.totalCount.toHexString();
-  const id2 = `${NOTIFICATION_CONFIGS.goerli.subgraphID}+${count}`;
+  const id2 = `${NOTIFICATION_CONFIGS[1][1]}+${count}`;
   log.info('New id of EpnsPushNotification is: {}', [id2]);
 
   let epnsPushNotification = EpnsPushNotification.load(id2);

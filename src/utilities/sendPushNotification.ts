@@ -7,9 +7,9 @@ const sendPushNotification = (
   body: string,
   subject: string,
   message: string,
-  image = '',
-  secret = 'null',
-  cta = 'https://app.voltz.xyz/',
+  image: string,
+  secret: string,
+  cta: string,
 ): void => {
   const notification = `{
       "type": "${type}", 

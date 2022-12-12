@@ -1,1 +1,1 @@
-export { default as EPNSNotification } from './handleEPNSNotification';
+export { default as handleEPNSNotification } from './handleEPNSNotification';

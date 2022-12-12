@@ -56,18 +56,21 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   amm.tickSpacing = BigInt.fromI32(event.params.tickSpacing);
   amm.save();
 
-  const recipient = NOTIFICATION_CONFIGS.goerli.channelAddress; // goerli test channel address
+  const recipient = NOTIFICATION_CONFIGS[1][0]; // goerli test channel address
   const type = '1'; // broadcast to everyone
   const title = 'New Pool Deployment on Voltz Protocol';
   const body = `A brand new pool was launched`;
   const subject = `Pool Deployment`;
-  const message = `A new pool on ${getProtocolPrefix(Number(rateOracle.protocolId))} - ${
+  const message = `A new pool on ${getProtocolPrefix(rateOracle.protocolId)} - ${
     underlyingToken.name
   } has been launched \
   The new pool has been deployed with address ${amm.id} \
   The pool starts at ${amm.termStartTimestamp} and matures on ${amm.termEndTimestamp}`;
+  const image = '';
+  const secret = 'null';
+  const cta = 'https://app.voltz.xyz';
 
-  sendPushNotification(recipient, type, title, body, subject, message);
+  sendPushNotification(recipient, type, title, body, subject, message, image, secret, cta);
 }
 
 export default handleIrsInstanceDeployed;
