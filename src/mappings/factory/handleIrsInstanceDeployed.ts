@@ -56,7 +56,7 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   amm.tickSpacing = BigInt.fromI32(event.params.tickSpacing);
   amm.save();
 
-  const recipient = NOTIFICATION_CONFIGS[1][0]; // goerli test channel address
+  const recipient = `eip155:5:${NOTIFICATION_CONFIGS[1][0]}`; // goerli test channel address
   const type = '1'; // broadcast to everyone
   const title = 'New Pool Deployment on Voltz Protocol';
   const body = `A brand new pool was launched`;

@@ -57,7 +57,7 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
     return;
   }
 
-  const recipient = owner;
+  const recipient = `eip155:5:${owner}`;
   const type = '3'; // only send it to a specific person
   const title = 'Liquidation Event Alert';
   const body = `Please check your portfolio as one of your positions was liquidated`;

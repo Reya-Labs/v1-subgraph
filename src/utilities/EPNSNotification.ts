@@ -1,8 +1,8 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
-import { EpnsNotificationCounter, EpnsPushNotification } from '../../../generated/schema';
-import { NOTIFICATION_CONFIGS } from '../../constants';
+import { EpnsNotificationCounter, EpnsPushNotification } from '../../generated/schema';
+import { NOTIFICATION_CONFIGS } from '../constants';
 
-export function handleEPNSNotification(recipient: string, notification: string): void {
+export function sendEPNSNotification(recipient: string, notification: string): void {
   const id1 = NOTIFICATION_CONFIGS[1][1];
   log.info('New id of EpnsNotificationCounter is: {}', [id1]);
 
@@ -30,4 +30,4 @@ export function handleEPNSNotification(recipient: string, notification: string):
   epnsNotificationCounter.save();
 }
 
-export default handleEPNSNotification;
+export default sendEPNSNotification;
