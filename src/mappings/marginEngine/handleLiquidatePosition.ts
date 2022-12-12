@@ -3,12 +3,12 @@ import { BigInt, log } from '@graphprotocol/graph-ts';
 import { Liquidation, RateOracle } from '../../../generated/schema';
 import { PositionLiquidation } from '../../../generated/templates/MarginEngine/MarginEngine';
 import { ONE_BI } from '../../constants';
-import { sendEPNSNotification } from '../notifications/EPNSNotification';
 import {
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
   getOrCreateTransaction,
   getUnderlyingTokenName,
+  sendPushNotification,
 } from '../../utilities';
 import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
 
@@ -56,6 +56,7 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
   if (rateOracle === null) {
     return;
   }
+
   const recipient = owner;
   const type = '3'; // only send it to a specific person
   const title = 'Liquidation Event Alert';
@@ -67,27 +68,12 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
   )}-${getUnderlyingTokenName(rateOracle.token)} \n
   Pool matures on: ${amm.termEndTimestamp} \n
   Amount of notional unwound was: ${Number(liquidation.notionalUnwound)} \n
-  The lower tick of the position was: ${Number(position.tickLower)} \n 
+  The lower tick of the position was: ${Number(position.tickLower)} \n
   The upper tick of the position was: ${Number(position.tickUpper)} \n
   The margin remaining in the position is: ${position.margin}
   `;
 
-  const image = '';
-  const secret = 'null';
-  const cta = 'https://app.voltz.xyz/';
-
-  const notification = `{
-      "type": "${type}", 
-      "title": "${title}",
-      "body": "${body}",
-      "subject": "${subject}",
-      "message": "${message}",
-      "image": "${image}",
-      "secret": "${secret}",
-      "cta": "${cta}"
-  }`;
-
-  sendEPNSNotification(recipient, notification);
+  sendPushNotification(recipient, type, title, body, subject, message);
 }
 export const subgraphID = 'voltzprotocol/voltz-goerli'; // change to mainnet when deploying to mainnet subgraph, maybe keep this in the main mappings file?
 export default handleLiquidatePosition;

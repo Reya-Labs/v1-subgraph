@@ -7,8 +7,7 @@ import {
   VAMM as VAMMTemplate,
   aaveFCM as AaveFCMTemplate,
 } from '../../../generated/templates';
-import { sendEPNSNotification } from '../notifications/EPNSNotification';
-import { getUnderlyingTokenName, getOrCreateAMM } from '../../utilities';
+import { getUnderlyingTokenName, getOrCreateAMM, sendPushNotification } from '../../utilities';
 import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
 
 // reads whether a new AMM was deployed by the factory
@@ -67,24 +66,7 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   The new pool has been deployed with address ${amm.id} \
   The pool starts at ${amm.termStartTimestamp} and matures on ${amm.termEndTimestamp}`;
 
-  const image = '';
-  const secret = 'null';
-  const cta = 'https://app.voltz.xyz/';
-
-  const notification = `{
-      "type": "${type}",
-      "title": "${title}",
-      "body": "${body}",
-      "subject": "${subject}",
-      "message": "${message}",
-      "image": "${image}",
-      "secret": "${secret}",
-      "cta": "${cta}"
-  }`;
-
-  // Any time a new event is fired by the factory to mark a new pool deployment handleIrsInstanceDeployed is fired which
-  // will fire a notification to the PUSH channel with info on the new pool.
-  sendEPNSNotification(recipient, notification);
+  sendPushNotification(recipient, type, title, body, subject, message);
 }
 
 export default handleIrsInstanceDeployed;
