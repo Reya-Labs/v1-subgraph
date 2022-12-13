@@ -9,6 +9,7 @@ import {
 } from '../../../generated/templates';
 import { NOTIFICATION_CONFIGS } from '../../constants';
 import { getUnderlyingTokenName, getOrCreateAMM, sendPushNotification } from '../../utilities';
+import convertUnixToDate from '../../utilities/convertUnixToDate';
 import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
 
 // reads whether a new AMM was deployed by the factory
@@ -64,8 +65,9 @@ function handleIrsInstanceDeployed(event: IrsInstance): void {
   const message = `A new pool on ${getProtocolPrefix(rateOracle.protocolId)} - ${
     underlyingToken.name
   } has been launched \
-  The new pool has been deployed with address ${amm.id} \
-  The pool starts at ${amm.termStartTimestamp} and matures on ${amm.termEndTimestamp}`;
+  The pool starts at ${convertUnixToDate(
+    amm.termStartTimestamp,
+  )} and matures on ${convertUnixToDate(amm.termEndTimestamp)}`;
   const image = '';
   const secret = 'null';
   const cta = 'https://app.voltz.xyz';

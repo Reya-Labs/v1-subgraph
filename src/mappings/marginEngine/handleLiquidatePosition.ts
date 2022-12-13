@@ -10,6 +10,7 @@ import {
   getUnderlyingTokenName,
   sendPushNotification,
 } from '../../utilities';
+import convertUnixToDate from '../../utilities/convertUnixToDate';
 import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
 
 function handleLiquidatePosition(event: PositionLiquidation): void {
@@ -66,7 +67,7 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
   Liquidation took place in the pool: ${getProtocolPrefix(
     rateOracle.protocolId,
   )}-${getUnderlyingTokenName(rateOracle.token)} \n
-  Pool matures on: ${amm.termEndTimestamp} \n
+  Pool matures on: ${convertUnixToDate(amm.termEndTimestamp)} \n
   Amount of notional unwound was: ${liquidation.notionalUnwound.toString()} \n
   The lower tick of the position was: ${position.tickLower.toString()} \n
   The upper tick of the position was: ${position.tickUpper.toString()} \n
