@@ -7,6 +7,7 @@ export const ZERO_BD = BigDecimal.fromString('0');
 export const ONE_BD = BigDecimal.fromString('1');
 export const BI_18 = BigInt.fromI32(18);
 export const WAD_BI = BigInt.fromString('1000000000000000000');
+export const MIL_BI = BigInt.fromString('1000000');
 
 export const FIXED_TAKER = BigInt.fromI32(1);
 export const VARIABLE_TAKER = BigInt.fromI32(2);

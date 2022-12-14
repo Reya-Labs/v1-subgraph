@@ -4,6 +4,7 @@ import { Liquidation, RateOracle } from '../../../generated/schema';
 import { PositionLiquidation } from '../../../generated/templates/MarginEngine/MarginEngine';
 import { ONE_BI } from '../../constants';
 import {
+  convertMarginUnits,
   convertUnixToDate,
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
@@ -71,7 +72,10 @@ function handleLiquidatePosition(event: PositionLiquidation): void {
   Amount of notional unwound was: ${liquidation.notionalUnwound.toString()} \n
   The lower tick of the position was: ${position.tickLower.toString()} \n
   The upper tick of the position was: ${position.tickUpper.toString()} \n
-  The margin remaining in the position is: ${position.margin}
+  The margin remaining in the position is: ${convertMarginUnits(
+    position.margin,
+    getUnderlyingTokenName(rateOracle.token),
+  )}
   `;
   const image = '';
   const secret = 'null';

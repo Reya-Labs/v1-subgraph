@@ -9,3 +9,4 @@ export { default as getAMMFromFCMAddress } from './getAMMFromFCMAddress';
 export { default as sendPushNotification } from './sendPushNotification';
 export { default as getProtocolPrefix } from './getProtocolPrefix';
 export { default as convertUnixToDate } from './convertUnixToDate';
+export { default as convertMarginUnits } from './convertMarginUnits';
