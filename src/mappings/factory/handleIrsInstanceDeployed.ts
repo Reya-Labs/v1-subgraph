@@ -8,9 +8,13 @@ import {
   aaveFCM as AaveFCMTemplate,
 } from '../../../generated/templates';
 import { NOTIFICATION_CONFIGS } from '../../constants';
-import { getUnderlyingTokenName, getOrCreateAMM, sendPushNotification } from '../../utilities';
-import convertUnixToDate from '../../utilities/convertUnixToDate';
-import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
+import {
+  getUnderlyingTokenName,
+  getOrCreateAMM,
+  sendPushNotification,
+  getProtocolPrefix,
+  convertUnixToDate,
+} from '../../utilities';
 
 // reads whether a new AMM was deployed by the factory
 function handleIrsInstanceDeployed(event: IrsInstance): void {

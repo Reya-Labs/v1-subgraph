@@ -4,14 +4,14 @@ import { Liquidation, RateOracle } from '../../../generated/schema';
 import { PositionLiquidation } from '../../../generated/templates/MarginEngine/MarginEngine';
 import { ONE_BI } from '../../constants';
 import {
+  convertUnixToDate,
   getAMMFromMarginEngineAddress,
   getOrCreatePosition,
   getOrCreateTransaction,
+  getProtocolPrefix,
   getUnderlyingTokenName,
   sendPushNotification,
 } from '../../utilities';
-import convertUnixToDate from '../../utilities/convertUnixToDate';
-import { getProtocolPrefix } from '../../utilities/getProtocolPrefix';
 
 function handleLiquidatePosition(event: PositionLiquidation): void {
   const transaction = getOrCreateTransaction(event);

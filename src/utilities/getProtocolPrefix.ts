@@ -1,6 +1,6 @@
 import { BigInt } from '@graphprotocol/graph-ts';
 
-export const getProtocolPrefix = (protocolId: BigInt): string => {
+const getProtocolPrefix = (protocolId: BigInt): string => {
   if (protocolId.equals(BigInt.fromU32(1))) {
     return 'Aave';
   }
@@ -22,3 +22,5 @@ export const getProtocolPrefix = (protocolId: BigInt): string => {
 
   return 'Unkown Protocol';
 };
+
+export default getProtocolPrefix;
