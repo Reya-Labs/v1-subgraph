@@ -161,6 +161,79 @@ export class RateOracle extends Entity {
   set token(value: string) {
     this.set("token", Value.fromString(value));
   }
+
+  get rateUpdates(): Array<string> {
+    let value = this.get("rateUpdates");
+    return value!.toStringArray();
+  }
+
+  set rateUpdates(value: Array<string>) {
+    this.set("rateUpdates", Value.fromStringArray(value));
+  }
+}
+
+export class RateUpdate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("rateOracle", Value.fromString(""));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("rate", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RateUpdate entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save RateUpdate entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("RateUpdate", id.toString(), this);
+    }
+  }
+
+  static load(id: string): RateUpdate | null {
+    return changetype<RateUpdate | null>(store.get("RateUpdate", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get rateOracle(): string {
+    let value = this.get("rateOracle");
+    return value!.toString();
+  }
+
+  set rateOracle(value: string) {
+    this.set("rateOracle", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get rate(): BigInt {
+    let value = this.get("rate");
+    return value!.toBigInt();
+  }
+
+  set rate(value: BigInt) {
+    this.set("rate", Value.fromBigInt(value));
+  }
 }
 
 export class MarginEngine extends Entity {
