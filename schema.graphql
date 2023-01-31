@@ -13,6 +13,14 @@ type RateOracle @entity {
   id: ID!
   protocolId: BigInt!
   token: UnderlyingToken!
+  rateUpdates: [RateUpdate!]!  @derivedFrom(field: "rateOracle")
+}
+
+type RateUpdate @entity {
+  id: ID!
+  rateOracle: RateOracle!
+  timestamp: BigInt!
+  rate: BigInt!
 }
 
 type MarginEngine @entity {
