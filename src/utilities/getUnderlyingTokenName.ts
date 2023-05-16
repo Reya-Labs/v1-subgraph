@@ -79,6 +79,12 @@ const getUnderlyingTokenName = (address: string): string => {
     return 'USDT';
   }
 
+  // ====== VUSD ======
+  // avalanche fuji
+  if (address.toLowerCase().includes('0x54B868B03c68A1307B24fB0A4b60b18A0714a94C'.toLowerCase())) {
+    return 'VUSD';
+  }
+
   return 'UNKNOWN';
 };
 
