@@ -18,6 +18,8 @@
     "configure:goerli": "mustache ../voltz-core/deployments/goerliDeployment.json subgraph.yaml.template > subgraph.yaml",
     "configure:arbitrum": "mustache ../voltz-core/deployments/arbitrumDeployment.json subgraph.yaml.template > subgraph.yaml",
     "configure:arbitrumGoerli": "mustache ../voltz-core/deployments/arbitrumGoerliDeployment.json subgraph.yaml.template > subgraph.yaml",
+    "configure:avalanche": "mustache ../voltz-core/deployments/avalancheDeployment.json subgraph.yaml.template > subgraph.yaml",
+    "configure:avalancheFuji": "mustache ../voltz-core/deployments/avalancheFujiDeployment.json subgraph.yaml.template > subgraph.yaml",
     "configure:localhost": "mustache ../voltz-core/deployments/localhostDeployment.json subgraph.yaml.template > subgraph.yaml && replace --silent 'network: localhost' 'network: mainnet' subgraph.yaml",
     "create-local": "yarn configure:localhost && graph create nicholaspiano/v1-subgraph --node http://127.0.0.1:8020",
     "build": "graph build",

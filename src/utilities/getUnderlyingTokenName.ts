@@ -20,6 +20,10 @@ const getUnderlyingTokenName = (address: string): string => {
   if (address.toLowerCase().includes('0x72A9c57cD5E2Ff20450e409cF6A542f1E6c710fc'.toLowerCase())) {
     return 'USDC';
   }
+  // avalanche
+  if (address.toLowerCase().includes('0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'.toLowerCase())) {
+    return 'USDC';
+  }
 
   // ====== DAI ======
   // mainnet
@@ -77,6 +81,12 @@ const getUnderlyingTokenName = (address: string): string => {
   // arbitrumGoerli
   if (address.toLowerCase().includes('0x8F30ec9Fb348513494cCC1710528E744Efa71003'.toLowerCase())) {
     return 'USDT';
+  }
+
+  // ====== VUSD ======
+  // avalanche fuji
+  if (address.toLowerCase().includes('0x54B868B03c68A1307B24fB0A4b60b18A0714a94C'.toLowerCase())) {
+    return 'VUSD';
   }
 
   return 'UNKNOWN';
