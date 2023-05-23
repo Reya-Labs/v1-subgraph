@@ -20,6 +20,10 @@ const getUnderlyingTokenName = (address: string): string => {
   if (address.toLowerCase().includes('0x72A9c57cD5E2Ff20450e409cF6A542f1E6c710fc'.toLowerCase())) {
     return 'USDC';
   }
+  // avalanche
+  if (address.toLowerCase().includes('0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'.toLowerCase())) {
+    return 'USDC';
+  }
 
   // ====== DAI ======
   // mainnet
